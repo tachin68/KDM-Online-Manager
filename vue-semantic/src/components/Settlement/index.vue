@@ -42,9 +42,9 @@
 									<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
 								</router-link>
 
-								<md-button class="md-icon-button md-list-action" @click="openDialog('confirmDelete')">
+								<button class="ui circular mini basic icon button" @click="openDialog('confirmDelete')">
 									<i class="md-icon material-icons md-theme-default">delete_forever</i>
-								</md-button>
+								</button>
 
 								<md-dialog ref="confirmDelete">
 									<md-dialog-title>Are you sure you want to delete this settlement ?</md-dialog-title>

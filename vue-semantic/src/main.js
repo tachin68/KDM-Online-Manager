@@ -50,11 +50,6 @@ Vue.material.registerTheme('about', {
 })
 
 
-// Vue.material.registerTheme('default', {
-// 	primary: 'blue',
-// })
-
-
 sync(store, router)
 
 new Vue({

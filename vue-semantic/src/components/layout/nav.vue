@@ -8,18 +8,20 @@
 						<md-avatar>
 							<img v-bind:src="auth.avatar">
 						</md-avatar>
+						<div class="md-list-text-container">
+							<span>{{ auth.name }}</span>
+						</div>
 					</md-list-item>
-
+<!--
 					<md-list-item>
 						<div class="md-list-text-container">
 							<span>{{ auth.name }}</span>
-							<!-- <span>{{ auth.name }}</span> -->
 						</div>
 
-						<!-- <md-button class="md-icon-button md-list-action"> -->
-							<!-- <md-icon>arrow_drop_down</md-icon> -->
-						<!-- </md-button> -->
-					</md-list-item>
+						<md-button class="md-icon-button md-list-action">
+							<md-icon>arrow_drop_down</md-icon>
+						</md-button>
+					</md-list-item> -->
 				</md-list>
 			</md-toolbar>
 

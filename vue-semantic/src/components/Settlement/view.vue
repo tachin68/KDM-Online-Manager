@@ -76,7 +76,7 @@
 					<b style="font-size: 1.28em;">Storage</b>
 				</div>
 				<div class="content">
-					<div class="ui grid container">
+					<!-- <div class="ui grid container"> -->
 						<!-- <div v-if="stroage" v-for="(value, key) in stroage" class="three centered wide mobile eight wide tablet two wide computer column">
 							<div class="ui labeled inverted button">
 								<div class="ui inverted tiny basic red button">{{ key }}</div>
@@ -89,7 +89,7 @@
 						</div>
 
 						<div class="ui internally celled grid">
-							<div class="row"  v-for="item in itemCount">
+							<div class="row" v-for="item in itemCount">
 								<div class="fourteen wide column">
 									<label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span>
 								</div>
@@ -99,7 +99,7 @@
 							</div>
 						</div>
 
-					</div>
+					<!-- </div> -->
 				</div>
 			</div>
 		</div>
