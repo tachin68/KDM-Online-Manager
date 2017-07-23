@@ -30,7 +30,7 @@ Vue.material.registerTheme('default', {
 		color: 'blue', hue: 600
 	},
 	warn: {
-		color: 'blue', hue: 600
+		color: 'black', hue: 600
 	}
 })
 

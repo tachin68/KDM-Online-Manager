@@ -12,8 +12,8 @@
 						<div class="item">
 							<div class="right floated content">
 								<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-								<div v-on:click="updateCountResoruce('Basic Resource', name, value.count, '+')" class="ui tiny inverted blue button icon"><i class="ui plus icon"></i></div>
-								<div v-on:click="updateCountResoruce('Basic Resource', name, value.count, '-')" class="ui tiny inverted red button icon"><i class="ui minus icon"></i></div>
+								<div v-on:click="updateCountResoruce('Basic Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
+								<div v-on:click="updateCountResoruce('Basic Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
 							</div>
 							<div style="font-size: 1.1em;">{{ name }}</div>
 						</div>
@@ -39,8 +39,8 @@
 								<div class="item">
 									<div class="right floated content">
 										<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-										<div v-on:click="updateMonsterCountResoruce(monsName, itemName, value.count, '+')" class="ui tiny inverted blue button icon"><i class="ui plus icon"></i></div>
-										<div v-on:click="updateMonsterCountResoruce(monsName, itemName, value.count, '-')" class="ui tiny inverted red button icon"><i class="ui minus icon"></i></div>
+										<div v-on:click="updateMonsterCountResoruce(monsName, itemName, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
+										<div v-on:click="updateMonsterCountResoruce(monsName, itemName, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
 									</div>
 									<div style="font-size: 1.1em;">{{ itemName }}</div>
 								</div>
@@ -62,8 +62,8 @@
 						<div class="item">
 							<div class="right floated content">
 								<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-								<div v-on:click="updateCountResoruce('Strange Resource', name, value.count, '+')" class="ui tiny inverted blue button icon"><i class="ui plus icon"></i></div>
-								<div v-on:click="updateCountResoruce('Strange Resource', name, value.count, '-')" class="ui tiny inverted red button icon"><i class="ui minus icon"></i></div>
+								<div v-on:click="updateCountResoruce('Strange Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
+								<div v-on:click="updateCountResoruce('Strange Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
 							</div>
 							<div style="font-size: 1.1em;">{{ name }}</div>
 						</div>
@@ -91,8 +91,8 @@
 								<div class="item">
 									<div class="right floated content">
 										<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-										<div v-on:click="updateGearsCount(name, itemName, value.count, '+')" class="ui tiny inverted blue button icon"><i class="ui plus icon"></i></div>
-										<div v-on:click="updateGearsCount(name, itemName, value.count, '-')" class="ui tiny inverted red button icon"><i class="ui minus icon"></i></div>
+										<div v-on:click="updateGearsCount(name, itemName, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
+										<div v-on:click="updateGearsCount(name, itemName, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
 									</div>
 									<div style="font-size: 1.1em;">{{ itemName }}</div>
 								</div>

@@ -132,7 +132,6 @@
 		mounted () {
 			window.document.title = 'Survivor'
 			this.getSurvivor()
-			// this.getSettlementLocation()
 		},
 
 		methods: {
@@ -151,14 +150,17 @@
 				// this.success = 1
 				// input['owner'] = { key: this.auth.key, name: this.auth.name }
 				// input['owner'] = this.auth.name
-
 				var input = this.input
 				var survivor = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).push(this.survivor())
+
 				// firebase.database().ref('settlementSurvivor').child(survivor.key).push(this.survivorLocation())
+				firebase.database().ref('survivorCourage').child(survivor.key).update(this.survivorCourage())
+				firebase.database().ref('survivorDisorders').child(survivor.key).update(this.survivorDisorders())
+				firebase.database().ref('survivorFightingArts').child(survivor.key).update(this.survivorFightingArts())
+				firebase.database().ref('survivorUnderstanding').child(survivor.key).update(this.survivorUnderstanding())
 				firebase.database().ref('survivorGearGrid').child(survivor.key).update(this.survivorGearGrid())
 				this.input = ''
 				this.$refs.snackbar.open();
-
 			},
 
 			survivorGearGrid() {
@@ -182,58 +184,32 @@
 						note: "",
 						status: true
 					},
-					Courage: {
-						Matchmaker: {
-							detail: "Spend 1 endeavor to trigger Intimacy story event.",
-							status: false
-						},
-						Prepared: {
-							detail: "Add hunt XP to your roll when determining a straggler.",
-							status: false
-						},
-						Stalwart: {
-							detail: "Can't be knocked down by brain trauma or intimidate.",
-							status: false
-						},
-						xp: 0
-					},
-					Disorders: {
-						slot1: "None",
-						slot2: "None",
-						slot3: "None"
-					},
-					'Fighting Arts': {
-						slot1: "None",
-						slot2: "None",
-						slot3: "None",
-						status: true
-					},
 					Gender: "",
 					Xp: 0,
-					Head: {
-						def: 0,
-						H: 0
-					},
-					Arms: {
-						def: 0,
-						L: 0,
-						H: 0
-					},
-					Body: {
-						def: 0,
-						L: 0,
-						H: 0
-					},
-					Waist: {
-						def: 0,
-						L: 0,
-						H: 0
-					},
-					Legs: {
-						def: 0,
-						L: 0,
-						H: 0
-					},
+					// Head: {
+					// 	def: 0,
+					// 	H: 0
+					// },
+					// Arms: {
+					// 	def: 0,
+					// 	L: 0,
+					// 	H: 0
+					// },
+					// Body: {
+					// 	def: 0,
+					// 	L: 0,
+					// 	H: 0
+					// },
+					// Waist: {
+					// 	def: 0,
+					// 	L: 0,
+					// 	H: 0
+					// },
+					// Legs: {
+					// 	def: 0,
+					// 	L: 0,
+					// 	H: 0
+					// },
 					Impairments: {
 						note: "",
 						'skip Next Hunt': false
@@ -251,25 +227,63 @@
 					Bleeding: 0,
 					Surname: "",
 					Survial: 1,
-					Understanding: {
-						Analyze: {
-							detail: "Look at the top AI card and return it to the top of the deck.",
-							status: false
-						},
-						Explore: {
-							detail: "Add +2 to your investigate results.",
-							status: false
-						},
-						Tinker: {
-							detail: "+1 endeavor when a returning survior.",
-							status: false
-						},
-						xp: 0
-					},
 					'Weapon Proficiency': {
 						type: "None",
 						xp: 0
 					}
+				}
+			},
+
+			survivorCourage() {
+				return {
+					Matchmaker: {
+						detail: "Spend 1 endeavor to trigger Intimacy story event.",
+						status: false
+					},
+					Prepared: {
+						detail: "Add hunt XP to your roll when determining a straggler.",
+						status: false
+					},
+					Stalwart: {
+						detail: "Can't be knocked down by brain trauma or intimidate.",
+						status: false
+					},
+					xp: 0
+				}
+			},
+
+			survivorDisorders() {
+				return {
+					slot1: "None",
+					slot2: "None",
+					slot3: "None"
+				}
+			},
+
+			survivorFightingArts() {
+				return {
+					slot1: "None",
+					slot2: "None",
+					slot3: "None",
+					status: true
+				}
+			},
+
+			survivorUnderstanding() {
+				return {
+					Analyze: {
+						detail: "Look at the top AI card and return it to the top of the deck.",
+						status: false
+					},
+					Explore: {
+						detail: "Add +2 to your investigate results.",
+						status: false
+					},
+					Tinker: {
+						detail: "+1 endeavor when a returning survior.",
+						status: false
+					},
+					xp: 0
 				}
 			},
 

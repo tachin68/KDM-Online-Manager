@@ -14,59 +14,73 @@
 			</md-card-area>
 
 			<md-card-content>
-				<form>
+				<form class="ui grid">
 					<md-snackbar :md-position="'bottom center'" ref="snackbar" :md-duration="5000">
 						<span>Update Success.</span>
 						<md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">OK</md-button>
 					</md-snackbar>
 
-					<md-switch v-model="survivor.Dead" class="md-accent md-theme-about">Dead</md-switch>
-					<md-switch v-model="survivor.Spend" class="md-primary md-theme-about">Spend Survival</md-switch>
+					<div class="sixteen wide column">
+						<md-switch v-model="survivor.Dead" class="md-accent md-theme-about">Dead</md-switch>
+						<md-switch v-model="survivor.Spend" class="md-primary md-theme-about">Spend Survival</md-switch>
+					</div>
 					<!-- <md-switch v-model="survivor.Spend" :value.sync="survivor.Spend" @change="changeSurvivorData('Spend')" class="md-primary md-theme-about" >Spend Survival</md-switch> -->
+					<div class="eight wide column">
+						<md-input-container class="md-accent md-theme-default">
+							<label>Name</label>
+							<md-input type="text" v-model.lazy="survivor.Name" @change="changeSurvivorData('Name')"></md-input>
+						</md-input-container>
+					</div>
 
-					<md-input-container class="md-accent md-theme-default">
-						<label>Name</label>
-						<md-input type="text" v-model.lazy="survivor.Name" @change="changeSurvivorData('Name')"></md-input>
-					</md-input-container>
+					<div class="eight wide column">
+						<md-input-container class="md-accent md-theme-default">
+							<label>Surname</label>
+							<md-input type="text" v-model.lazy="survivor.Surname" @change="changeSurvivorData('Surname')"></md-input>
+						</md-input-container>
+					</div>
 
-					<md-input-container class="md-accent md-theme-default">
-						<label>Surname</label>
-						<md-input type="text" v-model.lazy="survivor.Surname" @change="changeSurvivorData('Surname')"></md-input>
-					</md-input-container>
+					<div class="eight wide column">
+						<md-input-container class="md-accent md-theme-default">
+							<label for="survivor.Gender">Gender</label>
+							<md-select name="survivor.Gender" v-model="survivor.Gender" @change="changeSurvivorData('Gender')">
+								<md-option value="1">Male</md-option>
+								<md-option value="0">Female</md-option>
+							</md-select>
+						</md-input-container>
+					</div>
 
-					<md-input-container class="md-accent md-theme-default">
-						<label for="survivor.Gender">Gender</label>
-						<md-select name="survivor.Gender" v-model="survivor.Gender" @change="changeSurvivorData('Gender')">
-							<md-option value="1">Male</md-option>
-							<md-option value="0">Female</md-option>
-						</md-select>
-					</md-input-container>
+					<div class="eight wide column">
+						<md-input-container class="md-accent md-theme-default">
+							<label for="survivor.Xp">Hunt XP</label>
+							<md-select name="survivor.Xp" v-model="survivor.Xp" @change="changeSurvivorData('Xp')">
+								<md-option v-for="(value, key) in huntExp" :value="key">{{value}}</md-option>
+							</md-select>
+						</md-input-container>
+					</div>
 
-					<md-input-container class="md-accent md-theme-default">
-						<label for="survivor.Xp">Hunt XP</label>
-						<md-select name="survivor.Xp" v-model="survivor.Xp" @change="changeSurvivorData('Xp')">
-							<md-option v-for="(value, key) in huntExp" :value="key">{{value}}</md-option>
-						</md-select>
-					</md-input-container>
+					<div class="sixteen wide column">
+						<md-layout md-gutter v-for="key in objKeys">
+							<!-- <div class="two wide column"> -->
+							<md-layout>
+								<md-input-container class="md-accent md-theme-default">
+									<label>{{ key }}</label>
+									<md-input type="text" v-model.lazy="survivor[key]" @change="changeSurvivorData(key)"></md-input>
+								</md-input-container>
+							<!-- </div> -->
+							</md-layout>
+							<!-- <div class="two wide column"> -->
+							<md-layout>
+								<md-button v-on:click="updateStatusCount(key, survivor[key], '+')" class="md-icon-button md-mini md-raised md-theme-about md-primary">
+									<md-icon>add</md-icon>
+								</md-button>
 
-					<md-layout md-gutter v-for="key in objKeys">
-						<md-layout>
-							<md-input-container class="md-accent md-theme-default">
-								<label>{{ key }}</label>
-								<md-input type="text" v-model.lazy="survivor[key]" @change="changeSurvivorData(key)"></md-input>
-							</md-input-container>
+								<md-button v-on:click="updateStatusCount(key, survivor[key], '-')" class="md-icon-button md-mini md-raised md-theme-about md-accent">
+									<md-icon>remove</md-icon>
+								</md-button>
+							</md-layout>
+							<!-- </div> -->
 						</md-layout>
-
-						<md-layout>
-							<md-button v-on:click="updateStatusCount(key, survivor[key], '+')" class="md-icon-button md-mini md-raised md-theme-about md-primary">
-								<md-icon>add</md-icon>
-							</md-button>
-
-							<md-button v-on:click="updateStatusCount(key, survivor[key], '-')" class="md-icon-button md-mini md-raised md-theme-about md-accent">
-								<md-icon>remove</md-icon>
-							</md-button>
-						</md-layout>
-					</md-layout>
+					</div>
 
 				</form>
 			</md-card-content>
@@ -83,7 +97,7 @@
 			<md-card-content v-for="(name, slot) in faSlot">
 				<md-input-container class="md-accent md-theme-default">
 					<label>{{ name }}</label>
-					<md-select v-model="fa[slot]" @change="changeSurvivorData2D('Fighting Arts', slot)">
+					<md-select v-model="fa[slot]" @change="changeListData('survivorFightingArts', slot)">
 						<md-option v-for="(value, key) in fighting_arts" :value="key">
 							<span else><b>{{key}}</b></span>
 						</md-option>
@@ -103,7 +117,7 @@
 			<md-card-content v-for="(name, slot) in disorSlot">
 				<md-input-container class="md-accent md-theme-default">
 					<label>{{ name }}</label>
-					<md-select v-model="disor[slot]" @change="changeSurvivorData2D('Disorders', slot)">
+					<md-select v-model="disor[slot]" @change="changeListData('survivorDisorders', slot)">
 						<md-option v-for="(value, key) in disorders" :value="key">
 							<span ><b>{{key}}</b></span>
 						</md-option>
@@ -124,14 +138,15 @@
 			<md-card-content>
 				<md-input-container class="md-accent md-theme-default">
 					<label>Courage</label>
-					<md-select v-model="courage['xp']" @change="changeSurvivorData2D('Courage', 'xp')">
+					<md-select v-model="courage['xp']" @change="changeListData('survivorCourage', 'xp')">
 						<md-option v-for="(value, key) in courageExp" :value="key">{{ value }}</md-option>
 					</md-select>
 				</md-input-container>
 
 				<md-layout md-gutter v-for="(value, key) in courage">
 					<md-layout>
-						<md-switch v-if="key != 'xp'" v-model="courage[key]['status']" @change="changeSurvivorData3D('Courage', key, 'status')" class="md-theme-about md-primary"> {{ key }}</md-switch>
+						<!-- <md-switch v-if="key != 'xp'" v-model="courage[key]['status']" @change="changeSurvivorData3D('Courage', key, 'status')" class="md-theme-about md-primary"> {{ key }}</md-switch> -->
+						<md-radio v-if="key != 'xp'" :id="key" :name="key" md-value="true" v-model="courage[key]['status']" @change="changeListData3D('survivorCourage', key)" class="md-theme-about md-primary">{{ key }}</md-radio>
 					</md-layout>
 				</md-layout>
 			</md-card-content>
@@ -149,14 +164,14 @@
 			<md-card-content>
 				<md-input-container class="md-accent md-theme-default">
 					<label>Understanding</label>
-					<md-select v-model="understanding['xp']" @change="changeSurvivorData2D('Understanding', 'xp')">
+					<md-select v-model="understanding['xp']" @change="changeListData('survivorUnderstanding', 'xp')">
 						<md-option v-for="(value, key) in understandingExp" :value="key">{{ value }}</md-option>
 					</md-select>
 				</md-input-container>
 
 				<md-layout md-gutter v-for="(value, key) in understanding">
 					<md-layout>
-						<md-switch v-if="key != 'xp'" v-model="understanding[key]['status']" @change="changeSurvivorData3D('Understanding', key, 'status')" class="md-theme-about md-primary"> {{ key }}</md-switch>
+						<md-radio v-if="key != 'xp'" :id="key" :name="key" md-value="true" v-model="understanding[key]['status']" @change="changeListData3D('survivorUnderstanding', key)" class="md-theme-about md-primary">{{ key }}</md-radio>
 					</md-layout>
 				</md-layout>
 			</md-card-content>
@@ -274,16 +289,17 @@
 		},
 
 		mounted () {
-			$('.ui.toggle.checkbox').checkbox()
-			$('.ui.dropdown').dropdown()
+			// $('.ui.toggle.checkbox').checkbox()
+			// $('.ui.dropdown').dropdown()
 
 			this.getSurvivor()
-			this.getFightingArts()
-			this.getDisorders()
+			this.getSurvivorFightingArts()
+			this.getSurvivorDisorders()
 			this.getSurvivorCourage()
 			this.getSurvivorUnderstanding()
-			// this.getDisorders()
-			// this.getFightingArts()
+
+			this.getListDisorders()
+			this.getListFightingArts()
 
 		},
 
@@ -338,7 +354,7 @@
 
 			getSurvivorFightingArts () {
 
-				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).child('Fighting Arts').on('value', function(snapshot) {
+				firebase.database().ref('survivorFightingArts').child(this.$route.params.surid).on('value', function(snapshot) {
 
 					this.fa = snapshot.val()
 
@@ -348,7 +364,7 @@
 
 			getSurvivorDisorders () {
 
-				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).child('Disorders').on('value', function(snapshot) {
+				firebase.database().ref('survivorDisorders').child(this.$route.params.surid).on('value', function(snapshot) {
 
 					this.disor = snapshot.val()
 
@@ -358,7 +374,7 @@
 
 			getSurvivorCourage () {
 
-				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).child('Courage').on('value', function(snapshot) {
+				firebase.database().ref('survivorCourage').child(this.$route.params.surid).on('value', function(snapshot) {
 
 					this.courage = snapshot.val()
 
@@ -368,7 +384,7 @@
 
 			getSurvivorUnderstanding () {
 
-				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).child('Understanding').on('value', function(snapshot) {
+				firebase.database().ref('survivorUnderstanding').child(this.$route.params.surid).on('value', function(snapshot) {
 
 					this.understanding = snapshot.val()
 
@@ -376,7 +392,7 @@
 
 			},
 
-			getDisorders () {
+			getListDisorders () {
 
 				firebase.database().ref('disorders').on('value', function(snapshot) {
 
@@ -387,7 +403,7 @@
 
 			},
 
-			getFightingArts () {
+			getListFightingArts () {
 
 				firebase.database().ref('fightingArts').on('value', function(snapshot) {
 
@@ -410,50 +426,55 @@
 					var input = {}
 					input[key] = this.survivor[key]
 					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).update(input)
-					if(update) this.notify()
-					// if(update) this.$refs.snackbar.open()
+					// if(update) this.notify()
+					if(update) this.$refs.snackbar.open()
 				}
 
 			},
 
-			changeSurvivorData2D(keyNode, key) {
+			changeListData(table, key) {
+				var input = {}
 
-				if(keyNode && key) {
-					var input = {}
-					if(keyNode === 'Fighting Arts')
-					{
-						input[key] = this.fa[key]
-					} else if(keyNode === 'Disorders') {
-						input[key] = this.disor[key]
-					} else if(keyNode === 'Courage') {
-						input[key] = this.courage[key]
-					} else if(keyNode === 'Understanding') {
-						input[key] = this.understanding[key]
-					}
-
-					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).child(keyNode).update(input)
-					// if(update) this.$refs.snackbar.open()
-					if(update) this.notify()
+				if(table === 'survivorFightingArts') {
+					input[key] = this.fa[key]
+				} else if(table === 'survivorDisorders') {
+					input[key] = this.disor[key]
+				} else if(table === 'survivorCourage') {
+					input[key] = this.courage[key]
+				} else if(table === 'survivorUnderstanding') {
+					input[key] = this.understanding[key]
 				}
+
+				var update = firebase.database().ref(table).child(this.$route.params.surid).update(input)
+				// if(update) this.notify()
+				if(update) this.$refs.snackbar.open()
 
 			},
 
-			changeSurvivorData3D(keyNode, key, value) {
+			changeListData3D(table, key) {
+				var input = {}
+				var surId = this.$route.params.surid
+				var update = ''
 
-				if(keyNode && key) {
-					var input = {}
-
-					if(keyNode === 'Courage') {
-						input[value] = this.courage[key]['status']
-					} else if(keyNode === 'Understanding') {
-						input[value] = this.understanding[key]['status']
-					}
-
-					var update = firebase.database().ref('settlementSurvivor/'+this.$route.params.key+'/'+this.$route.params.surid+'/'+keyNode+'/'+key).update(input)
-					// if(update) this.$refs.snackbar.open()
-					if(update) this.notify()
+				if(table === 'survivorCourage') {
+					update = this.foreachUpdate(table, key, surId, ['Matchmaker', 'Prepared', 'Stalwart'])
+				} else if(table === 'survivorUnderstanding') {
+					update = this.foreachUpdate(table, key, surId, ['Analyze', 'Explore', 'Tinker'])
 				}
+				if(update) this.$refs.snackbar.open()
 
+			},
+
+			foreachUpdate(table, key, surId, arr) {
+				var input = {}
+				var update = ''
+
+				$.each(arr, function (index, value) {
+
+					input['status'] = (value == key) ? true : false;
+					update = firebase.database().ref(table).child(surId).child(value).update(input)
+				})
+				return update
 			},
 
 			notify() {
