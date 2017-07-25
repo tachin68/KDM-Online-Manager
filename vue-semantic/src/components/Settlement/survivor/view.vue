@@ -2,7 +2,7 @@
 
 	<div class="ui basic segment container">
 
-		<md-card>
+		<md-card v-if="survivor.Spend">
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
@@ -64,17 +64,18 @@
 							<md-layout>
 								<md-input-container class="md-accent md-theme-default">
 									<label>{{ key }}</label>
-									<md-input type="text" v-model.lazy="survivor[key]" @change="changeSurvivorData(key)"></md-input>
+									<md-input type="text" v-model="survivor[key]"></md-input>
 								</md-input-container>
 							<!-- </div> -->
 							</md-layout>
 							<!-- <div class="two wide column"> -->
 							<md-layout>
-								<md-button v-on:click="updateStatusCount(key, survivor[key], '+')" class="md-icon-button md-mini md-raised md-theme-about md-primary">
+								<md-button v-on:click="updateStatusCount(key, '+')" class="md-icon-button md-mini md-raised md-theme-about md-primary">
 									<md-icon>add</md-icon>
 								</md-button>
+								<!-- <div v-on:click="updateStatusCount(key, survivor[key], '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div> -->
 
-								<md-button v-on:click="updateStatusCount(key, survivor[key], '-')" class="md-icon-button md-mini md-raised md-theme-about md-accent">
+								<md-button v-on:click="updateStatusCount(key, '-')" class="md-icon-button md-mini md-raised md-theme-about md-accent">
 									<md-icon>remove</md-icon>
 								</md-button>
 							</md-layout>
@@ -85,7 +86,7 @@
 				</form>
 			</md-card-content>
 
-			<md-card-area md-inset>
+<!-- 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
 							<div class="md-toolbar-container">
@@ -103,9 +104,9 @@
 						</md-option>
 					</md-select>
 				</md-input-container>
-			</md-card-content>
+			</md-card-content> -->
 
-			<md-card-area md-inset>
+			<!-- <md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
 							<div class="md-toolbar-container">
@@ -123,8 +124,8 @@
 						</md-option>
 					</md-select>
 				</md-input-container>
-			</md-card-content>
-
+			</md-card-content> -->
+<!--
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
@@ -145,7 +146,6 @@
 
 				<md-layout md-gutter v-for="(value, key) in courage">
 					<md-layout>
-						<!-- <md-switch v-if="key != 'xp'" v-model="courage[key]['status']" @change="changeSurvivorData3D('Courage', key, 'status')" class="md-theme-about md-primary"> {{ key }}</md-switch> -->
 						<md-radio v-if="key != 'xp'" :id="key" :name="key" md-value="true" v-model="courage[key]['status']" @change="changeListData3D('survivorCourage', key)" class="md-theme-about md-primary">{{ key }}</md-radio>
 					</md-layout>
 				</md-layout>
@@ -175,9 +175,12 @@
 					</md-layout>
 				</md-layout>
 			</md-card-content>
-
+ -->
 		</md-card>
 
+		<div v-else class="ui basic center aligned segment">
+			<md-spinner md-indeterminate></md-spinner>
+		</div>
 	</div>
 
 </template>
@@ -185,19 +188,25 @@
 
 	import { mapState } from 'vuex'
 
+    import fightingArts from './fighting_arts.vue'
+
 	export default {
 
 		data () {
 
 			return {
+				template: {
+					loading: true
+				},
+				surId: this.$route.params.surid,
 				title: '',
 				dead: '',
 				spend: '',
 				// survivor: {},
 				// survivor: {'Dead' : 'Dead', 'Spend' : 'Spend', 'Name' : 'Name', 'Surname': 'Surname', 'Gender': 'Gender', 'Xp': 'Xp'},
 				survivor: {
-					'Dead' : '',
-					'Spend' : '',
+					'Dead' : false,
+					'Spend' : false,
 					'Name' : '',
 					'Surname': '',
 					'Gender': '',
@@ -292,15 +301,16 @@
 			// $('.ui.toggle.checkbox').checkbox()
 			// $('.ui.dropdown').dropdown()
 
-			this.getSurvivor()
 			this.getSurvivorFightingArts()
+			this.getListFightingArts()
+
 			this.getSurvivorDisorders()
 			this.getSurvivorCourage()
 			this.getSurvivorUnderstanding()
 
 			this.getListDisorders()
-			this.getListFightingArts()
 
+			this.getSurvivor()
 		},
 
 		methods: {
@@ -411,12 +421,10 @@
 					// console.log(this.fighting_arts)
 
 				}.bind(this))
-
 			},
 
-			updateStatusCount (key, value, type) {
-				value = (type === '+') ? (+value + 1) : (+value - 1)
-				this.survivor[key] = value
+			updateStatusCount (key, type) {
+				(type === '+') ? (this.survivor[key] += 1) : (this.survivor[key] -= 1)
 				this.changeSurvivorData(key)
 			},
 
@@ -427,9 +435,8 @@
 					input[key] = this.survivor[key]
 					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).update(input)
 					// if(update) this.notify()
-					if(update) this.$refs.snackbar.open()
+					// if(update) this.$refs.snackbar.open()
 				}
-
 			},
 
 			changeListData(table, key) {
@@ -487,7 +494,9 @@
 				})
 			}
 
-		}
+		},
+
+        components: { fightingArts }
 
 	}
 </script>
