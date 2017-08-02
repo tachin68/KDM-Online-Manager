@@ -13,16 +13,6 @@
 							<span>{{ auth.name }}</span>
 						</div>
 					</md-list-item>
-<!--
-					<md-list-item>
-						<div class="md-list-text-container">
-							<span>{{ auth.name }}</span>
-						</div>
-
-						<md-button class="md-icon-button md-list-action">
-							<md-icon>arrow_drop_down</md-icon>
-						</md-button>
-					</md-list-item> -->
 				</md-list>
 			</md-toolbar>
 
@@ -30,8 +20,7 @@
 
 				<li @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
-						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">home</i> <span>Settlement</span></div>
-						<!-- <div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">location_city</i> <span>Settlement</span></div> -->
+						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">location_city</i> <span>Settlement</span></div>
 					</router-link>
 				</li>
 
@@ -55,13 +44,13 @@
 
 				<li @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
-						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">person</i> <span>Population</span></div>
+						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">people</i> <span>Population</span></div>
 					</router-link>
 				</li>
 
 				<li @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
-						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">people</i> <span>Party</span></div>
+						<div class="md-list-item-holder"><i class="md-icon icon users md-theme-default"></i> <span>Party</span></div>
 					</router-link>
 				</li>
 
@@ -79,25 +68,11 @@
 
 				<div class="md-toolbar-container">
 
-					<md-button class="md-icon-button" @click="$refs.sidebar.toggle()">
+					<md-button v-if="auth.name" class="md-icon-button" @click="$refs.sidebar.toggle()">
 						<md-icon>menu</md-icon>
 					</md-button>
 
 					<h2 class="md-title" style="flex: 1">KD:M 1.5</h2>
-
-					<!-- <md-button class="md-button" v-on:click.prevent="logout">
-						<md-icon>exit_to_app</md-icon>Log Out
-					</md-button>
-
-					<md-avatar>
-						<img v-bind:src="auth.avatar">
-					</md-avatar> -->
-
-					<!-- <router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default"> -->
-						<!-- <span>Settlement</span> -->
-					<!-- </router-link> -->
-
-					<!-- <span style="flex: 1"></span> -->
 				</div>
 
 			</md-toolbar>

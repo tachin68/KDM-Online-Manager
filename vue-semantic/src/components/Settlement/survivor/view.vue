@@ -3,6 +3,24 @@
 	<div class="ui basic segment container">
 
 		<md-card v-if="survivor.Spend">
+		<md-tabs md-centered>
+  <md-tab md-label="Movies" md-icon="ondemand_video">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
+  </md-tab>
+
+  <md-tab md-label="Music" md-icon="music_note">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
+  </md-tab>
+
+  <md-tab md-label="Books" md-icon="books">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas.</p>
+  </md-tab>
+
+  <md-tab md-label="Pictures" md-icon="photo">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas.</p>
+  </md-tab>
+</md-tabs>
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">

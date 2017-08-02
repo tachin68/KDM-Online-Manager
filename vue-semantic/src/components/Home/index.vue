@@ -1,6 +1,6 @@
 <template>
 
-	<div class="ui basic segment container text">
+	<div class="ui basic segment container text mdl-grid" style="margin-top: 1rem;">
 
 		<md-card>
 			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
@@ -21,14 +21,14 @@
 					<md-layout md-gutter>
 						<md-layout md-align="center">
 						<!-- <md-layout md-flex-xsmall="100" md-flex-small="50" md-flex-medium="33" md-align="center" md-column md-flex="40" md-flex-offset="30"> -->
-							<button v-on:click="onSignInButtonClick" :class="{'ui google plus button' : true, 'loading': loading}"><i class="mail icon"></i> Sign In with Gmail</button>
+							<button v-on:click="onSignInButtonClick" :class="{'ui google plus button' : true, 'loading': loading, 'disabled': disabled}"><i class="mail icon"></i> Sign In with Gmail</button>
 						</md-layout>
 					</md-layout>
 				</md-card-header-text>
 			</md-card-header>
 		</md-card>
-
-		<!-- <div class="ui inverted center aligned segment" v-on:submit.stop.prevent="createUser">
+<!--
+		<div class="ui inverted center aligned segment" v-on:submit.stop.prevent="createUser">
 			<h3 class="ui header">
 				<img src="https://firebasestorage.googleapis.com/v0/b/kd-monster-online-sheet.appspot.com/o/lantern_48x48.png?alt=media&token=fb21135c-4a90-403b-b84c-dfdf04496f0e" class="ui image">
 				<div class="content">Sign up</div>
@@ -49,7 +49,8 @@
 		data () {
 
 			return {
-				loading: false
+				loading: false,
+				disabled: false
 			}
 		},
 
@@ -87,7 +88,7 @@
 
 			onSignInButtonClick () {
 
-				this.loading = true
+				this.disabled = this.loading = true
 
 				firebase.auth().signInWithPopup(provider).then(function(result) {
 
