@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<md-card-area md-inset>
+		<!-- <md-card-area md-inset>
 			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 					<div class="md-title">
 						<div class="md-toolbar-container">
@@ -8,7 +8,7 @@
 						</div>
 					</div>
 			</md-whiteframe>
-		</md-card-area>
+		</md-card-area> -->
 		<md-card-content v-for="(name, slot) in faSlot">
 			<md-input-container class="md-accent md-theme-default">
 				<label>{{ name }}</label>
@@ -72,7 +72,26 @@
 					this.fighting_arts = snapshot.val()
 
 				}.bind(this))
-			}
+			},
+
+			changeListData(table, key) {
+				var input = {}
+
+				if(table === 'survivorFightingArts') {
+					input[key] = this.fa[key]
+				} else if(table === 'survivorDisorders') {
+					input[key] = this.disor[key]
+				} else if(table === 'survivorCourage') {
+					input[key] = this.courage[key]
+				} else if(table === 'survivorUnderstanding') {
+					input[key] = this.understanding[key]
+				}
+
+				var update = firebase.database().ref(table).child(this.$route.params.surid).update(input)
+				// if(update) this.notify()
+				// if(update) this.$refs.snackbar.open()
+
+			},
 
 		}
 

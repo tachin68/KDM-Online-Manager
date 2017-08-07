@@ -3,33 +3,34 @@
 	<div class="ui basic segment container">
 
 		<md-card v-if="survivor.Spend">
-		<md-tabs md-centered>
-  <md-tab md-label="Movies" md-icon="ondemand_video">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
-  </md-tab>
 
-  <md-tab md-label="Music" md-icon="music_note">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
-  </md-tab>
-
-  <md-tab md-label="Books" md-icon="books">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas.</p>
-  </md-tab>
-
-  <md-tab md-label="Pictures" md-icon="photo">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas.</p>
-  </md-tab>
-</md-tabs>
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
 							<div class="md-toolbar-container">
-								<h2 class="md-headline" style="flex: 1;">{{ title }}</h2>
+								<h2  @click="showViewfightingArts"  class="md-headline" style="flex: 1;">{{ title }}</h2>
 							</div>
 						</div>
 				</md-whiteframe>
 			</md-card-area>
+{{activeTab}}
+		<md-tabs md-fixed>
+			<md-tab id="movies" md-label="Movies" :md-active="activeTab == 0" :md-disabled="activeTab !== 0">
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
+			</md-tab>
+
+			<md-tab md-label="Fighting Arts" :md-active="activeTab == 1">
+				<!-- <fighting-arts v-show="viewfightingArts" :surId="surId"></fighting-arts> -->
+			</md-tab>
+
+			<md-tab id="books" md-label="Books">
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas.</p>
+			</md-tab>
+
+			<md-tab id="pictures" md-label="Pictures">
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas.</p>
+			</md-tab>
+		</md-tabs>
 
 			<md-card-content>
 				<form class="ui grid">
@@ -206,7 +207,7 @@
 
 	import { mapState } from 'vuex'
 
-    import fightingArts from './fighting_arts.vue'
+		import fightingArts from './fighting_arts.vue'
 
 	export default {
 
@@ -216,10 +217,12 @@
 				template: {
 					loading: true
 				},
+				viewfightingArts: false,
 				surId: this.$route.params.surid,
 				title: '',
 				dead: '',
 				spend: '',
+				activeTab : 0,
 				// survivor: {},
 				// survivor: {'Dead' : 'Dead', 'Spend' : 'Spend', 'Name' : 'Name', 'Surname': 'Surname', 'Gender': 'Gender', 'Xp': 'Xp'},
 				survivor: {
@@ -333,6 +336,10 @@
 
 		methods: {
 
+xxx()
+{
+console.log('ddd')
+},
 			getSurvivor1 () {
 
 				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).on('value', function(snapshot) {
@@ -502,6 +509,12 @@
 				return update
 			},
 
+			showViewfightingArts()
+			{
+				console.log('A')
+				this.viewfightingArts = true
+			},
+
 			notify() {
 				const h = this.$createElement;
 
@@ -514,7 +527,7 @@
 
 		},
 
-        components: { fightingArts }
+				components: { fightingArts }
 
 	}
 </script>
