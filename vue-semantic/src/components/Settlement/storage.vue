@@ -72,6 +72,27 @@
 			</div>
 		</div>
 
+		<div v-on:click="getVerminResource" class="ui secondary inverted black segment">
+			<div class="ui inverted fluid accordion">
+				<div class="title">
+					<i class="dropdown icon"></i>
+					<b style="font-size: 1.28em;">Vermin Resource</b>
+				</div>
+				<div class="content">
+					<div  v-if="vermin" v-for="(value, name) in vermin" class="ui inverted list" style="padding-left:20px;">
+						<div class="item">
+							<div class="right floated content">
+								<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
+								<div v-on:click="updateCountResoruce('Vermin Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
+								<div v-on:click="updateCountResoruce('Vermin Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
+							</div>
+							<div style="font-size: 1.1em;">{{ name }}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="ui secondary inverted black segment">
 			<div class="ui inverted accordion">
 				<div class="title">
@@ -126,6 +147,7 @@
 				basic: {},
 				monsters: {},
 				strange: {},
+				vermin: {},
 				gears : {
 							'Barber Surgeon' : '',
 							Blacksmith : '',
@@ -181,6 +203,15 @@ console.log(this.gears)
 				firebase.database().ref('settlementStorage').child(this.$route.params.key).child('Resource').child('Strange Resource').on('value', function(snapshot) {
 
 					this.strange = snapshot.val()
+					// console.log(snapshot.val())
+				}.bind(this))
+			},
+
+			getVerminResource() {
+
+				firebase.database().ref('settlementStorage').child(this.$route.params.key).child('Resource').child('Vermin Resource').on('value', function(snapshot) {
+
+					this.vermin = snapshot.val()
 					// console.log(snapshot.val())
 				}.bind(this))
 			},

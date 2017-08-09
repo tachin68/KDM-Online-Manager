@@ -107,6 +107,33 @@
 			</div>
 		</div>
 
+		<div v-on:click="getVerminResource" class="ui styled padded inverted segment">
+			<div class="ui inverted accordion">
+				<div class="title">
+					<i class="dropdown icon"></i>
+					<b>Strange Resource</b>
+				</div>
+				<div class="content">
+					<table class="ui selectable fixed inverted table">
+						<tbody v-if="vermin_resource" v-for="(value, name) in vermin_resource">
+							<tr>
+								<td>
+									<h4 class="ui inverted image header">
+										<img class="ui custom mini rounded centered image" v-bind:src="value.image" />
+										<div class="content">
+											<router-link :to="'resource/'+name" style="color:#fff; font-weight: bold;">{{ name }}</router-link>
+											<div class="sub header"><i v-html="value.type"></i></div>
+											<div class="sub header"><p v-html="value.detail"></p></div>
+										</div>
+									</h4>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
 
 <!-- หนังสือ -->
 <!-- 📖 -->
@@ -132,7 +159,8 @@
 				basic_resource: {},
 				monster_resource: {},
 				mon_owner_resource: {},
-				strange_resource: {}
+				strange_resource: {},
+				vermin_resource: {}
 			}
 		},
 
@@ -142,7 +170,7 @@
 
 		mounted () {
 			window.document.title = 'Resource';
-			$('.ui.accordion').accordion();
+			$('.ui.accordion').accordion()
 
 			// $('.ui.dropdown').dropdown()
 			// $('#img .inline.icon').popup({ inline: true })
@@ -197,6 +225,15 @@
 				firebase.database().ref('itemResource').child('Strange Resource').on('value', function(snapshot) {
 
 					this.strange_resource = snapshot.val()
+
+				}.bind(this))
+			},
+
+			getVerminResource() {
+
+				firebase.database().ref('itemResource').child('Vermin Resource').on('value', function(snapshot) {
+
+					this.vermin_resource = snapshot.val()
 
 				}.bind(this))
 			},

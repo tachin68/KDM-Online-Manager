@@ -42,14 +42,14 @@
 									<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
 								</router-link>
 
-								<button class="ui circular mini basic icon button" @click="openDialog('confirmDelete')">
+								<button class="ui circular mini basic icon button" @click="openDialog(key)">
 									<i class="md-icon material-icons md-theme-default">delete_forever</i>
 								</button>
 
-								<md-dialog ref="confirmDelete">
+								<md-dialog :ref="key">
 									<md-dialog-title>Are you sure you want to delete this settlement ?</md-dialog-title>
 									<md-dialog-actions>
-										<md-button class="md-theme-about md-primary" @click="closeDialog('confirmDelete')">Cancel</md-button>
+										<md-button class="md-theme-about md-primary" @click="closeDialog(key)">Cancel</md-button>
 										<md-button class="md-accent" @click="deleteItem(key)">Ok</md-button>
 									</md-dialog-actions>
 								</md-dialog>
@@ -75,12 +75,14 @@
 
 			return {
 				input: {
+
 					name: '',
 					survival_limit: { name: 'Survival Limit', value: 1 },
 					depart: { name: 'Depart', value:0 },
 					population: { name:'Population', value: 0},
 					dead: { name:'Dead', value: 0}
 				},
+				i: 0,
 				items: [],
 				test: {},
 				resource: {},
@@ -191,7 +193,8 @@
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Antelope').set(this.antelopeResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('White Lion').set(this.lionResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Phoenix').set(this.phoenixResource())
-					this.input = ''
+					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Vermin Resource').set(this.verminResource())
+					this.input.name = ''
 					this.$refs.snackbar.open()
 					$('#btnSubmit').removeClass('loading')
 				}
@@ -202,7 +205,10 @@
 				firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
 				firebase.database().ref('settlementLocation').child(key).remove()
 				firebase.database().ref('settlementStorage').child(key).remove()
-				this.closeDialog('confirmDelete')
+				firebase.database().ref('settlementSurvivor').child(key).remove()
+
+				// ลบทึกอย่างของ survivor
+				this.closeDialog(key)
 			},
 
 			locationCoreGame() {
@@ -554,8 +560,53 @@
 				}
 			},
 
-			setData() {
+			verminResource() {
 
+				return {
+					'Crab Spider': {
+						count: 0 ,
+						type: {
+							hide: 'hide',
+							vermin: 'vermin',
+							consumable: 'consumable'
+						}
+					},
+					'Cyclops Fly': {
+						count: 0,
+						type : {
+							vermin: 'vermin',
+							consumable: 'consumable'
+						}
+					},
+					'Hissing Cockroach': {
+						count: 0,
+						type : {
+							vermin: 'vermin',
+							consumable: 'consumable'
+						}
+					},
+					'Lonely Ant': {
+						count: 0,
+						type : {
+							vermin: 'vermin',
+							consumable: 'consumable'
+						}
+					},
+					'Nightmare Tick': {
+						count: 0,
+						type : {
+							vermin: 'vermin',
+							consumable: 'consumable'
+						}
+					},
+					'Sword Beetle': {
+						count: 0,
+						type : {
+							vermin: 'vermin',
+							consumable: 'consumable'
+						}
+					}
+				}
 			}
 		}
 
