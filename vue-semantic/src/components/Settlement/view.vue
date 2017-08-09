@@ -34,8 +34,8 @@
 			</tbody>
 		</table> -->
 
-		<router-link :to="'storage/'+id" class="ui black button">Storage's {{ settlementName }}</router-link>
-		<router-link :to="'survivors/'+id" class="ui black button">Create Survivor</router-link>
+		<router-link :to="'storage/'+id" class="md-button md-theme-default md-raised md-primary">Storage's {{ settlementName }}</router-link>
+		<router-link :to="'survivors/'+id" class="md-button md-theme-default md-raised md-primary">Create Survivor</router-link>
 
 		<div class="ui four stackable inverted grey tiny item menu">
 			<!-- <span class="item" v-for="(data, key) in rows" v-if="data.name"><h4>{{ data.name }} : {{ data.value }}</h4></span> -->

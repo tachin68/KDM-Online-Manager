@@ -19,7 +19,7 @@ import locale from '../node_modules/element-ui/lib/locale'
 // configure language
 locale.use(lang)
 
-Vue.use(element)
+// Vue.use(element)
 Vue.use(VueMaterial)
 
 Vue.material.registerTheme('default', {
@@ -35,18 +35,18 @@ Vue.material.registerTheme('default', {
 })
 
 Vue.material.registerTheme('about', {
-  primary: {
-    color: 'blue',
-    hue: 500
-  },
-  accent: {
-    color: 'red',
-    hue: 500
-  },
-  warn: {
-    color: 'red',
-    hue: 900
-  }
+	primary: {
+		color: 'blue',
+		hue: 500
+	},
+	accent: {
+		color: 'red',
+		hue: 500
+	},
+	warn: {
+		color: 'red',
+		hue: 900
+	}
 })
 
 
