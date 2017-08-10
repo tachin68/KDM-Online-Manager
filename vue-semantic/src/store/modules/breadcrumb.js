@@ -1,13 +1,10 @@
 const initial = {
-	key: null,
-	share: null,
-	name: null,
 	breadcrumb: [{}]
 }
 
 export default {
 
-	state: JSON.parse(localStorage.getItem('settlement') || JSON.stringify(initial)),
+	state: JSON.parse(localStorage.getItem('breadcrumb') || JSON.stringify(initial)),
 
 	mutations: {
 
@@ -19,7 +16,7 @@ export default {
 		setSettlementIndex (state) {
 
 			Object.assign(state, initial)
-			localStorage.removeItem('settlement')
+			localStorage.removeItem('breadcrumb')
 		}
 	},
 
@@ -32,7 +29,7 @@ export default {
 
 		setSettlementIndex ({commit, rootState}) {
 
-			commit('setSettlementIndex')
+			commit('breadcrumb')
 		}
 	}
 }

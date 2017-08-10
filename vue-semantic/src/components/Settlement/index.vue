@@ -1,14 +1,9 @@
 <template>
 	<div class="ui basic segment container">
-
-		<div class="ui basic breadcrumb">
-			<a class="section">Home</a>
-			<i class="right angle icon divider"></i>
-			<a class="section">Store</a>
-			<i class="right angle icon divider"></i>
-			<div class="active section">T-Shirt</div>
-		</div>
-{{ xxx }}
+		<breadcrumb></breadcrumb>
+		<pre>
+{{ settlement }}
+		</pre>
 		<md-card>
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
@@ -78,6 +73,8 @@
 
 	import { mapState } from 'vuex'
 
+	import breadcrumb from '../layout/breadcrumb'
+
 	export default {
 
 		data () {
@@ -101,9 +98,12 @@
 		},
 
 		mounted () {
-			var name = this.input
+			this.$store.dispatch('setSettlementIndex')
 			window.document.title = 'Settlements'
 			this.getSettlement()
+result.breadcrumb.push({link: 'ddd'})
+			this.$store.dispatch('getSettlement', {result: result})
+		// console.log(window.location)
 		},
 
 		methods: {
@@ -626,7 +626,8 @@
 					}
 				}
 			}
-		}
+		},
 
+		components: {breadcrumb},
 	}
 </script>

@@ -34,6 +34,9 @@
 			</tbody>
 		</table> -->
 
+		<pre>
+{{ settlement }}
+		</pre>
 		<router-link :to="'storage/'+id" class="md-button md-theme-default md-raised md-primary">Storage's {{ settlementName }}</router-link>
 		<router-link :to="'survivors/'+id" class="md-button md-theme-default md-raised md-primary">Create Survivor</router-link>
 
@@ -148,7 +151,7 @@
 		},
 
 		computed: {
-			...mapState(['auth'])
+			...mapState(['auth', 'settlement'])
 		},
 
 		mounted () {
@@ -175,7 +178,7 @@
 					window.document.title	= snapshot.val().name
 					this.settlementName		= snapshot.val().name
 
-					var result = {key:'sss', share:'xxx', name:snapshot.val().name}
+					var result = {key:snapshot.key, share:'xxx', name:snapshot.val().name}
 
 					this.$store.dispatch('getSettlement', {result: result})
 
