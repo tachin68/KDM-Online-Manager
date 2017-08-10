@@ -1,5 +1,5 @@
-const initial = {
-	breadcrumb: [{}]
+var initial = {
+	link: null
 }
 
 export default {
@@ -8,28 +8,28 @@ export default {
 
 	mutations: {
 
-		getSettlement (state, {rootState, result}) {
-
+		pushBreadcrumb (state, {rootState, result}) {
+			// state.breadcrumb.push(result)
   			Object.assign(state, result)
 		},
 
-		setSettlementIndex (state) {
+		setBreadcrumb (state) {
 
 			Object.assign(state, initial)
-			localStorage.removeItem('breadcrumb')
+			localStorage.removeItem('link')
 		}
 	},
 
 	actions: {
 
-		getSettlement ({commit, rootState}, {result}) {
+		pushBreadcrumb ({commit, rootState}, {result}) {
 
-			commit('getSettlement', {rootState, result})
+			commit('pushBreadcrumb', {rootState, result})
 		},
 
-		setSettlementIndex ({commit, rootState}) {
+		setBreadcrumb ({commit, rootState}) {
 
-			commit('breadcrumb')
+			commit('setBreadcrumb')
 		}
 	}
 }

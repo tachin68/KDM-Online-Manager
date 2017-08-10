@@ -1,8 +1,7 @@
 const initial = {
 	key: null,
 	share: null,
-	name: null,
-	breadcrumb: [{}]
+	name: null
 }
 
 export default {

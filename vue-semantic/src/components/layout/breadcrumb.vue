@@ -9,6 +9,15 @@
 </template>
 <script>
 	export default {
+		data () {
+			return {
+				// link: window.location.href
+			}
+		},
 
+		mounted () {
+
+			console.log(window.location.href)
+		},
 	}
 </script>

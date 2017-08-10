@@ -1,9 +1,11 @@
 <template>
 	<div class="ui basic segment container">
 		<breadcrumb></breadcrumb>
+
 		<pre>
-{{ settlement }}
+{{ breadcrumb }}
 		</pre>
+
 		<md-card>
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
@@ -94,15 +96,15 @@
 		},
 
 		computed: {
-			...mapState(['auth', 'settlement'])
+			...mapState(['auth', 'settlement', 'breadcrumb'])
 		},
 
 		mounted () {
 			this.$store.dispatch('setSettlementIndex')
 			window.document.title = 'Settlements'
 			this.getSettlement()
-result.breadcrumb.push({link: 'ddd'})
-			this.$store.dispatch('getSettlement', {result: result})
+			this.$store.dispatch('pushBreadcrumb', {result: {link: window.location.href}})
+
 		// console.log(window.location)
 		},
 
