@@ -1,0 +1,37 @@
+const initial = {
+	key: null,
+	share: null,
+	name: null
+}
+
+export default {
+
+	state: JSON.parse(localStorage.getItem('settlement') || JSON.stringify(initial)),
+
+	mutations: {
+
+		getSettlement (state, {rootState, result}) {
+
+  			Object.assign(state, result)
+		},
+
+		settlementIndex (state) {
+
+			Object.assign(state, initial)
+			localStorage.removeItem('settlement')
+		}
+	},
+
+	actions: {
+
+		getSettlement ({commit, rootState}, {result}) {
+
+			commit('getSettlement', {rootState, result})
+		},
+
+		settlementIndex ({commit, rootState}) {
+
+			commit('settlementIndex')
+		}
+	}
+}

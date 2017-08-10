@@ -59,7 +59,7 @@
 		},
 
 		mounted () {
-
+			if(this.auth.login) this.$router.push({name: 'settlement'})
 		},
 
 		methods: {
@@ -113,8 +113,8 @@
 
 							// firebase.database().ref('email').child(email.key).update({ ref_user: user.key })
 
-							// var result = { login: true, key: user.key, avatar: avatar, name: result.user.displayName }
-							// this.$store.dispatch('authLogin', {result: result}).then(this.$router.push({name: 'home'}))
+							var result = { login: true, key: user.key, avatar: avatar, name: result.user.displayName }
+							this.$store.dispatch('authLogin', {result: result}).then(this.$router.push({name: 'settlement'}))
 
 						} else {
 

@@ -1,5 +1,14 @@
 <template>
 	<div class="ui basic segment container">
+
+		<div class="ui basic breadcrumb">
+			<a class="section">Home</a>
+			<i class="right angle icon divider"></i>
+			<a class="section">Store</a>
+			<i class="right angle icon divider"></i>
+			<div class="active section">T-Shirt</div>
+		</div>
+{{ xxx }}
 		<md-card>
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
@@ -82,21 +91,13 @@
 					population: { name:'Population', value: 0},
 					dead: { name:'Dead', value: 0}
 				},
-				i: 0,
 				items: [],
-				test: {},
-				resource: {},
-				// confirm: {
-				// 	title: 'Use Google\'s location service?',
-				// 	contentHtml: 'Let Google help apps determine location. <br> This means sending <strong>anonymous</strong> location data to Google, even when no apps are running.',
-				// 	ok: 'DELETE',
-				// 	cancel: 'CANCEL'
-				// 	}
+				resource: {}
 			}
 		},
 
 		computed: {
-			...mapState(['auth'])
+			...mapState(['auth', 'settlement'])
 		},
 
 		mounted () {
@@ -182,10 +183,10 @@
 				if(input.name)
 				{
 					input['owner'] = this.auth.key
-					$('#btnSubmit').addClass('loading')
 					// var row = firebase.database().ref('settlement').push(input)
 					// firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
 					var row = firebase.database().ref('settlement').child(this.auth.key).push(input)
+
 					firebase.database().ref('settlementMember').child(row.key).push({})
 					firebase.database().ref('settlementStorageGear').child(row.key).push({})
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Basic Resource').set(this.basciResource())
@@ -194,20 +195,37 @@
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('White Lion').set(this.lionResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Phoenix').set(this.phoenixResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Vermin Resource').set(this.verminResource())
+
 					this.input.name = ''
 					this.$refs.snackbar.open()
-					$('#btnSubmit').removeClass('loading')
 				}
 			},
 
 			deleteItem(key) {
+				var survivors = {}
+
+				firebase.database().ref('settlementSurvivor').child(key).on('value', function(snapshot) {
+
+					survivors = snapshot.val()
+
+				}.bind(this))
+
+				if(survivors)
+				{
+					$.each(survivors, function(surKey, value) {
+						firebase.database().ref('survivorCourage').child(surKey).remove()
+						firebase.database().ref('survivorDisorders').child(surKey).remove()
+						firebase.database().ref('survivorFightingArts').child(surKey).remove()
+						firebase.database().ref('survivorUnderstanding').child(surKey).remove()
+						firebase.database().ref('survivorGearGrid').child(surKey).remove()
+					})
+				}
 
 				firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
 				firebase.database().ref('settlementLocation').child(key).remove()
 				firebase.database().ref('settlementStorage').child(key).remove()
 				firebase.database().ref('settlementSurvivor').child(key).remove()
 
-				// ลบทึกอย่างของ survivor
 				this.closeDialog(key)
 			},
 

@@ -21,7 +21,7 @@
 
 	export default {
 
-		computed: mapState(['auth']),
+		computed: mapState(['auth', 'xxx']),
 		// components: {NavLayout, MainLayout, FootLayout},
 		components: {NavLayout, MainLayout},
 	}

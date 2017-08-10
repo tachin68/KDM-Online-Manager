@@ -142,7 +142,7 @@
 
 					this.survivors = snapshot.val()
 
-				}.bind(this));
+				}.bind(this))
 
 			},
 

@@ -134,7 +134,6 @@
 
 			return {
 				id: this.$route.params.key,
-				i: 0,
 				settlementName: '',
 				locations: {},
 				stroage: {},
@@ -175,6 +174,10 @@
 
 					window.document.title	= snapshot.val().name
 					this.settlementName		= snapshot.val().name
+
+					var result = {key:'sss', share:'xxx', name:snapshot.val().name}
+
+					this.$store.dispatch('getSettlement', {result: result})
 
 				}.bind(this));
 
