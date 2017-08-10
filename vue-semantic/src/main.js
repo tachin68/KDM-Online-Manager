@@ -49,7 +49,6 @@ Vue.material.registerTheme('about', {
 	}
 })
 
-
 sync(store, router)
 
 new Vue({

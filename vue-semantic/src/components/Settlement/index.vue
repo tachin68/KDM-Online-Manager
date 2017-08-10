@@ -3,7 +3,10 @@
 		<breadcrumb></breadcrumb>
 
 		<pre>
+{{ settlement }}
 {{ breadcrumb }}
+{{ auth.key }}
+{{ owner }}
 		</pre>
 
 		<md-card>
@@ -48,7 +51,7 @@
 									<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
 								</router-link>
 
-								<button class="ui circular mini basic icon button" @click="openDialog(key)">
+								<button v-if="auth.key === owner " class="ui circular mini basic icon button" @click="openDialog(key)">
 									<i class="md-icon material-icons md-theme-default">delete_forever</i>
 								</button>
 
@@ -91,6 +94,7 @@
 					dead: { name:'Dead', value: 0}
 				},
 				items: [],
+				owner: null,
 				resource: {}
 			}
 		},
@@ -102,8 +106,8 @@
 		mounted () {
 			this.$store.dispatch('setSettlementIndex')
 			window.document.title = 'Settlements'
+			this.getUser()
 			this.getSettlement()
-			this.$store.dispatch('pushBreadcrumb', {result: {link: window.location.href}})
 
 		// console.log(window.location)
 		},
@@ -118,10 +122,27 @@
 				this.$refs[ref][0].close()
 			},
 
+			getUser() {
+
+				var email = ''
+
+				firebase.database().ref('user').orderByChild('email').equalTo('mapplleps@gmail.com').on('child_added', function(snapshot) {
+
+					email = snapshot.val().email
+					// this.owner = snapshot.key
+					// this.items = snapshot.val()
+
+				}.bind(this))
+				if(email) {
+					console.log('A')
+				}
+			},
+
 			getSettlement() {
 
 				firebase.database().ref('settlement').child(this.auth.key).on('value', function(snapshot) {
 
+					this.owner = snapshot.key
 					this.items = snapshot.val()
 
 				}.bind(this))
@@ -189,8 +210,8 @@
 					// firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
 					var row = firebase.database().ref('settlement').child(this.auth.key).push(input)
 
-					firebase.database().ref('settlementMember').child(row.key).push({})
-					firebase.database().ref('settlementStorageGear').child(row.key).push({})
+					firebase.database().ref('settlementMember').child(row.key).update({ ownerKey: this.auth.key, ownerName: this.auth.name, share:[] })
+					firebase.database().ref('settlementStorageGear').child(row.key).push({empty:''})
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Basic Resource').set(this.basciResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Strange Resource').set(this.strangeResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Antelope').set(this.antelopeResource())
@@ -226,7 +247,9 @@
 				firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
 				firebase.database().ref('settlementLocation').child(key).remove()
 				firebase.database().ref('settlementStorage').child(key).remove()
+				firebase.database().ref('settlementStorageGear').child(key).remove()
 				firebase.database().ref('settlementSurvivor').child(key).remove()
+				firebase.database().ref('settlementMember').child(key).remove()
 
 				this.closeDialog(key)
 			},

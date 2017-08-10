@@ -93,7 +93,9 @@
 				firebase.auth().signInWithPopup(provider).then(function(result) {
 
 					var avatar = result.user.photoURL + '?sz=50'
+					// var md5 = require('md5')
 
+					// console.log(md5('5555'))
 					firebase.database().ref('email').orderByChild('name').equalTo(result.user.email).on('value', function(snapshot) {
 
 						if (snapshot.val() === null)
