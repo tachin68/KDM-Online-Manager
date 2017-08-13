@@ -6,7 +6,7 @@
 {{ settlement }}
 {{ breadcrumb }}
 {{ auth.key }}
-{{ owner }}
+{{ share }}
 		</pre>
 
 		<md-card>
@@ -14,7 +14,7 @@
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
 							<div class="md-toolbar-container">
-								<h2 class="md-headline" style="flex: 1;">Create New Settlement</h2>
+								<h2 class="md-headline" style="flex: 1;">Create Settlement</h2>
 							</div>
 						</div>
 				</md-whiteframe>
@@ -51,7 +51,7 @@
 									<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
 								</router-link>
 
-								<button v-if="auth.key === owner " class="ui circular mini basic icon button" @click="openDialog(key)">
+								<button class="ui circular mini basic icon button" @click="openDialog(key)">
 									<i class="md-icon material-icons md-theme-default">delete_forever</i>
 								</button>
 
@@ -60,6 +60,41 @@
 									<md-dialog-actions>
 										<md-button class="md-theme-about md-primary" @click="closeDialog(key)">Cancel</md-button>
 										<md-button class="md-accent" @click="deleteItem(key)">Ok</md-button>
+									</md-dialog-actions>
+								</md-dialog>
+							</div>
+						</li>
+					</md-list>
+					<md-divider class="md-inset"></md-divider>
+				</md-layout>
+			</md-card-content>
+
+				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
+					<div class="md-title">
+						<div class="md-toolbar-container">
+							<h2 class="md-headline" style="flex: 1;"> Settlements Share</h2>
+						</div>
+					</div>
+				</md-whiteframe>
+			</md-card-area>
+			<md-card-content>
+				<md-layout md-align="center" md-column md-gutter v-for="(item, key) in share">
+					<md-list>
+						<li class="md-list-item">
+							<div class="md-list-item-holder">
+								<router-link :to="'settlement/'+key" class="md-button md-list-item-container">
+									<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
+								</router-link>
+
+								<button class="ui circular mini basic icon button" @click="openDialog(key)">
+									<i class="md-icon material-icons md-theme-default">delete_forever</i>
+								</button>
+
+								<md-dialog :ref="key">
+									<md-dialog-title>Are you sure you want to delete this settlement ?</md-dialog-title>
+									<md-dialog-actions>
+										<md-button class="md-theme-about md-primary" @click="closeDialog(key)">Cancel</md-button>
+										<md-button class="md-accent" @click="deleteShareSettlement(key)">Ok</md-button>
 									</md-dialog-actions>
 								</md-dialog>
 							</div>
@@ -95,6 +130,7 @@
 				},
 				items: [],
 				owner: null,
+				share: {},
 				resource: {}
 			}
 		},
@@ -106,10 +142,8 @@
 		mounted () {
 			this.$store.dispatch('setSettlementIndex')
 			window.document.title = 'Settlements'
-			this.getUser()
+			this.getSettlementShare()
 			this.getSettlement()
-
-		// console.log(window.location)
 		},
 
 		methods: {
@@ -122,20 +156,15 @@
 				this.$refs[ref][0].close()
 			},
 
-			getUser() {
+			getSettlementShare() {
 
-				var email = ''
+				firebase.database().ref('userHasSettlement').child(this.auth.key).on('value', function(snapshot) {
+				// firebase.database().ref('userHasSettlement').child('-KrBbRhXmHHi96Vg4WBg').on('value', function(snapshot) {
 
-				firebase.database().ref('user').orderByChild('email').equalTo('mapplleps@gmail.com').on('child_added', function(snapshot) {
-
-					email = snapshot.val().email
-					// this.owner = snapshot.key
-					// this.items = snapshot.val()
+					this.share = snapshot.val()
 
 				}.bind(this))
-				if(email) {
-					console.log('A')
-				}
+
 			},
 
 			getSettlement() {
@@ -210,7 +239,10 @@
 					// firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
 					var row = firebase.database().ref('settlement').child(this.auth.key).push(input)
 
-					firebase.database().ref('settlementMember').child(row.key).update({ ownerKey: this.auth.key, ownerName: this.auth.name, share:[] })
+					// share settlement
+					// firebase.database().ref('settlementMember').child(row.key).update({ 0: '-KrBbRhXmHHi96Vg4WBg' })
+					// firebase.database().ref('userHasSettlement').child('-KrBbRhXmHHi96Vg4WBg').update({ 0: row.key })
+
 					firebase.database().ref('settlementStorageGear').child(row.key).push({empty:''})
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Basic Resource').set(this.basciResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Strange Resource').set(this.strangeResource())
@@ -224,34 +256,63 @@
 				}
 			},
 
-			deleteItem(key) {
-				var survivors = {}
-
-				firebase.database().ref('settlementSurvivor').child(key).on('value', function(snapshot) {
-
-					survivors = snapshot.val()
-
-				}.bind(this))
-
-				if(survivors)
-				{
-					$.each(survivors, function(surKey, value) {
-						firebase.database().ref('survivorCourage').child(surKey).remove()
-						firebase.database().ref('survivorDisorders').child(surKey).remove()
-						firebase.database().ref('survivorFightingArts').child(surKey).remove()
-						firebase.database().ref('survivorUnderstanding').child(surKey).remove()
-						firebase.database().ref('survivorGearGrid').child(surKey).remove()
-					})
-				}
-
-				firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
-				firebase.database().ref('settlementLocation').child(key).remove()
-				firebase.database().ref('settlementStorage').child(key).remove()
-				firebase.database().ref('settlementStorageGear').child(key).remove()
-				firebase.database().ref('settlementSurvivor').child(key).remove()
-				firebase.database().ref('settlementMember').child(key).remove()
-
+			deleteShareSettlement(key) {
+				firebase.database().ref('userHasSettlement').child(this.auth.key).child(key).remove()
 				this.closeDialog(key)
+			},
+
+			deleteItem(key) {
+				// var survivors = {}
+				// var member = {}
+				// var uhs = {}
+
+				// firebase.database().ref('settlementSurvivor').child(key).on('value', function(snapshot) {
+
+				// 	survivors = snapshot.val()
+
+				// }.bind(this))
+
+				// if(survivors)
+				// {
+				// 	$.each(survivors, function(surKey, value) {
+				// 		firebase.database().ref('survivorCourage').child(surKey).remove()
+				// 		firebase.database().ref('survivorDisorders').child(surKey).remove()
+				// 		firebase.database().ref('survivorFightingArts').child(surKey).remove()
+				// 		firebase.database().ref('survivorUnderstanding').child(surKey).remove()
+				// 		firebase.database().ref('survivorGearGrid').child(surKey).remove()
+				// 	})
+				// }
+
+				// firebase.database().ref('settlementMember').child(key).on('value', function(snapshot) {
+
+				// 	member = snapshot.val()
+
+				// }.bind(this))
+
+				// $.each(member, function(k, memKey) {
+
+				// 	var arr = {}
+				// 	var i = 0
+
+				// 	firebase.database().ref('userHasSettlement').child(memKey).on('value', function(snapshot) {
+				// 		uhs = snapshot.val()
+				// 	}.bind(this))
+
+				// 	$.each(uhs, function(k2, settleKey) {
+				// 		if(settleKey != key) arr[i++] = settleKey
+				// 	})
+
+				// 	firebase.database().ref('userHasSettlement').child(memKey).set(arr)
+				// })
+
+				// firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
+				// firebase.database().ref('settlementLocation').child(key).remove()
+				// firebase.database().ref('settlementStorage').child(key).remove()
+				// firebase.database().ref('settlementStorageGear').child(key).remove()
+				// firebase.database().ref('settlementSurvivor').child(key).remove()
+				// firebase.database().ref('settlementMember').child(key).remove()
+
+				// this.closeDialog(key)
 			},
 
 			locationCoreGame() {
