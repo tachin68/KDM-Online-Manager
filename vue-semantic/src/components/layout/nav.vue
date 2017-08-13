@@ -24,37 +24,37 @@
 					</router-link>
 				</li>
 
-				<li @click="$refs.sidebar.toggle()" class="md-list-item">
+				<!-- <li v-show="settlement.key" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">event_note</i> <span>Timeline</span></div>
 					</router-link>
-				</li>
+				</li> -->
 
-				<li @click="$refs.sidebar.toggle()" class="md-list-item">
+				<!-- <li v-show="settlement.key" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">whatshot</i> <span>Monster</span></div>
 					</router-link>
-				</li>
+				</li> -->
 
-				<li @click="$refs.sidebar.toggle()" class="md-list-item">
-					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
+				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+					<router-link :to="'/settlement/storage/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">store_mall_directory</i> <span>Storage</span></div>
 					</router-link>
 				</li>
 
-				<li @click="$refs.sidebar.toggle()" class="md-list-item">
-					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
+				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+					<router-link :to="'/settlement/survivors/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">people</i> <span>Population</span></div>
 					</router-link>
 				</li>
 
-				<li @click="$refs.sidebar.toggle()" class="md-list-item">
+				<!-- <li v-show="settlement.key" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon icon users md-theme-default"></i> <span>Party</span></div>
 					</router-link>
-				</li>
+				</li> -->
 
-				<li @click="$refs.sidebar.toggle()" class="md-list-item">
+				<li v-show="auth.login" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<md-button class="md-button md-button md-list-item-container md-theme-default" v-on:click.prevent="logout">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">exit_to_app</i> <span>Log Out</span></div>
 					</md-button>
@@ -101,7 +101,7 @@
 	export default {
 
 		computed: {
-			...mapState(['auth'])
+			...mapState(['auth', 'settlement'])
 		},
 
 		mounted () {

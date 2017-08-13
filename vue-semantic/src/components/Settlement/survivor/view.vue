@@ -2,13 +2,13 @@
 
 	<div :class="{'ui basic segment container':true, 'loading': survivor.loading}">
 
-		<md-card v-if="!survivor.loading" >
+		<md-card v-if="!survivor.loading">
 
 			<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
 				<span>Update Success.</span>
 				<md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">OK</md-button>
 			</md-snackbar>
-
+<!-- <pre>{{ survivor }}</pre> -->
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
@@ -19,7 +19,7 @@
 				</md-whiteframe>
 			</md-card-area>
 
-			<md-tabs @change="changeTabs" md-navigation>
+			<md-tabs @change="changeTabs" md-navigation="true">
 				<md-tab md-label="Stats">
 					<div class="ui grid">
 						<div class="sixteen wide column">
@@ -29,14 +29,14 @@
 						<div class="eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label>Name</label>
-								<md-input type="text" v-model.lazy="survivor.Name" @change="changeSurvivorData('Name')"></md-input>
+								<md-input type="text" v-model="survivor.Name" @change="changeSurvivorData('Name')"></md-input>
 							</md-input-container>
 						</div>
 
 						<div class="eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label>Surname</label>
-								<md-input type="text" v-model.lazy="survivor.Surname" @change="changeSurvivorData('Surname')"></md-input>
+								<md-input type="text" v-model="survivor.Surname" @change="changeSurvivorData('Surname')"></md-input>
 							</md-input-container>
 						</div>
 
@@ -44,8 +44,9 @@
 							<md-input-container class="md-accent md-theme-default">
 								<label for="survivor.Gender">Gender</label>
 								<md-select name="survivor.Gender" v-model="survivor.Gender" @change="changeSurvivorData('Gender')">
-									<md-option value="1">Male</md-option>
+								<!-- <md-select name="survivor.Gender" v-model="survivor.Gender"> -->
 									<md-option value="0">Female</md-option>
+									<md-option value="1">Male</md-option>
 								</md-select>
 							</md-input-container>
 						</div>
@@ -54,6 +55,7 @@
 							<md-input-container class="md-accent md-theme-default">
 								<label for="survivor.Xp">Hunt XP</label>
 								<md-select name="survivor.Xp" v-model="survivor.Xp" @change="changeSurvivorData('Xp')">
+								<!-- <md-select name="survivor.Xp" v-model="survivor.Xp"> -->
 									<md-option v-for="(value, key) in huntExp" :value="key">{{value}}</md-option>
 								</md-select>
 							</md-input-container>
@@ -127,6 +129,7 @@
 				viewUnderstanding: false,
 
 				title: '',
+				checkData: {},
 
 				survivor: {
 					loading		: true,
@@ -135,14 +138,13 @@
 					'Name'		: '',
 					'Surname'	: '',
 					'Gender'	: '',
-					'Xp'		: '',
-					'Insanity'	: '',
-					'Movement'	: '',
-					'Accuracy'	: '',
-					'Strength'	: '',
-					'Evasion'	: '',
-					'Luck'		: '',
-					'Speed'		: ''
+					'Insanity'	: 0,
+					'Movement'	: 0,
+					'Accuracy'	: 0,
+					'Strength'	: 0,
+					'Evasion'	: 0,
+					'Luck'		: 0,
+					'Speed'		: 0
 				},
 
 				huntExp: {
@@ -225,9 +227,10 @@
 
 			getSurvivor () {
 
-				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).on('value', function(snapshot) {
-
-					this.survivor = snapshot.val()
+				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).on('value', function(snapshot)
+				{
+					this.survivor	= snapshot.val()
+					this.checkData	= snapshot.val()
 
 					if(this.survivor.Name || this.survivor.Surname) window.document.title = this.survivor.Name+' '+this.survivor.Surname
 					if(this.survivor.Name || this.survivor.Surname) this.title = this.survivor.Name+' '+this.survivor.Surname
@@ -237,14 +240,19 @@
 
 			},
 
-			updateStatusCount (key, type) {
+			updateStatusCount (key, type)
+			{
 				(type === '+') ? (this.survivor[key] += 1) : (this.survivor[key] -= 1)
 				this.changeSurvivorData(key)
 			},
 
-			changeSurvivorData(key) {
+			changeSurvivorData(key)
+			{
+				console.log(this.checkData[key] + ' ? ' + this.survivor[key])
 
-				if(key) {
+				if(this.checkData[key] != this.survivor[key])
+				{
+					console.log('sss')
 					var input = {}
 					input[key] = this.survivor[key]
 					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).update(input)

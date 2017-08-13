@@ -1,6 +1,6 @@
 const initial = {
 	key: null,
-	share: null,
+	owner: null,
 	name: null
 }
 

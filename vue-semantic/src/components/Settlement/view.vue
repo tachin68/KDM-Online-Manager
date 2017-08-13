@@ -1,111 +1,85 @@
 <template>
 
-	<div class="ui basic segment container">
-		<!-- {{ auth }} -->
-		<!-- <form class="ui inverted form segment" v-on:submit.stop.prevent="" style="">
+	<div :class="{ 'ui basic segment container': true, 'loading': rows.loading }">
+<!-- <pre>{{ settlement }}</pre> -->
+<!-- <pre>{{ auth.key }}</pre> -->
+<!-- <pre>{{ access }}</pre> -->
+<!-- <pre>{{ stroage }}</pre> -->
 
-			<h3 class="ui header">
-				<img src="https://68.media.tumblr.com/avatar_bd70160a9028_48.png" class="ui image">
-				<div class="content">Inovation</div>
-			</h3>
-			<div class="field">
-				<div class="ui action right labeled icon input">
-					<input type="text" placeholder="Settlement Name" v-model="input.name">
-					<button class="ui icon button" type="submit"><i class="plus icon"></i></button>
+		<span v-show="access">
+			<router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'storage/'+id" class="md-button md-theme-default md-raised md-primary">Storage's {{ settlementName }}</router-link>
+			<router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'survivors/'+id" class="md-button md-theme-default md-raised md-primary">Create Survivor</router-link>
+
+			<div class="ui four stackable inverted grey tiny item menu">
+				<!-- <span class="item" v-for="(data, key) in rows" v-if="data.name"><h4>{{ data.name }} : {{ data.value }}</h4></span> -->
+				<span class="item"><h4>{{ rows.survival_limit.name }} : {{ rows.survival_limit.value }}</h4></span>
+				<span class="item"><h4>{{ rows.depart.name }} : {{ rows.depart.value }}</h4></span>
+				<span class="item"><h4>{{ rows.population.name }} : {{ rows.population.value }}</h4></span>
+				<span class="item"><h4>{{ rows.dead.name }} : {{ rows.dead.value }}</h4></span>
+			</div>
+
+			<div class="ui secondary inverted black segment">
+				<div class="ui inverted accordion">
+					<div class="title">
+						<i class="dropdown icon"></i>
+						<b style="font-size: 1.28em;">Inovations</b>
+					</div>
+					<div class="content">
+						<p>A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
+					</div>
 				</div>
 			</div>
-		</form> -->
-<!--
-		<pre>
-			{{ items }}
-		</pre> -->
-<!--
-		<table class="ui inverted large unstackable table">
-			<thead>
-				<tr>
-					<th colspan="2">Location</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="items" v-for="name in items">
-					<td><router-link to="#" style="color:#fff; font-weight: bold;">{{ name }}</router-link></td>
-					<td class="right aligned"><a class="ui button mini circular icon" v-on:click="deleteItem(key)"><i class="close icon"></i></a></td>
-				</tr>
-			</tbody>
-		</table> -->
 
-		<pre>
-{{ settlement }}
-		</pre>
-		<router-link :to="'storage/'+id" class="md-button md-theme-default md-raised md-primary">Storage's {{ settlementName }}</router-link>
-		<router-link :to="'survivors/'+id" class="md-button md-theme-default md-raised md-primary">Create Survivor</router-link>
-
-		<div class="ui four stackable inverted grey tiny item menu">
-			<!-- <span class="item" v-for="(data, key) in rows" v-if="data.name"><h4>{{ data.name }} : {{ data.value }}</h4></span> -->
-			<span class="item"><h4>{{ rows.survival_limit.name }} : {{ rows.survival_limit.value }}</h4></span>
-			<span class="item"><h4>{{ rows.depart.name }} : {{ rows.depart.value }}</h4></span>
-			<span class="item"><h4>{{ rows.population.name }} : {{ rows.population.value }}</h4></span>
-			<span class="item"><h4>{{ rows.dead.name }} : {{ rows.dead.value }}</h4></span>
-		</div>
-
-		<div class="ui secondary inverted black segment">
-			<div class="ui inverted accordion">
-				<div class="title">
-					<i class="dropdown icon"></i>
-					<b style="font-size: 1.28em;">Inovations</b>
-				</div>
-				<div class="content">
-					<p>A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
+			<div class="ui secondary inverted black segment">
+				<div class="ui inverted accordion">
+					<div class="title">
+						<i class="dropdown icon"></i>
+						<b style="font-size: 1.28em;">Locations</b>
+					</div>
+					<div class="content" style="padding-left:20px;">
+						<p v-for="(value, key) in locations" v-if="value"><router-link :to="'settlement/location/'+key" style="font-size: 1.1em; color:#fff; font-weight: bold;">{{ key }}</router-link></a></p>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="ui secondary inverted black segment">
-			<div class="ui inverted accordion">
-				<div class="title">
-					<i class="dropdown icon"></i>
-					<b style="font-size: 1.28em;">Locations</b>
-				</div>
-				<div class="content" style="padding-left:20px;">
-					<p v-for="(value, key) in locations" v-if="value"><router-link :to="'settlement/location/'+key" style="font-size: 1.1em; color:#fff; font-weight: bold;">{{ key }}</router-link></a></p>
-				</div>
-			</div>
-		</div>
-
-		<div v-if="stroage" v-on:click="getSettlementStorage" class="ui secondary inverted black segment">
-			<div class="ui inverted accordion">
-				<div class="title">
-					<i class="dropdown icon"></i>
-					<b style="font-size: 1.28em;">Storage</b>
-				</div>
-				<div class="content">
-					<!-- <div class="ui grid container"> -->
-						<!-- <div v-if="stroage" v-for="(value, key) in stroage" class="three centered wide mobile eight wide tablet two wide computer column">
-							<div class="ui labeled inverted button">
-								<div class="ui inverted tiny basic red button">{{ key }}</div>
-								<a class="ui basic red left pointing label">{{ value }}</a>
-							</div>
-							<span class="item" ><h4>{{ key }} : {{ value }}</h4></span>
-						</div> -->
-						<div style="margin-top:1rem;" class="ui six stackable inverted grey tiny item menu">
-							<span class="item" v-for="(value, key) in stroage"><h4>{{ key }} : {{ value }}</h4></span>
-						</div>
-
-						<div class="ui internally celled grid">
-							<div class="row" v-for="item in itemCount">
-								<div class="fourteen wide column">
-									<label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span>
+			<div v-if="stroage" v-on:click="getSettlementStorage" class="ui secondary inverted black segment">
+				<div class="ui inverted accordion">
+					<div class="title">
+						<i class="dropdown icon"></i>
+						<b style="font-size: 1.28em;">Storage</b>
+					</div>
+					<div class="content">
+						<!-- <div class="ui grid container"> -->
+							<!-- <div v-if="stroage" v-for="(value, key) in stroage" class="three centered wide mobile eight wide tablet two wide computer column">
+								<div class="ui labeled inverted button">
+									<div class="ui inverted tiny basic red button">{{ key }}</div>
+									<a class="ui basic red left pointing label">{{ value }}</a>
 								</div>
-								<div class="two wide column">
-									<h4>{{ item.value }}</h4>
+								<span class="item" ><h4>{{ key }} : {{ value }}</h4></span>
+							</div> -->
+
+							<div style="margin-top:1rem;" class="ui six stackable inverted grey tiny item menu">
+								<span class="item" v-for="(value, key) in stroage"><h4>{{ key }} : {{ value }}</h4></span>
+							</div>
+
+							<div class="ui internally celled grid">
+								<div class="row" v-for="item in itemCount">
+									<div class="fourteen wide column">
+										<label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span>
+									</div>
+									<div class="two wide column">
+										<h4>{{ item.value }}</h4>
+									</div>
 								</div>
 							</div>
-						</div>
 
-					<!-- </div> -->
+						<!-- </div> -->
+					</div>
 				</div>
 			</div>
-		</div>
+		</span>
+
+		<div v-show="!access">Private Settlement</div>
 <!--
 		<div v-on:click="getSettlementStorage" class="ui styled padded inverted segment">
 			<div class="ui inverted accordion">
@@ -137,11 +111,13 @@
 
 			return {
 				id: this.$route.params.key,
+				access: false,
 				settlementName: '',
 				locations: {},
-				stroage: {},
+				stroage: {loading: true},
 				itemCount: {},
 				rows: {
+					loading: true,
 					survival_limit: { name: 'Survival Limit', value: 1 },
 					depart: { name: 'Depart', value:0 },
 					population: { name:'Population', value: 0},
@@ -155,34 +131,74 @@
 		},
 
 		mounted () {
-			$('.ui.dropdown').dropdown();
-			$('.ui.accordion').accordion();
+			$('.ui.dropdown').dropdown()
+			$('.ui.accordion').accordion()
 
-			this.getSettlement()
-			this.getSettlementLocation()
+			this.checkMember()
 		},
 
 		methods: {
 			firstUpper(str) {
 				return str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-				    return letter.toUpperCase();
+					return letter.toUpperCase();
 				})
+			},
+
+			checkMember()
+			{
+				firebase.database().ref('settlementMember').child(this.$route.params.key).orderByKey().equalTo(this.auth.key).on('value', function(snapshot) {
+
+					if(snapshot.val())
+					{
+						this.getSettlement()
+
+					} else {
+						firebase.database().ref('settlement').child(this.auth.key).child(this.$route.params.key).on('value', function(snapshot) {
+							if(snapshot.val().owner == this.auth.key)
+							{
+								var result = {key: snapshot.key, owner: snapshot.val().owner, name: snapshot.val().name}
+
+								this.$store.dispatch('getSettlement', {result: result})
+
+								window.document.title 	= snapshot.val().name
+								this.rows				= snapshot.val()
+								this.settlementName		= snapshot.val().name
+								this.access				= true
+
+								this.getSettlementLocation()
+
+
+
+							} else this.$store.dispatch('setSettlementIndex')
+
+						}.bind(this))
+					}
+
+				}.bind(this))
+
 			},
 
 			getSettlement () {
 
-				firebase.database().ref('settlement').child(this.auth.key).child(this.$route.params.key).on('value', function(snapshot) {
+				firebase.database().ref('settlement').orderByChild(this.$route.params.key).on('child_added', function(snapshot)
+				{
+					firebase.database().ref('settlement').child(snapshot.key).child(this.$route.params.key).on('value', function(snapshot)
+					{
+						var result = {key: snapshot.key, owner: snapshot.val().owner, name: snapshot.val().name}
 
-					this.rows = snapshot.val()
+						this.$store.dispatch('getSettlement', {result: result})
 
-					window.document.title	= snapshot.val().name
-					this.settlementName		= snapshot.val().name
+						window.document.title 	= snapshot.val().name
+						this.rows				= snapshot.val()
+						this.settlementName		= snapshot.val().name
+						this.access				= true
 
-					var result = {key:snapshot.key, share:'xxx', name:snapshot.val().name}
+						this.getSettlementLocation()
 
-					this.$store.dispatch('getSettlement', {result: result})
+					}.bind(this))
 
-				}.bind(this));
+				}.bind(this))
+
 
 			},
 

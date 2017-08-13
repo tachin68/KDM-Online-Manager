@@ -1,23 +1,24 @@
 <template>
 	<div class="ui basic segment container">
-		<breadcrumb></breadcrumb>
+		<!-- <breadcrumb></breadcrumb> -->
 
-		<pre>
-{{ settlement }}
-{{ breadcrumb }}
-{{ auth.key }}
-{{ share }}
-		</pre>
+		<!-- <pre> -->
+<!-- {{ settlement }} -->
+<!-- {{ breadcrumb }} -->
+<!-- {{ auth.key }} -->
+<!-- {{ share }} -->
+		<!-- </pre> -->
 
-		<md-card>
-			<md-card-area md-inset>
+		<md-card md-with-hover>
+			<!-- <md-card-area md-inset> -->
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
-						<div class="md-title">
-							<div class="md-toolbar-container">
-								<h2 class="md-headline" style="flex: 1;">Create Settlement</h2>
-							</div>
+					<div class="md-title">
+						<div class="md-toolbar-container">
+							<h2 class="md-headline" style="flex: 1;">Create Settlement</h2>
 						</div>
+					</div>
 				</md-whiteframe>
+
 				<md-card-header>
 					<md-card-header-text>
 						<form novalidate v-on:submit.stop.prevent="createSettlement">
@@ -33,15 +34,18 @@
 						</form>
 					</md-card-header-text>
 				</md-card-header>
+			<!-- </md-card-area> -->
+		</md-card>
 
-				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
-					<div class="md-title">
-						<div class="md-toolbar-container">
-							<h2 class="md-headline" style="flex: 1;"> Settlements</h2>
-						</div>
+		<md-card md-with-hover style="margin-top:1rem;">
+			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
+				<div class="md-title">
+					<div class="md-toolbar-container">
+						<h2 class="md-headline" style="flex: 1;"> Settlements</h2>
 					</div>
-				</md-whiteframe>
-			</md-card-area>
+				</div>
+			</md-whiteframe>
+
 			<md-card-content>
 				<md-layout md-align="center" md-column md-gutter v-for="(item, key) in items">
 					<md-list>
@@ -68,15 +72,17 @@
 					<md-divider class="md-inset"></md-divider>
 				</md-layout>
 			</md-card-content>
+		</md-card>
 
-				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
-					<div class="md-title">
-						<div class="md-toolbar-container">
-							<h2 class="md-headline" style="flex: 1;"> Settlements Share</h2>
-						</div>
+		<md-card md-with-hover style="margin-top:1rem;">
+			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
+				<div class="md-title">
+					<div class="md-toolbar-container">
+						<h2 class="md-headline" style="flex: 1;"> Settlements Share</h2>
 					</div>
-				</md-whiteframe>
-			</md-card-area>
+				</div>
+			</md-whiteframe>
+
 			<md-card-content>
 				<md-layout md-align="center" md-column md-gutter v-for="(item, key) in share">
 					<md-list>
@@ -236,7 +242,6 @@
 				{
 					input['owner'] = this.auth.key
 					// var row = firebase.database().ref('settlement').push(input)
-					// firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
 					var row = firebase.database().ref('settlement').child(this.auth.key).push(input)
 
 					// share settlement
@@ -244,6 +249,7 @@
 					// firebase.database().ref('userHasSettlement').child('-KrBbRhXmHHi96Vg4WBg').update({ 0: row.key })
 
 					firebase.database().ref('settlementStorageGear').child(row.key).push({empty:''})
+					firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Basic Resource').set(this.basciResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Strange Resource').set(this.strangeResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Antelope').set(this.antelopeResource())
@@ -262,57 +268,61 @@
 			},
 
 			deleteItem(key) {
-				// var survivors = {}
-				// var member = {}
-				// var uhs = {}
+				var survivors = {}
+				var member = {}
+				var uhs = {}
 
-				// firebase.database().ref('settlementSurvivor').child(key).on('value', function(snapshot) {
+				firebase.database().ref('settlementSurvivor').child(key).on('value', function(snapshot) {
 
-				// 	survivors = snapshot.val()
+					survivors = snapshot.val()
 
-				// }.bind(this))
+				}.bind(this))
 
-				// if(survivors)
-				// {
-				// 	$.each(survivors, function(surKey, value) {
-				// 		firebase.database().ref('survivorCourage').child(surKey).remove()
-				// 		firebase.database().ref('survivorDisorders').child(surKey).remove()
-				// 		firebase.database().ref('survivorFightingArts').child(surKey).remove()
-				// 		firebase.database().ref('survivorUnderstanding').child(surKey).remove()
-				// 		firebase.database().ref('survivorGearGrid').child(surKey).remove()
-				// 	})
-				// }
+				if(survivors)
+				{
+					$.each(survivors, function(surKey, value) {
+						firebase.database().ref('survivorCourage').child(surKey).remove()
+						firebase.database().ref('survivorDisorders').child(surKey).remove()
+						firebase.database().ref('survivorFightingArts').child(surKey).remove()
+						firebase.database().ref('survivorUnderstanding').child(surKey).remove()
+						firebase.database().ref('survivorGearGrid').child(surKey).remove()
+					})
+				}
 
-				// firebase.database().ref('settlementMember').child(key).on('value', function(snapshot) {
+				firebase.database().ref('settlementMember').child(key).on('value', function(snapshot) {
 
-				// 	member = snapshot.val()
+					member = snapshot.val()
 
-				// }.bind(this))
+				}.bind(this))
 
-				// $.each(member, function(k, memKey) {
+				$.each(member, function(k, memKey) {
 
-				// 	var arr = {}
-				// 	var i = 0
+					var arr = {}
+					var i = 0
 
-				// 	firebase.database().ref('userHasSettlement').child(memKey).on('value', function(snapshot) {
-				// 		uhs = snapshot.val()
-				// 	}.bind(this))
+					firebase.database().ref('userHasSettlement').child(memKey).on('value', function(snapshot) {
+						if(snapshot.val()) uhs = snapshot.val()
+					}.bind(this))
 
-				// 	$.each(uhs, function(k2, settleKey) {
-				// 		if(settleKey != key) arr[i++] = settleKey
-				// 	})
+					if(uhs)
+					{
+						$.each(uhs, function(k2, settleKey) {
+							if(settleKey != key) arr[i++] = settleKey
+						})
+					}
 
-				// 	firebase.database().ref('userHasSettlement').child(memKey).set(arr)
-				// })
+					firebase.database().ref('userHasSettlement').child(memKey).set(arr)
+				})
 
-				// firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
-				// firebase.database().ref('settlementLocation').child(key).remove()
-				// firebase.database().ref('settlementStorage').child(key).remove()
-				// firebase.database().ref('settlementStorageGear').child(key).remove()
-				// firebase.database().ref('settlementSurvivor').child(key).remove()
-				// firebase.database().ref('settlementMember').child(key).remove()
+				firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
+				firebase.database().ref('settlementLocation').child(key).remove()
+				firebase.database().ref('settlementStorage').child(key).remove()
+				firebase.database().ref('settlementStorageGear').child(key).remove()
+				firebase.database().ref('settlementSurvivor').child(key).remove()
+				firebase.database().ref('settlementMember').child(key).remove()
+				firebase.database().ref('settlementLocation').child(key).remove()
 
-				// this.closeDialog(key)
+				this.closeDialog(key)
 			},
 
 			locationCoreGame() {

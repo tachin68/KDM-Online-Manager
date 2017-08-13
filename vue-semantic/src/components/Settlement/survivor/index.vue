@@ -2,7 +2,7 @@
 
 	<div class="ui basic segment container">
 
-		<md-card>
+		<md-card md-with-hover>
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
@@ -26,15 +26,17 @@
 						</form>
 					</md-card-header-text>
 				</md-card-header>
-
-				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
-					<div class="md-title">
-						<div class="md-toolbar-container">
-							<h2 class="md-headline" style="flex: 1;"> Survivor</h2>
-						</div>
-					</div>
-				</md-whiteframe>
 			</md-card-area>
+		</md-card>
+
+		<md-card md-with-hover style="margin-top:1rem;">
+			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
+				<div class="md-title">
+					<div class="md-toolbar-container">
+						<h2 class="md-headline" style="flex: 1;"> Survivor</h2>
+					</div>
+				</div>
+			</md-whiteframe>
 
 			<md-card-content>
 				<md-table>
