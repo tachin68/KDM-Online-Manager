@@ -106,7 +106,7 @@
 							</div>
 						</li>
 					</md-list>
-					<md-divider class="md-inset"></md-divider>
+					<!-- <md-divider class="md-inset"></md-divider> -->
 				</md-layout>
 			</md-card-content>
 
@@ -164,8 +164,8 @@
 
 			getSettlementShare() {
 
-				firebase.database().ref('userHasSettlement').child(this.auth.key).on('value', function(snapshot) {
-				// firebase.database().ref('userHasSettlement').child('-KrBbRhXmHHi96Vg4WBg').on('value', function(snapshot) {
+				firebase.database().ref('user_has_settlement').child(this.auth.key).on('value', function(snapshot) {
+				// firebase.database().ref('user_has_settlement').child('-KrBbRhXmHHi96Vg4WBg').on('value', function(snapshot) {
 
 					this.share = snapshot.val()
 
@@ -246,7 +246,7 @@
 
 					// share settlement
 					// firebase.database().ref('settlementMember').child(row.key).update({ 0: '-KrBbRhXmHHi96Vg4WBg' })
-					// firebase.database().ref('userHasSettlement').child('-KrBbRhXmHHi96Vg4WBg').update({ 0: row.key })
+					// firebase.database().ref('user_has_settlement').child('-KrBbRhXmHHi96Vg4WBg').update({ 0: row.key })
 
 					firebase.database().ref('settlementStorageGear').child(row.key).push({empty:''})
 					firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
@@ -256,6 +256,7 @@
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('White Lion').set(this.lionResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Phoenix').set(this.phoenixResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Vermin Resource').set(this.verminResource())
+					firebase.database().ref('settlement_has_survivor').child(row.key).set(this.settlementHasSurvivor())
 
 					this.input.name = ''
 					this.$refs.snackbar.open()
@@ -263,14 +264,14 @@
 			},
 
 			deleteShareSettlement(key) {
-				firebase.database().ref('userHasSettlement').child(this.auth.key).child(key).remove()
+				firebase.database().ref('user_has_settlement').child(this.auth.key).child(key).remove()
 				this.closeDialog(key)
 			},
 
 			deleteItem(key) {
-				var survivors = {}
-				var member = {}
-				var uhs = {}
+				var uhs			= {}
+				var member		= {}
+				var survivors	= {}
 
 				firebase.database().ref('settlementSurvivor').child(key).on('value', function(snapshot) {
 
@@ -300,7 +301,7 @@
 					var arr = {}
 					var i = 0
 
-					firebase.database().ref('userHasSettlement').child(memKey).on('value', function(snapshot) {
+					firebase.database().ref('user_has_settlement').child(memKey).on('value', function(snapshot) {
 						if(snapshot.val()) uhs = snapshot.val()
 					}.bind(this))
 
@@ -311,7 +312,7 @@
 						})
 					}
 
-					firebase.database().ref('userHasSettlement').child(memKey).set(arr)
+					firebase.database().ref('user_has_settlement').child(memKey).set(arr)
 				})
 
 				firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
@@ -323,6 +324,15 @@
 				firebase.database().ref('settlementLocation').child(key).remove()
 
 				this.closeDialog(key)
+			},
+
+			settlementHasSurvivor() {
+				return	{
+							survival_limit: { name: 'Survival Limit', value: 1 },
+							depart: { name: 'Depart', value:0 },
+							population: { name:'Population', value: 0},
+							dead: { name:'Dead', value: 0}
+						}
 			},
 
 			locationCoreGame() {
