@@ -6,7 +6,7 @@
 
 			<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
 				<span>Update Success.</span>
-				<md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">OK</md-button>
+				<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 			</md-snackbar>
 <!-- <pre>{{ survivor }}</pre> -->
 			<md-card-area md-inset>
@@ -19,7 +19,7 @@
 				</md-whiteframe>
 			</md-card-area>
 
-			<md-tabs @change="changeTabs" md-navigation="true">
+			<md-tabs @change="changeTabs">
 				<md-tab md-label="Stats">
 					<div class="ui grid">
 						<div class="sixteen wide column">
@@ -71,12 +71,12 @@
 								</md-layout>
 
 								<md-layout>
-									<md-button v-on:click="updateStatusCount(key, '+')" class="md-icon-button md-mini md-raised md-theme-about md-primary">
+									<md-button v-on:click="updateStatusCount(key, '+')" md-theme="about" class="md-icon-button md-mini md-raised md-primary">
 										<md-icon>add</md-icon>
 									</md-button>
 									<!-- <div v-on:click="updateStatusCount(key, survivor[key], '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div> -->
 
-									<md-button v-on:click="updateStatusCount(key, '-')" class="md-icon-button md-mini md-raised md-theme-about md-accent">
+									<md-button v-on:click="updateStatusCount(key, '-')" md-theme="about" class="md-icon-button md-mini md-raised md-accent">
 										<md-icon>remove</md-icon>
 									</md-button>
 								</md-layout>
@@ -86,19 +86,19 @@
 				</md-tab>
 
 				<md-tab md-label="FA">
-					<fighting-arts v-show="viewFightingArts" @global-event="callNotify" :surId="surId"></fighting-arts>
+					<fighting-arts v-show="viewFightingArts" :surId="surId"></fighting-arts>
 				</md-tab>
 
 				<md-tab md-label="Disorders">
-					<disorders v-show="viewDisorders" @global-event="callNotify" :surId="surId"></disorders>
+					<disorders v-show="viewDisorders" :surId="surId"></disorders>
 				</md-tab>
 
 				<md-tab md-label="Courage">
-					<courage v-show="viewCourage" @global-event="callNotify" :surId="surId"></courage>
+					<courage v-show="viewCourage" :surId="surId"></courage>
 				</md-tab>
 
 				<md-tab md-label="Understanding">
-					<understanding v-show="viewUnderstanding" @global-event="callNotify" :surId="surId"></understanding>
+					<understanding v-show="viewUnderstanding" :surId="surId"></understanding>
 				</md-tab>
 			</md-tabs>
 		</md-card>
@@ -248,11 +248,9 @@
 
 			changeSurvivorData(key)
 			{
-				console.log(this.checkData[key] + ' ? ' + this.survivor[key])
-
 				if(this.checkData[key] != this.survivor[key])
 				{
-					console.log('sss')
+					// console.log('sss')
 					var input = {}
 					input[key] = this.survivor[key]
 					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).update(input)
@@ -261,9 +259,9 @@
 				}
 			},
 
-			callNotify() {
+			callNotify(data) {
 				// this.notify()
-				this.$refs.snackbar.open()
+				if(data.success) this.$refs.snackbar.open()
 			},
 
 			notify() {

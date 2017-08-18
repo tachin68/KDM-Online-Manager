@@ -1,5 +1,10 @@
 <template>
 	<div>
+		<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
+			<span>Update Success.</span>
+			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
+		</md-snackbar>
+
 		<md-card-content v-for="(name, slot) in faSlot">
 			<md-input-container class="md-accent md-theme-default">
 				<label>{{ name }}</label>
@@ -72,7 +77,7 @@
 
 				var update = firebase.database().ref(table).child(this.surId).update(input)
 
-				if(update) this.$emit('global-event')
+				if(update) this.$refs.snackbar.open()
 			},
 
 		}

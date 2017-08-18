@@ -31,6 +31,10 @@ Vue.material.registerTheme('default', {
 	},
 	warn: {
 		color: 'black', hue: 600
+	},
+	redd: {
+		color: 'red',
+		hue: 500
 	}
 })
 

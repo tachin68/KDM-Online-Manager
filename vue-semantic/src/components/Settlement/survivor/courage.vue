@@ -1,5 +1,10 @@
 <template>
 	<div>
+		<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
+			<span>Update Success.</span>
+			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
+		</md-snackbar>
+
 		<md-card-content>
 			<md-input-container class="md-accent md-theme-default">
 				<label>Courage</label>
@@ -91,7 +96,7 @@
 
 				update = this.foreachUpdate(table, key, this.surId, ['Matchmaker', 'Prepared', 'Stalwart'])
 
-				if(update) this.$emit('global-event')
+				if(update) this.$refs.snackbar.open()
 			},
 
 			foreachUpdate(table, key, surId, arr) {
@@ -103,7 +108,7 @@
 					input['status'] = (value == key) ? true : false;
 					update = firebase.database().ref(table).child(surId).child(value).update(input)
 
-					if(update) this.$emit('global-event')
+					if(update) this.$refs.snackbar.open()
 				})
 
 				return update

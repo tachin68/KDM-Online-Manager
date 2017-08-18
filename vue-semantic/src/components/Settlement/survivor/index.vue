@@ -21,7 +21,7 @@
 							</md-input-container>
 							<md-snackbar :md-position="'bottom center'" ref="snackbar" :md-duration="5000">
 								<span>Create Survivor Success.</span>
-								<md-button class="md-accent" md-theme="light-blue" @click.native="$refs.snackbar.close()">OK</md-button>
+								<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 							</md-snackbar>
 						</form>
 					</md-card-header-text>
