@@ -6,7 +6,16 @@
 <!-- <pre>{{ access }}</pre> -->
 <!-- <pre>{{ stroage }}</pre> -->
 
+
+
 		<span v-show="access">
+			<form novalidate v-on:submit.stop.prevent="shareSettlement">
+				<md-input-container>
+					<label>Share Settlement (E-mail)</label>
+			    	<md-input type="email"></md-input>
+				</md-input-container>
+			</form>
+
 			<router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'storage/'+id" class="md-button md-theme-default md-raised md-primary">Storage's {{ settlementName }}</router-link>
 			<router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'survivors/'+id" class="md-button md-theme-default md-raised md-primary">Create Survivor</router-link>
 
@@ -138,6 +147,13 @@
 		},
 
 		methods: {
+			shareSettlement()
+			{
+				// share settlement
+				// firebase.database().ref('settlementMember').child(this.$route.params.key).update({ 0: '-KrBbRhXmHHi96Vg4WBg' })
+				// firebase.database().ref('user_has_settlement').child('-KrBbRhXmHHi96Vg4WBg').update({ 0: row.key })
+			},
+
 			firstUpper(str) {
 				return str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
 					return letter.toUpperCase();

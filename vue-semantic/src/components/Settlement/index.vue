@@ -47,31 +47,34 @@
 			</md-whiteframe>
 
 			<md-card-content>
-				<md-layout md-align="center" md-column md-gutter v-for="(item, key) in items">
+				<md-layout md-column md-gutter v-for="(item, key) in items">
 					<md-list>
 						<li class="md-list-item">
-							<div class="md-list-item-holder">
-								<router-link :to="'settlement/'+key" class="md-button md-list-item-container">
-									<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
-								</router-link>
+							<md-layout md-gutter>
+								<md-layout>
+									<router-link :to="'settlement/'+key" class="md-button md-list-item-container">
+										<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
+									</router-link>
 
-								<button class="ui circular mini basic icon button" @click="openDialog(key)">
-									<i class="md-icon material-icons md-theme-default">delete_forever</i>
-								</button>
+									<md-button md-theme="about" class="md-icon-button md-list-action" @click="openDialog(key)">
+										<i class="md-icon material-icons md-theme-default">delete_forever</i>
+									</md-button>
 
-								<md-dialog :ref="key">
-									<md-dialog-title>Are you sure you want to delete this settlement ?</md-dialog-title>
-									<md-dialog-actions>
-										<md-button class="md-theme-about md-primary" @click="closeDialog(key)">Cancel</md-button>
-										<md-button class="md-accent" @click="deleteItem(key)">Ok</md-button>
-									</md-dialog-actions>
-								</md-dialog>
-							</div>
+									<md-dialog :ref="key">
+										<md-dialog-title>Are you sure you want to delete this settlement ?</md-dialog-title>
+										<md-dialog-actions>
+											<md-button class="md-accent" @click="closeDialog(key)">Cancel</md-button>
+											<md-button class="md-accent" @click="deleteItem(key)">Ok</md-button>
+										</md-dialog-actions>
+									</md-dialog>
+								</md-layout>
+							</md-layout>
 						</li>
 					</md-list>
 					<md-divider class="md-inset"></md-divider>
 				</md-layout>
 			</md-card-content>
+
 		</md-card>
 
 		<md-card md-with-hover style="margin-top:1rem;">
@@ -243,10 +246,6 @@
 					input['owner'] = this.auth.key
 					// var row = firebase.database().ref('settlement').push(input)
 					var row = firebase.database().ref('settlement').child(this.auth.key).push(input)
-
-					// share settlement
-					// firebase.database().ref('settlementMember').child(row.key).update({ 0: '-KrBbRhXmHHi96Vg4WBg' })
-					// firebase.database().ref('user_has_settlement').child('-KrBbRhXmHHi96Vg4WBg').update({ 0: row.key })
 
 					firebase.database().ref('settlementStorageGear').child(row.key).push({empty:''})
 					firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
@@ -467,13 +466,13 @@
 
 				return {
 					'Bladder': {
-						count: 0 ,
+						count: 0,
 						type : {
 							consumable: 'consumable',
 							organ: 'organ'
 						}
 					},
-					'Consumable': {
+					'Beast Steak': {
 						count: 0,
 						type : {
 							consumable: 'consumable',

@@ -5,13 +5,13 @@
 
 			<md-toolbar class="md-account-header">
 				<md-list class="md-transparent">
-					<md-list-item class="md-avatar-list">
+					<md-list-item>
 						<md-avatar>
 							<img v-bind:src="auth.avatar">
 						</md-avatar>
-						<div class="md-list-text-container">
+						<!-- <div class="md-list-text-container"> -->
 							<span>{{ auth.name }}</span>
-						</div>
+						<!-- </div> -->
 					</md-list-item>
 				</md-list>
 			</md-toolbar>
@@ -24,13 +24,13 @@
 					</router-link>
 				</li>
 
-				<!-- <li v-show="settlement.key" @click="$refs.sidebar.toggle()" class="md-list-item">
-					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
+				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+					<router-link :to="'/settlement/timeline/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">event_note</i> <span>Timeline</span></div>
 					</router-link>
-				</li> -->
+				</li>
 
-				<!-- <li v-show="settlement.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+				<!-- <li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">whatshot</i> <span>Monster</span></div>
 					</router-link>
@@ -48,7 +48,7 @@
 					</router-link>
 				</li>
 
-				<!-- <li v-show="settlement.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+				<!-- <li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon icon users md-theme-default"></i> <span>Party</span></div>
 					</router-link>

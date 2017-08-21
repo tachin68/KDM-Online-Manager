@@ -40,7 +40,7 @@ Vue.material.registerTheme('default', {
 
 Vue.material.registerTheme('about', {
 	primary: {
-		color: 'blue',
+		color: 'Deep Orange',
 		hue: 500
 	},
 	accent: {

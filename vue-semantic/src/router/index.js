@@ -2,12 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Home/index'
 import Auth from '../components/Auth/login'
+
 import settlement from '../components/settlement/index'
 import settlementView from '../components/settlement/view'
-import settlementStorage from '../components/settlement/storage'
+import settlementStorage from '../components/settlement/storage/index'
+import settlementTimeline from '../components/settlement/timeline/index'
 import settlementSurvivor from '../components/settlement/survivor/index'
+
 import survivorView from '../components/settlement/survivor/view'
 import survivorGearGrid from '../components/settlement/survivor/geargrid'
+
 import resource from '../components/resource/index'
 import resourceView from '../components/resource/view'
 import gear from '../components/gear/index'
@@ -24,6 +28,8 @@ const router = new VueRouter({
 				requiresAuth: false
 			}
 		},
+
+		// Settlement
 		{
 			path: '/settlement', name: 'settlement', component: settlement,
 			meta: {
@@ -43,6 +49,15 @@ const router = new VueRouter({
 			}
 		},
 		{
+			path: '/settlement/timeline/:key', name: 'settlement/timeline/:key', component: settlementTimeline,
+			meta: {
+				requiresAuth: true
+			}
+		},
+
+
+		// survivor
+		{
 			path: '/settlement/survivors/geargrid/:surid', name: 'settlement/geargrid/:surid', component: survivorGearGrid,
 			meta: {
 				requiresAuth: true
@@ -60,6 +75,7 @@ const router = new VueRouter({
 				requiresAuth: true
 			}
 		},
+
 		{
 			path: '/resource', name: 'resource', component: resource,
 			meta: {
