@@ -5,7 +5,6 @@
 			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 		</md-snackbar>
 
-
 		<md-card md-with-hover>
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container">
@@ -23,12 +22,12 @@
 
 							<md-input-container md-inline>
 								<label>Event</label>
-								<md-input  v-model="row.event"></md-input>
+								<md-textarea v-model="row.event"></md-textarea>
 							</md-input-container>
 
 							 <md-input-container md-inline>
 								<label>Hunt / Notes</label>
-								<md-input v-model="row.hunt" ></md-input>
+								<md-textarea v-model="row.hunt" ></md-textarea>
 							</md-input-container>
 						</md-list-item>
 					</md-list>
@@ -59,20 +58,20 @@
 			return {
 				timeline: []
 			}
-
 		},
 
-		computed: {
+		computed:
+		{
 			...mapState(['auth'])
 		},
 
-		mounted () {
-
+		mounted ()
+		{
 			this.getSettlementTimeline()
-
 		},
 
-		methods: {
+		methods:
+		{
 			getSettlementTimeline()
 			{
 				firebase.database().ref('settlementTimeline').child(this.$route.params.key).on('value', function(snapshot) {

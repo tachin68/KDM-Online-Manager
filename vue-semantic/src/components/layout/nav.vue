@@ -9,9 +9,7 @@
 						<md-avatar>
 							<img v-bind:src="auth.avatar">
 						</md-avatar>
-						<!-- <div class="md-list-text-container"> -->
-							<span>{{ auth.name }}</span>
-						<!-- </div> -->
+						<span>{{ auth.name }}</span>
 					</md-list-item>
 				</md-list>
 			</md-toolbar>
@@ -30,11 +28,11 @@
 					</router-link>
 				</li>
 
-				<!-- <li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
-					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
+				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+					<router-link :to="'/settlement/monsters/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">whatshot</i> <span>Monster</span></div>
 					</router-link>
-				</li> -->
+				</li>
 
 				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link :to="'/settlement/storage/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">

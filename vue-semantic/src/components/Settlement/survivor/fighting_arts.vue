@@ -32,7 +32,8 @@
 
 				fa: {},
 				faSlot: { slot1: 'Slot 1', slot2: 'Slot 2', slot3: 'Slot 3' },
-				fighting_arts: {}
+				fighting_arts: {},
+				checkData: {}
 			}
 
 		},
@@ -56,6 +57,7 @@
 				firebase.database().ref('survivorFightingArts').child(this.surId).on('value', function(snapshot) {
 
 					this.fa = snapshot.val()
+					this.checkData = snapshot.val()
 
 				}.bind(this))
 
@@ -71,13 +73,14 @@
 			},
 
 			changeListData(table, key) {
-				var input = {}
+				if(this.checkData[key] != this.fa[key])
+				{
+					var input = {}
+					input[key] = this.fa[key]
+					var update = firebase.database().ref(table).child(this.surId).update(input)
 
-				input[key] = this.fa[key]
-
-				var update = firebase.database().ref(table).child(this.surId).update(input)
-
-				if(update) this.$refs.snackbar.open()
+					if(update) this.$refs.snackbar.open()
+				}
 			},
 
 		}

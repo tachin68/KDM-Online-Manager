@@ -8,7 +8,7 @@
 				<span>Update Success.</span>
 				<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 			</md-snackbar>
-<!-- <pre>{{ survivor }}</pre> -->
+
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 						<div class="md-title">
@@ -40,22 +40,20 @@
 							</md-input-container>
 						</div>
 
-						<div class="eight wide column">
+						<div class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label for="survivor.Gender">Gender</label>
 								<md-select name="survivor.Gender" v-model="survivor.Gender" @change="changeSurvivorData('Gender')">
-								<!-- <md-select name="survivor.Gender" v-model="survivor.Gender"> -->
 									<md-option value="0">Female</md-option>
 									<md-option value="1">Male</md-option>
 								</md-select>
 							</md-input-container>
 						</div>
 
-						<div class="eight wide column">
+						<div class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label for="survivor.Xp">Hunt XP</label>
 								<md-select name="survivor.Xp" v-model="survivor.Xp" @change="changeSurvivorData('Xp')">
-								<!-- <md-select name="survivor.Xp" v-model="survivor.Xp"> -->
 									<md-option v-for="(value, key) in huntExp" :value="key">{{value}}</md-option>
 								</md-select>
 							</md-input-container>
@@ -71,10 +69,9 @@
 								</md-layout>
 
 								<md-layout>
-									<md-button v-on:click="updateStatusCount(key, '+')" md-theme="about" class="md-icon-button md-mini md-raised md-primary">
+									<md-button v-on:click="updateStatusCount(key, '+')" class="md-icon-button md-mini md-raised md-accent">
 										<md-icon>add</md-icon>
 									</md-button>
-									<!-- <div v-on:click="updateStatusCount(key, survivor[key], '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div> -->
 
 									<md-button v-on:click="updateStatusCount(key, '-')" md-theme="about" class="md-icon-button md-mini md-raised md-accent">
 										<md-icon>remove</md-icon>
@@ -85,7 +82,7 @@
 					</div>
 				</md-tab>
 
-				<md-tab md-label="FA">
+				<md-tab md-label="Fighting Arts">
 					<fighting-arts v-show="viewFightingArts" :surId="surId"></fighting-arts>
 				</md-tab>
 

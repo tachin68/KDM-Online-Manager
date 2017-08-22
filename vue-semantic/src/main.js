@@ -12,14 +12,14 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 import 'vue-material/dist/vue-material.js'
 
-import element from '../node_modules/element-ui'
-import lang from '../node_modules/element-ui/lib/locale/lang/en'
-import locale from '../node_modules/element-ui/lib/locale'
+// import element from '../node_modules/element-ui'
+// import lang from '../node_modules/element-ui/lib/locale/lang/en'
+// import locale from '../node_modules/element-ui/lib/locale'
 
 // configure language
-locale.use(lang)
-
+// locale.use(lang)
 // Vue.use(element)
+
 Vue.use(VueMaterial)
 
 Vue.material.registerTheme('default', {
@@ -40,7 +40,7 @@ Vue.material.registerTheme('default', {
 
 Vue.material.registerTheme('about', {
 	primary: {
-		color: 'Deep Orange',
+		color: 'light-blue',
 		hue: 500
 	},
 	accent: {

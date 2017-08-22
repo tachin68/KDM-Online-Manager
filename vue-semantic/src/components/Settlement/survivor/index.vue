@@ -66,45 +66,6 @@
 			</md-card-content>
 		</md-card>
 
-		<!-- <form class="ui secondary inverted black form segment" v-on:submit.stop.prevent="createSurvivor">
-			<h3 class="ui header">
-				<img src="https://firebasestorage.googleapis.com/v0/b/kd-monster-online-sheet.appspot.com/o/lantern_48x48.png?alt=media&token=fb21135c-4a90-403b-b84c-dfdf04496f0e" class="ui image">
-				<div class="content">Create Survivor</div>
-			</h3>
-			<div class="field">
-				<div class="ui action right labeled inverted icon input">
-					<input type="text" placeholder="Survivor Name" v-model="input.name">
-					<a class="ui inverted icon button" type="submit"><i class="icons"><i class="users icon"></i><i class="inverted corner add icon"></i></i></a>
-				</div>
-			</div>
-		</form> -->
-		<!-- <pre>
-			{{survivors}}
-		</pre> -->
-		<!-- <table class="ui inverted selectable striped fixed unstackable table" style="cursor:pointer;">
-			<thead>
-				<tr>
-					<th>Dead</th>
-					<th>Name</th>
-					<th>Gender</th>
-					<th>Hunt Xp</th>
-					<th>Gear Grid</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="survivors" v-for="(item, key) in survivors">
-					<td>{{ item.Status.dead ? 'Dead' : '' }}</td>
-					<td><router-link :to="settlementId+'/'+key" style="color:#fff; font-weight: bold;">{{ item.Name }}</router-link></td>
-					<td v-if="item.Gender === ''"></td>
-					<td v-if="item.Gender === '0'">Female</td>
-					<td v-if="item.Gender === '1'">Male</td>
-					<td>{{ item.xp }}</td>
-					<td><router-link :to="'geargrid/'+settlementId+'/'+key" style="color:#fff; font-weight: bold;">Gear Grid</router-link></td>
-					<td class="right aligned"><a class="ui button inverted small red circular icon" v-on:click="deleteItem(key)"><i class="remove user icon"></i></a></td>
-				</tr>
-			</tbody>
-		</table> -->
-
 	</div>
 
 </template>

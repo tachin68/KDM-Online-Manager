@@ -91,21 +91,25 @@
 					<md-list>
 						<li class="md-list-item">
 							<div class="md-list-item-holder">
-								<router-link :to="'settlement/'+key" class="md-button md-list-item-container">
-									<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
-								</router-link>
+								<md-layout md-gutter>
+									<md-layout>
+										<router-link :to="'settlement/'+key" class="md-button md-list-item-container">
+											<i class="md-icon material-icons md-theme-default">forward</i><span>{{ item.name }}</span>
+										</router-link>
 
-								<button class="ui circular mini basic icon button" @click="openDialog(key)">
-									<i class="md-icon material-icons md-theme-default">delete_forever</i>
-								</button>
+										<md-button md-theme="about" class="md-icon-button md-list-action" @click="openDialog(key)">
+											<i class="md-icon material-icons md-theme-default">delete_forever</i>
+										</md-button>
 
-								<md-dialog :ref="key">
-									<md-dialog-title>Are you sure you want to delete this settlement ?</md-dialog-title>
-									<md-dialog-actions>
-										<md-button class="md-theme-about md-primary" @click="closeDialog(key)">Cancel</md-button>
-										<md-button class="md-accent" @click="deleteShareSettlement(key)">Ok</md-button>
-									</md-dialog-actions>
-								</md-dialog>
+										<md-dialog :ref="key">
+											<md-dialog-title>Are you sure you want to delete this share settlement ?</md-dialog-title>
+											<md-dialog-actions>
+												<md-button class="md-accent" @click="closeDialog(key)">Cancel</md-button>
+												<md-button class="md-accent" @click="deleteShareSettlement(key)">Ok</md-button>
+											</md-dialog-actions>
+										</md-dialog>
+									</md-layout>
+								</md-layout>
 							</div>
 						</li>
 					</md-list>
@@ -121,8 +125,6 @@
 <script>
 
 	import { mapState } from 'vuex'
-
-	import breadcrumb from '../layout/breadcrumb'
 
 	export default {
 
@@ -145,7 +147,7 @@
 		},
 
 		computed: {
-			...mapState(['auth', 'settlement', 'breadcrumb'])
+			...mapState(['auth', 'settlement'])
 		},
 
 		mounted () {
@@ -733,6 +735,6 @@
 			}
 		},
 
-		components: {breadcrumb},
+		components: {},
 	}
 </script>

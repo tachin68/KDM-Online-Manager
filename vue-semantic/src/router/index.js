@@ -7,6 +7,7 @@ import settlement from '../components/settlement/index'
 import settlementView from '../components/settlement/view'
 import settlementStorage from '../components/settlement/storage/index'
 import settlementTimeline from '../components/settlement/timeline/index'
+import settlementMonsters from '../components/settlement/monsters/index'
 import settlementSurvivor from '../components/settlement/survivor/index'
 
 import survivorView from '../components/settlement/survivor/view'
@@ -50,6 +51,12 @@ const router = new VueRouter({
 		},
 		{
 			path: '/settlement/timeline/:key', name: 'settlement/timeline/:key', component: settlementTimeline,
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/settlement/monsters/:key', name: 'settlement/monsters/:key', component: settlementMonsters,
 			meta: {
 				requiresAuth: true
 			}

@@ -7,17 +7,21 @@
 <!-- <pre>{{ stroage }}</pre> -->
 
 
+		<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
+			<span>{{ shareStatus }}</span>
+			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
+		</md-snackbar>
 
 		<span v-show="access">
-			<form novalidate v-on:submit.stop.prevent="shareSettlement">
+			<form v-if="settlement.owner === auth.key" novalidate v-on:submit.stop.prevent="shareSettlement">
 				<md-input-container>
 					<label>Share Settlement (E-mail)</label>
-			    	<md-input type="email"></md-input>
+			    	<md-input type="email" v-model="emailShare"></md-input>
 				</md-input-container>
 			</form>
 
-			<router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'storage/'+id" class="md-button md-theme-default md-raised md-primary">Storage's {{ settlementName }}</router-link>
-			<router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'survivors/'+id" class="md-button md-theme-default md-raised md-primary">Create Survivor</router-link>
+			<!-- <router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'storage/'+id" class="md-button md-theme-default md-raised md-primary">Storage's {{ settlementName }}</router-link> -->
+			<!-- <router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'survivors/'+id" class="md-button md-theme-default md-raised md-primary">Create Survivor</router-link> -->
 
 			<div class="ui four stackable inverted grey tiny item menu">
 				<!-- <span class="item" v-for="(data, key) in rows" v-if="data.name"><h4>{{ data.name }} : {{ data.value }}</h4></span> -->
@@ -120,6 +124,8 @@
 
 			return {
 				id: this.$route.params.key,
+				emailShare: '',
+				shareStatus: 'Share success.',
 				access: false,
 				settlementName: '',
 				locations: {},
@@ -147,11 +153,35 @@
 		},
 
 		methods: {
+
+			// share settlement with E-mail
 			shareSettlement()
 			{
-				// share settlement
-				// firebase.database().ref('settlementMember').child(this.$route.params.key).update({ 0: '-KrBbRhXmHHi96Vg4WBg' })
-				// firebase.database().ref('user_has_settlement').child('-KrBbRhXmHHi96Vg4WBg').update({ 0: row.key })
+				if(this.emailShare)
+				{
+					var userKey = ''
+					firebase.database().ref('user').orderByChild('email').equalTo(this.emailShare).on('child_added', function(snapshot) {
+
+						userKey = snapshot.key
+
+					}.bind(this))
+
+					if(userKey)
+					{
+						firebase.database().ref('settlementMember').child(this.$route.params.key).orderByChild(userKey).on('value', function(snapshot) {
+							if(!snapshot.val())
+							{
+								firebase.database().ref('settlementMember').child(this.$route.params.key).push(userKey)
+								firebase.database().ref('user_has_settlement').child(userKey).child(this.$route.params.key).update({ name: this.settlementName })
+								shareStatus = 'Share success.'
+							}
+
+						}.bind(this))
+					} else this.shareStatus = 'Email not found.'
+
+					this.$refs.snackbar.open()
+					this.emailShare = ''
+				}
 			},
 
 			firstUpper(str) {
@@ -214,8 +244,6 @@
 					}.bind(this))
 
 				}.bind(this))
-
-
 			},
 
 			getSettlementLocation () {
