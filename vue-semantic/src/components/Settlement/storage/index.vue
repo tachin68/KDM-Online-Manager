@@ -9,13 +9,19 @@
 				</div>
 				<div class="content">
 					<div  v-if="basic" v-for="(value, name) in basic" class="ui inverted list" style="padding-left:20px;">
-						<div class="item">
-							<div class="right floated content">
-								<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-								<div v-on:click="updateCountResoruce('Basic Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
-								<div v-on:click="updateCountResoruce('Basic Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
+						<div class="item" style="line-height: 2em;">
+							<div class="right floated content" style="line-height: 2em;">
+								<span style="color: #fff;font-size: 1.28em;padding: 0.48rem;"><b>{{ value.count }}</b></span>
+								<md-button @click="updateCountResoruce('Basic Resource', name, value.count, '+')" class="md-dense md-icon-button md-raised md-accent">
+									<md-icon>add</md-icon>
+								</md-button>
+								<md-button @click="updateCountResoruce('Basic Resource', name, value.count, '-')" md-theme="about" class="md-dense md-icon-button md-raised md-accent">
+									<md-icon>remove</md-icon>
+								</md-button>
+								<!-- <div v-on:click="updateCountResoruce('Basic Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div> -->
+								<!-- <div v-on:click="updateCountResoruce('Basic Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div> -->
 							</div>
-							<div style="font-size: 1.1em;">{{ name }}</div>
+							<span style="font-size: 1.1em;">{{ name }}</span>
 						</div>
 					</div>
 				</div>
@@ -36,11 +42,18 @@
 						</div>
 						<div class="content">
 							<div v-for="(value, itemName) in items" class="ui inverted list" style="padding-left:20px;">
-								<div class="item">
-									<div class="right floated content">
+								<div class="item" style="line-height: 2em;">
+									<div class="right floated content" style="line-height: 2em;">
 										<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-										<div v-on:click="updateMonsterCountResoruce(monsName, itemName, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
-										<div v-on:click="updateMonsterCountResoruce(monsName, itemName, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
+										<md-button @click="updateMonsterCountResoruce(monsName, itemName, value.count, '+')" class="md-dense md-icon-button md-raised md-accent">
+											<md-icon>add</md-icon>
+										</md-button>
+
+										<md-button @click="updateMonsterCountResoruce(monsName, itemName, value.count, '-')" md-theme="about" class="md-dense md-icon-button md-raised md-accent">
+											<md-icon>remove</md-icon>
+										</md-button>
+										<!-- <div v-on:click="updateMonsterCountResoruce(monsName, itemName, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div> -->
+										<!-- <div v-on:click="updateMonsterCountResoruce(monsName, itemName, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div> -->
 									</div>
 									<div style="font-size: 1.1em;">{{ itemName }}</div>
 								</div>
@@ -59,11 +72,17 @@
 				</div>
 				<div class="content">
 					<div  v-if="strange" v-for="(value, name) in strange" class="ui inverted list" style="padding-left:20px;">
-						<div class="item">
-							<div class="right floated content">
+						<div class="item" style="line-height: 2em;">
+							<div class="right floated content" style="line-height: 2em;">
 								<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-								<div v-on:click="updateCountResoruce('Strange Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
-								<div v-on:click="updateCountResoruce('Strange Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
+								<md-button @click="updateCountResoruce('Strange Resource', name, value.count, '+')" class="md-dense md-icon-button md-raised md-accent">
+									<md-icon>add</md-icon>
+								</md-button>
+								<md-button @click="updateCountResoruce('Strange Resource', name, value.count, '-')" md-theme="about" class="md-dense md-icon-button md-raised md-accent">
+									<md-icon>remove</md-icon>
+								</md-button>
+								<!-- <div v-on:click="updateCountResoruce('Strange Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div> -->
+								<!-- <div v-on:click="updateCountResoruce('Strange Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div> -->
 							</div>
 							<div style="font-size: 1.1em;">{{ name }}</div>
 						</div>
@@ -80,11 +99,17 @@
 				</div>
 				<div class="content">
 					<div  v-if="vermin" v-for="(value, name) in vermin" class="ui inverted list" style="padding-left:20px;">
-						<div class="item">
-							<div class="right floated content">
+						<div class="item" style="line-height: 2em;">
+							<div class="right floated content" style="line-height: 2em;">
 								<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-								<div v-on:click="updateCountResoruce('Vermin Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
-								<div v-on:click="updateCountResoruce('Vermin Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
+								<md-button @click="updateCountResoruce('Vermin Resource', name, value.count, '+')" class="md-dense md-icon-button md-raised md-accent">
+									<md-icon>add</md-icon>
+								</md-button>
+								<md-button @click="updateCountResoruce('Vermin Resource', name, value.count, '-')" md-theme="about" class="md-dense md-icon-button md-raised md-accent">
+									<md-icon>remove</md-icon>
+								</md-button>
+								<!-- <div v-on:click="updateCountResoruce('Vermin Resource', name, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div> -->
+								<!-- <div v-on:click="updateCountResoruce('Vermin Resource', name, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div> -->
 							</div>
 							<div style="font-size: 1.1em;">{{ name }}</div>
 						</div>
@@ -93,27 +118,32 @@
 			</div>
 		</div>
 
-		<div class="ui secondary inverted black segment">
+		<div @click="getStorageGear" class="ui secondary inverted black segment">
 			<div class="ui inverted accordion">
 				<div class="title">
 					<i class="dropdown icon"></i>
 					<b style="font-size: 1.28em;">Gears</b>
 				</div>
 				<div class="content">
-
-					<div v-if="gears" v-for="(value, name) in gears" class="accordion" style="padding-left:20px;">
+					<div v-if="gears" v-for="(items, name) in gears" class="accordion" style="padding-left:20px;">
 						<div class="ui divider"></div>
-						<div class="title" v-on:click="getGearByLocation(name)">
+						<div class="title">
 							<i class="dropdown icon"></i>
 							<b style="font-size: 1.28em;">{{ name }}</b>
 						</div>
 						<div class="content">
-							<div v-for="(value, itemName) in gearValue" class="ui inverted list" style="padding-left:20px;">
-								<div class="item">
-									<div class="right floated content">
+							<div v-for="(value, itemName) in items" class="ui inverted list" style="padding-left:20px;">
+								<div class="item" style="line-height: 2em;">
+									<div class="right floated content" style="line-height: 2em;">
 										<span style="color: #fff;font-size: 1.28em;padding: 0.48em;"><b>{{ value.count }}</b></span>
-										<div v-on:click="updateGearsCount(name, itemName, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div>
-										<div v-on:click="updateGearsCount(name, itemName, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div>
+										<md-button @click="updateGearsCount(name, itemName, value.count, '+')" class="md-dense md-icon-button md-raised md-accent">
+											<md-icon>add</md-icon>
+										</md-button>
+										<md-button @click="updateGearsCount(name, itemName, value.count, '-')" md-theme="about" class="md-dense md-icon-button md-raised md-accent">
+											<md-icon>remove</md-icon>
+										</md-button>
+										<!-- <div v-on:click="updateGearsCount(name, itemName, value.count, '+')" class="ui tiny inverted circular blue button icon"><i class="ui plus icon"></i></div> -->
+										<!-- <div v-on:click="updateGearsCount(name, itemName, value.count, '-')" class="ui tiny inverted circular red button icon"><i class="ui minus icon"></i></div> -->
 									</div>
 									<div style="font-size: 1.1em;">{{ itemName }}</div>
 								</div>
@@ -148,21 +178,7 @@
 				monsters: {},
 				strange: {},
 				vermin: {},
-				gears : {
-							'Barber Surgeon' : '',
-							Blacksmith : '',
-							'Bone Smith' : '',
-							Catarium : '',
-							'Leather Worker' : '',
-							'Mask Maker' : '',
-							'Organ Grinder' : '',
-							Plummery : '',
-							'Rare Gear' : '',
-							Skinnery : '',
-							'Starting Gear' : '',
-							'Stone Circle' : '',
-							'Weapon Crafter' : '' },
-				gearValue: {}
+				gears : {}
 			}
 		},
 
@@ -171,8 +187,6 @@
 		},
 
 		mounted () {
-console.log(this.gears)
-
 			window.document.title = 'Storage'
 			$('.ui.accordion').accordion();
 
@@ -203,7 +217,7 @@ console.log(this.gears)
 				firebase.database().ref('settlementStorage').child(this.$route.params.key).child('Resource').child('Strange Resource').on('value', function(snapshot) {
 
 					this.strange = snapshot.val()
-					// console.log(snapshot.val())
+
 				}.bind(this))
 			},
 
@@ -212,16 +226,15 @@ console.log(this.gears)
 				firebase.database().ref('settlementStorage').child(this.$route.params.key).child('Resource').child('Vermin Resource').on('value', function(snapshot) {
 
 					this.vermin = snapshot.val()
-					// console.log(snapshot.val())
+
 				}.bind(this))
 			},
 
-			getGearByLocation(name) {
+			getStorageGear() {
 
-				firebase.database().ref('settlementStorage').child(this.$route.params.key).child('Gears').child(name).on('value', function(snapshot) {
+				firebase.database().ref('settlementStorageGear').child(this.$route.params.key).on('value', function(snapshot) {
 
-					console.log(snapshot.val())
-					this.gearValue = snapshot.val()
+					this.gears = snapshot.val()
 
 				}.bind(this))
 			},
@@ -243,7 +256,7 @@ console.log(this.gears)
 			updateGearsCount(locationName, itemName, count, type) {
 
 				count = (type === '+') ? count + 1 : count - 1
-				if(count >= 0) firebase.database().ref('settlementStorage/'+this.$route.params.key+'/Gears/'+locationName+'/'+itemName).update({'count': count})
+				if(count >= 0) firebase.database().ref('settlementStorageGear/'+this.$route.params.key+'/'+locationName+'/'+itemName).update({'count': count})
 
 			}
 		}

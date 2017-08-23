@@ -5,7 +5,7 @@
 			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 		</md-snackbar>
 
-		<md-card md-with-hover>
+		<md-card md-with-hover style="cursor:default;">
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container">
 					<div class="md-title">
@@ -17,44 +17,72 @@
 
 				<md-card-content>
 					<md-list>
-						<md-list-item v-for="(row, key) in input.monsters">
-							<md-checkbox v-model="row.status"></md-checkbox>
+						<md-layout>
+							<md-list-item v-for="(row, key) in input.monsters">
+								<md-checkbox v-model="row.status"></md-checkbox>
 
-							<md-input-container md-inline>
-								<label>Monster Name</label>
-								<md-input v-model="row.name"></md-input>
-							</md-input-container>
-						</md-list-item>
+								<md-input-container md-inline>
+									<label>Monster Name</label>
+									<md-textarea v-model="row.name"></md-textarea>
+								</md-input-container>
+							</md-list-item>
+						</md-layout>
 					</md-list>
+
+					<md-button @click="addMonster" class="md-icon-button md-raised md-accent">
+						<md-icon>add</md-icon>
+					</md-button>
+
+					<md-button @click="save" md-theme="about" class="md-icon-button md-raised md-accent">
+						<md-icon>save</md-icon>
+					</md-button>
 				</md-card-content>
 			</md-card-area>
 		</md-card>
 
-		<md-card md-with-hover>
+		<md-card md-with-hover style="margin-top:1rem;cursor:default;">
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container">
 					<div class="md-title">
 						<div class="md-toolbar-container">
-							<h2 class="md-headline" style="flex: 1;">Quarries</h2>
+							<h2 class="md-headline" style="flex: 1;">Nemesis Monster</h2>
 						</div>
 					</div>
 				</md-whiteframe>
 
 				<md-card-content>
 					<md-list>
-						<md-list-item v-for="(row, key) in input.nemesis">
-								<md-checkbox v-model="row.status"></md-checkbox>
-	      					<!-- <div class="md-list-text-container"> -->
-								<md-input-container md-inline>
-									<label>Monster name</label>
-									<md-input v-model="row.name"></md-input>
-								</md-input-container>
-							<!-- </div> -->
-								<md-layout><md-checkbox v-model="row.LV1">LV1</md-checkbox></md-layout>
-								<md-layout><md-checkbox v-model="row.LV2">LV2</md-checkbox></md-layout>
-								<md-layout><md-checkbox v-model="row.LV3">LV3</md-checkbox></md-layout>
-						</md-list-item>
+						<md-layout>
+							<md-list-item v-for="(row, key) in input.nemesis">
+								<div class="ui grid">
+									<div class="one wide column" style="padding-top:1.7rem;">
+										<md-checkbox v-model="row.status"></md-checkbox>
+									</div>
+
+									<div class="thirteen wide column">
+										<md-input-container md-inline style="margin-bottom:0rem;">
+											<label>Nemesis monster name</label>
+											<md-textarea v-model="row.name"></md-textarea>
+										</md-input-container>
+
+										<md-layout>
+											<md-checkbox v-model="row.LV1">LV1</md-checkbox>
+											<md-checkbox v-model="row.LV2">LV2</md-checkbox>
+											<md-checkbox v-model="row.LV3">LV3</md-checkbox>
+										</md-layout>
+									</div>
+								</div>
+							</md-list-item>
+						</md-layout>
 					</md-list>
+
+					<md-button @click="addNemesis" class="md-icon-button md-raised md-accent">
+						<md-icon>add</md-icon>
+					</md-button>
+
+					<md-button @click="save" md-theme="about" class="md-icon-button md-raised md-accent">
+						<md-icon>save</md-icon>
+					</md-button>
 				</md-card-content>
 			</md-card-area>
 		</md-card>
@@ -72,21 +100,8 @@
 
 			return {
 				input: {
-					monsters: {
-						xxx: {
-							name: 'White Lion',
-							status: false
-						}
-					},
-					nemesis: {
-						xxx: {
-							name: 'Butcher',
-							LV1: false,
-							LV2: false,
-							LV3: false,
-							status: false
-						}
-					}
+					monsters: [],
+					nemesis: []
 				}
 			}
 		},
@@ -98,31 +113,40 @@
 
 		mounted ()
 		{
-			// this.getSettlementMonsters()
+			this.getSettlementMonsters()
 		},
 
 		methods:
 		{
 			getSettlementMonsters()
 			{
-				// firebase.database().ref('settlementMonsters').child(this.$route.params.key).on('value', function(snapshot) {
+				firebase.database().ref('settlementMonsters').child(this.$route.params.key).on('value', function(snapshot) {
 
-				// 	this.input = snapshot.val()
+					if(snapshot.val()) this.input = snapshot.val()
 
-				// }.bind(this))
+				}.bind(this))
 			},
 
-			addYear()
+			addMonster()
 			{
-				// for (var i = 1; i <= 5; i++) {
-				// 	this.timeline.push({year: (this.timeline.length + 1), status: false, event: '', hunt: ''})
-				// }
+				this.input.monsters.push({ name: '', status: false })
+			},
+
+			addNemesis()
+			{
+				this.input.nemesis.push({
+						name: '',
+						LV1: false,
+						LV2: false,
+						LV3: false,
+						status: false
+					})
 			},
 
 			save()
 			{
-				// var update = firebase.database().ref('settlementMonsters').child(this.$route.params.key).set(this.timeline)
-				// if(update) this.$refs.snackbar.open()
+				var update = firebase.database().ref('settlementMonsters').child(this.$route.params.key).update(this.input)
+				if(update) this.$refs.snackbar.open()
 			}
 		}
 

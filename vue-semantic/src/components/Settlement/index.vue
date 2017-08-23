@@ -242,21 +242,37 @@
 			createSettlement () {
 
 				var input = this.input
-				// input['owner'] = { key: this.auth.key, name: this.auth.name }
+
 				if(input.name)
 				{
 					input['owner'] = this.auth.key
-					// var row = firebase.database().ref('settlement').push(input)
+
 					var row = firebase.database().ref('settlement').child(this.auth.key).push(input)
 
-					firebase.database().ref('settlementStorageGear').child(row.key).push({empty:''})
-					firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
+					// Gear Storage
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Barber Surgeon').set(this.storageGearBarberSurgeon())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Blacksmith').set(this.storageGearBlacksmith())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Bone Smith').set(this.storageGearBoneSmith())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Catarium').set(this.storageGearCatarium())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Leather Worker').set(this.storageGearLeatherWorker())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Mask Maker').set(this.storageGearMaskMaker())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Organ Grinder').set(this.storageGearOrganGrinder())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Plummery').set(this.storageGearPlummery())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Rare Gear').set(this.storageGearRareGear())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Skinnery').set(this.storageGearSkinnery())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Starting Gear').set(this.storageGearStartingGear())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Stone Circle').set(this.storageGearStoneCircle())
+					firebase.database().ref('settlementStorageGear').child(row.key).child('Weapon Crafter').set(this.storageGearWeaponCrafter())
+
+					// Resource Storage
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Basic Resource').set(this.basciResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Strange Resource').set(this.strangeResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Antelope').set(this.antelopeResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('White Lion').set(this.lionResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Phoenix').set(this.phoenixResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Vermin Resource').set(this.verminResource())
+
+					firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
 					firebase.database().ref('settlement_has_survivor').child(row.key).set(this.settlementHasSurvivor())
 
 					this.input.name = ''
@@ -355,6 +371,8 @@
 				}
 			},
 
+
+			// start Resource Settlement
 			basciResource() {
 
 				return {
@@ -729,6 +747,1160 @@
 						type : {
 							vermin: 'vermin',
 							consumable: 'consumable'
+						}
+					}
+				}
+			},
+
+
+			// start Gear Settlement
+			storageGearBarberSurgeon() {
+
+				return {
+					'Almanac': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							soluble: 'soluble',
+							flammable: 'flammable'
+						}
+					},
+					'Brain Mint': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							consumable: 'consumable'
+						}
+					},
+					'Bug Trap': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							soluble: 'soluble'
+						}
+					},
+					'Elder Earings': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							jewelry: 'jewelry'
+						}
+					},
+					'First Aid Kit': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							heavy: 'heavy'
+						}
+					},
+					'Musk Bomb': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							thrown: 'thrown',
+							fragile: 'fragile',
+							stinky: 'stinky'
+						}
+					},
+					'Scavenger Kit': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							heavy: 'heavy'
+						}
+					},
+					'Speed Powder': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							soluble: 'soluble'
+						}
+					}
+				}
+			},
+
+			storageGearBlacksmith() {
+
+				return {
+					'Beacon Shield': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							shield: 'shield',
+							metal: 'metal',
+							heavy: 'heavy'
+						}
+					},
+					'Dragon Slayer': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							'grand weapon': 'grand weapon',
+							'two-handed': 'two-handed',
+							metal: 'metal',
+							heavy: 'heavy'
+						}
+					},
+					'Lantern Cuirass': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							metal: 'metal',
+							heavy: 'heavy'
+						}
+					},
+					'Lantern Dagger': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							dagger: 'dagger',
+							finesse: 'finesse',
+							metal: 'metal'
+						}
+					},
+					'Lantern Gauntlets': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							dagger: 'dagger',
+							metal: 'metal',
+							heavy: 'heavy'
+						}
+					},
+					'Lantern Glaive': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							spear: 'spear',
+							axe: 'axe',
+							'two-handed': 'two-handed',
+							finesse: 'finesse',
+							metal: 'metal'
+						}
+					},
+					'Lantern Greaves': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							metal: 'metal',
+							heavy: 'heavy'
+						}
+					},
+					'Lantern Helm': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							metal: 'metal',
+							heavy: 'heavy'
+						}
+					},
+					'Lantern Mail': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							metal: 'metal',
+							heavy: 'heavy'
+						}
+					},
+					'Lantern Sword': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							sword: 'sword',
+							finesse: 'finesse',
+							metal: 'metal'
+						}
+					},
+					'Perfect Slayer': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							'grand weapon': 'grand weapon',
+							'two-handed': 'two-handed',
+							sword: 'sword',
+							heavy: 'heavy',
+							finesse: 'finesse',
+							metal: 'metal'
+						}
+					},
+					'Ring Whip': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							whip: 'whip',
+							finesse: 'finesse',
+							metal: 'metal'
+						}
+					},
+					'Scrap Shield': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							shield: 'shield',
+							bone: 'bone',
+							metal: 'metal'
+						}
+					}
+				}
+			},
+
+			storageGearBoneSmith() {
+
+				return {
+					'Bone Axe': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							axe: 'axe',
+							bone: 'bone'
+						}
+					},
+					'Bone Blade': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							sword: 'sword',
+							bone: 'bone'
+						}
+					},
+					'Bone Dagger': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							dagger: 'dagger',
+							bone: 'bone'
+						}
+					},
+					'Bone Dart': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							ranged: 'ranged',
+							thrown: 'thrown',
+							bone: 'bone'
+						}
+					},
+					'Bone Pickaxe': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							tool: 'tool',
+							bone: 'bone'
+						}
+					},
+					'Bone Sickle': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							tool: 'tool',
+							bone: 'bone'
+						}
+					},
+					'Skull Helm': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							bone: 'bone',
+							fragile: 'fragile'
+						}
+					}
+				}
+			},
+
+			storageGearCatarium() {
+
+				return {
+					'Cat Eye Circlet': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							jewelry: 'jewelry',
+							other: 'other'
+						}
+					},
+					'Cat Fang Knife': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							dagger: 'dagger',
+							bone: 'bone'
+						}
+					},
+					'Cat Gut Bow': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							ranged: 'ranged',
+							bow: 'bow',
+							'two-handed': 'two-handed'
+						}
+					},
+					'Claw Head Arrow': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							ammunition: 'ammunition',
+							arrow: 'arrow'
+						}
+					},
+					'Frenzy Drink': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							consumable: 'consumable',
+							fragile: 'fragile'
+						}
+					},
+					'King Spear': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							spear: 'spear',
+							heavy: 'heavy',
+							'two-handed': 'two-handed'
+						}
+					},
+					'Lion Beast Katar': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							katar: 'katar'
+						}
+					},
+					'Lion Headdress': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							flammable: 'flammable'
+						}
+					},
+					'Lion Headdress': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							flammable: 'flammable'
+						}
+					},
+					'Lion Skin Coat': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							fur: 'fur',
+							bone: 'bone',
+							heavy: 'heavy',
+							flammable: 'flammable'
+						}
+					},
+					'Whisker Harp': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							instrument: 'instrument',
+							noisy: 'noisy'
+						}
+					},
+					'White Lion Boots': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur',
+							heavy: 'heavy'
+						}
+					},
+					'White Lion Coat': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur',
+							heavy: 'heavy'
+						}
+					},
+					'White Lion Gauntlet': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur',
+							heavy: 'heavy'
+						}
+					},
+					'White Lion Helm': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur',
+							heavy: 'heavy'
+						}
+					},
+					'White Lion Skirt': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur',
+							heavy: 'heavy'
+						}
+					}
+				}
+			},
+
+			storageGearLeatherWorker() {
+
+				return {
+					'Hunter Whip': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							whip: 'whip',
+							leather: 'leather'
+						}
+					},
+					'Leather Boots': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							leather: 'leather'
+						}
+					},
+					'Leather Bracers': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							leather: 'leather'
+						}
+					},
+					'Leather Cuirass': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							leather: 'leather'
+						}
+					},
+					'Leather Mask': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							leather: 'leather'
+						}
+					},
+					'Leather Skirt': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							leather: 'leather'
+						}
+					},
+					'Round Leather Shield': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							shield: 'shield',
+							leather: 'leather'
+						}
+					}
+				}
+			},
+
+			storageGearMaskMaker() {
+
+				return {
+					'Antelope Mask': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							mask: 'mask',
+							bone: 'bone',
+							other: 'other'
+						}
+					},
+					'Death Mask': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							mask: 'mask',
+							bone: 'bone',
+							other: 'other'
+						}
+					},
+					'God Mask': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							mask: 'mask',
+							bone: 'bone',
+							other: 'other'
+						}
+					},
+					'Man Mask': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							mask: 'mask',
+							bone: 'bone',
+							other: 'other'
+						}
+					},
+					'Phoenix Mask': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							mask: 'mask',
+							bone: 'bone',
+							other: 'other'
+						}
+					},
+					'White Lion Mask': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							mask: 'mask',
+							bone: 'bone',
+							other: 'other'
+						}
+					}
+				}
+			},
+
+			storageGearOrganGrinder() {
+
+				return {
+					'Dried Acanthus': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							herb: 'herb',
+							consumable: 'consumable'
+						}
+					},
+					'Fecal Salve': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							balm: 'balm',
+							stinky: 'stinky'
+						}
+					},
+					'Lucky Charm': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							jewelry: 'jewelry'
+						}
+					},
+					'Monster Grease': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							consumable: 'consumable',
+							soluble: 'soluble',
+							stinky: 'stinky'
+						}
+					},
+					'Monster Tooth Necklace': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							jewelry: 'jewelry',
+							bone: 'bone'
+						}
+					}
+				}
+			},
+
+			storageGearPlummery() {
+
+				return {
+					'Arc Bow': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							ranged: 'ranged',
+							bow: 'bow',
+							'two-handed': 'two-handed'
+						}
+					},
+					'Bird Bread': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							consumable: 'consumable',
+							soluble: 'soluble'
+						}
+					},
+					'Bloom Sphere': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							stinky: 'stinky',
+							other: 'other'
+						}
+					},
+					'Crest Crown': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							other: 'other'
+						}
+					},
+					'Feather Mantle': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							flammable: 'flammable'
+						}
+					},
+					'Feather Shield': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							shield: 'shield',
+							flammable: 'flammable'
+						}
+					},
+					'Hollow Point Arrow': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							ammunition: 'ammunition',
+							arrow: 'arrow'
+						}
+					},
+					'Hollow Sword': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							sword: 'sword',
+							bone: 'bone'
+						}
+					},
+					'Hours Ring': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							other: 'other'
+						}
+					},
+					'Phoenix Faulds': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							feather: 'feather',
+							metal: 'metal',
+							flammable: 'flammable'
+						}
+					},
+					'Phoenix Gauntlet': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							feather: 'feather',
+							metal: 'metal',
+							flammable: 'flammable'
+						}
+					},
+					'Phoenix Greaves': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							feather: 'feather',
+							metal: 'metal',
+							flammable: 'flammable'
+						}
+					},
+					'Phoenix Helm': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							feather: 'feather',
+							metal: 'metal',
+							flammable: 'flammable'
+						}
+					},
+					'Phoenix Plackart': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							feather: 'feather',
+							metal: 'metal',
+							flammable: 'flammable'
+						}
+					},
+					'Sonic Tomahawk': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							axe: 'axe',
+							metal: 'metal'
+						}
+					}
+				}
+			},
+
+			storageGearRareGear() {
+
+				return {
+					'Adventure Sword': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							sword: 'sword',
+							finesse: 'finesse',
+							other: 'other'
+						}
+					},
+					'Butcher Cleaver L': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							axe: 'axe',
+							other: 'other'
+						}
+					},
+					'Butcher Cleaver R': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							axe: 'axe',
+							other: 'other'
+						}
+					},
+					'Forsaker Mask': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							mask: 'mask',
+							metal: 'metal',
+							other: 'other'
+						}
+					},
+					'Lantern Halberd': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							'two-handed': 'two-handed',
+							spear: 'spear',
+							other: 'other'
+						}
+					},
+					'Muramasa': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							katana: 'katana',
+							'two-handed': 'two-handed',
+							finesse: 'finesse',
+							other: 'other'
+						}
+					},
+					'Regal Faulds': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							bone: 'bone',
+							metal: 'metal'
+						}
+					},
+					'Regal Gauntlet': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							bone: 'bone',
+							metal: 'metal'
+						}
+					},
+					'Regal Greaves': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							bone: 'bone',
+							metal: 'metal'
+						}
+					},
+					'Regal Helm': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							bone: 'bone',
+							metal: 'metal'
+						}
+					},
+					'Regal Plackart': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							bone: 'bone',
+							metal: 'metal'
+						}
+					},
+					'Steel Shield': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							shield: 'shield',
+							metal: 'metal',
+							heavy: 'heavy'
+						}
+					},
+					'Steel Sword': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							sword: 'sword',
+							finesse: 'finesse',
+							metal: 'metal'
+						}
+					},
+					'Thunder Maul': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							club: 'club',
+							'two-handed': 'two-handed',
+							other: 'other'
+						}
+					},
+					'Twilight Sword': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							'two-handed': 'two-handed',
+							finesse: 'finesse',
+							other: 'other'
+						}
+					}
+				}
+			},
+
+			storageGearSkinnery() {
+
+				return {
+					'Bandages': {
+						count: 0 ,
+						type: {
+							item: 'item'
+						}
+					},
+					'Rawhide Boots': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							rawhide: 'rawhide'
+						}
+					},
+					'Rawhide Drum': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							rawhide: 'rawhide',
+							instrument: 'instrument',
+							noisy: 'noisy'
+						}
+					},
+					'Rawhide Gloves': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							rawhide: 'rawhide'
+						}
+					},
+					'Rawhide Headband': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							rawhide: 'rawhide'
+						}
+					},
+					'Rawhide Pants': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							rawhide: 'rawhide'
+						}
+					},
+					'Rawhide Vest': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							rawhide: 'rawhide'
+						}
+					},
+					'Rawhide Whip': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							whip: 'whip',
+							rawhide: 'rawhide'
+						}
+					}
+				}
+			},
+
+			storageGearStartingGear() {
+
+				return {
+					'Cloth': {
+						count: 0 ,
+						type: {
+							armor: 'armor'
+						}
+					},
+					'Founding Stone': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							stone: 'stone'
+						}
+					}
+				}
+			},
+
+			storageGearStoneCircle() {
+
+				return {
+					'Beast Knuckle': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							Katar: 'Katar',
+							bone: 'bone'
+						}
+					},
+					'Blood Paint': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							soluble: 'soluble'
+						}
+					},
+					'Blue Charm': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							jewelry: 'jewelry',
+							fragile: 'fragile'
+						}
+					},
+					'Bone Earing': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							jewelry: 'jewelry',
+							bone: 'bone'
+						}
+					},
+					'Boss Mehndi': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							soluble: 'soluble'
+						}
+					},
+					'Green Charm': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							jewelry: 'jewelry',
+							fragile: 'fragile'
+						}
+					},
+					'Lance of Longinus': {
+						count: 0 ,
+						type: {
+							melee: 'melee',
+							weapon: 'weapon',
+							spear: 'spear',
+							'two-handed': 'two-handed',
+							bone: 'bone'
+						}
+					},
+					'Red Charm': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							jewelry: 'jewelry',
+							fragile: 'fragile'
+						}
+					},
+					'Screaming Boots': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur'
+						}
+					},
+					'Screaming Coat': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur'
+						}
+					},
+					'Screaming Horns': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							bone: 'bone'
+						}
+					},
+					'Screaming Leg Warmers': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur'
+						}
+					},
+					'Screaming Skirt': {
+						count: 0 ,
+						type: {
+							armor: 'armor',
+							set: 'set',
+							fur: 'fur'
+						}
+					}
+				}
+			},
+
+			storageGearWeaponCrafter() {
+
+				return {
+					'Blood Sheath': {
+						count: 0 ,
+						type: {
+							item: 'item',
+							bone: 'bone',
+							other: 'other'
+						}
+					},
+					'Counterweighted Axe': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							axe: 'axe',
+							'two-handed': 'two-handed'
+						}
+					},
+					'Finger of God': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							spear: 'spear',
+							'two-handed': 'two-handed'
+						}
+					},
+					'Rainbow Katana': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							katana: 'katana',
+							finesse: 'finesse',
+							'two-handed': 'two-handed'
+						}
+					},
+					'Scrap Dagger': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							dagger: 'dagger',
+							metal: 'metal'
+						}
+					},
+					'Scrap Sword': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							sword: 'sword',
+							metal: 'metal'
+						}
+					},
+					'Skullcap Hammer': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							club: 'club',
+							bone: 'bone'
+						}
+					},
+					'Whistling Mace': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							club: 'club',
+							bone: 'bone'
+						}
+					},
+					'Zanbato': {
+						count: 0 ,
+						type: {
+							weapon: 'weapon',
+							melee: 'melee',
+							'grand weapon': 'grand weapon',
+							'two-handed': 'two-handed',
+							bone: 'bone'
 						}
 					}
 				}

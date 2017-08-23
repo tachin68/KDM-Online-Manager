@@ -18,6 +18,12 @@
 
 				<li @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
+						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">home</i> <span>Home</span></div>
+					</router-link>
+				</li>
+
+				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+					<router-link :to="'/settlement/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">location_city</i> <span>Settlement</span></div>
 					</router-link>
 				</li>
@@ -25,6 +31,12 @@
 				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link :to="'/settlement/timeline/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">event_note</i> <span>Timeline</span></div>
+					</router-link>
+				</li>
+
+				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+					<router-link :to="'/settlement/innovations/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
+						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">layers</i> <span>Innovations</span></div>
 					</router-link>
 				</li>
 
@@ -70,7 +82,7 @@
 						<md-icon>menu</md-icon>
 					</md-button>
 
-					<h2 class="md-title" style="flex: 1">KD:M 1.5</h2>
+					<h2 class="md-title" style="flex: 1">KD: M</h2>
 				</div>
 
 			</md-toolbar>

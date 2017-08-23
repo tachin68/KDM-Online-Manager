@@ -50,7 +50,8 @@
 						<b style="font-size: 1.28em;">Locations</b>
 					</div>
 					<div class="content" style="padding-left:20px;">
-						<p v-for="(value, key) in locations" v-if="value"><router-link :to="'settlement/location/'+key" style="font-size: 1.1em; color:#fff; font-weight: bold;">{{ key }}</router-link></a></p>
+						<p v-for="(value, key) in locations" v-if="value">{{ key }}</p>
+						<!-- <p v-for="(value, key) in locations" v-if="value"><router-link :to="'settlement/location/'+key" style="font-size: 1.1em; color:#fff; font-weight: bold;">{{ key }}</router-link></p> -->
 					</div>
 				</div>
 			</div>

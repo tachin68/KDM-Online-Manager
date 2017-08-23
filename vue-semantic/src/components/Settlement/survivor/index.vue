@@ -29,7 +29,7 @@
 			</md-card-area>
 		</md-card>
 
-		<md-card md-with-hover style="margin-top:1rem;">
+		<md-card md-with-hover style="margin-top:1rem;cursor:default;">
 			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 				<div class="md-title">
 					<div class="md-toolbar-container">
