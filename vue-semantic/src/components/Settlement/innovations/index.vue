@@ -10,14 +10,15 @@
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container">
 					<div class="md-title">
 						<div class="md-toolbar-container">
-							<h2 class="md-headline" style="flex: 1;">Timeline</h2>
+							<h2 class="md-headline" style="flex: 1;">Innovation</h2>
 						</div>
 					</div>
 				</md-whiteframe>
 
 				<md-card-content>
+				<button @click="getInnoConsequuence('Language')" class="ui button blue">xxx</button>
 					<pre>
-						{{ innovations }}
+						{{ dex }}
 					</pre>
 					<!-- <md-list>
 						<md-list-item v-for="(row, key) in timeline">
@@ -58,10 +59,62 @@
 		data () {
 
 			return {
-				innovations: {
-					innovation: {},
-					dex: []
-				}
+					innovations: [{
+							name: "Language",
+							status: false,
+							property: {
+								encorage: true,
+								s_limit: 1
+							},
+						},
+
+						{
+							name: "Paint",
+							status: false,
+							property: {
+								dash: true,
+							},
+						},
+
+						{
+							name: "Symposium",
+							status: false,
+							property: {
+								s_limit: 1,
+							},
+						},
+
+						{
+							name: "Inner Lantern",
+							status: false,
+							property: {
+								surge: true,
+							},
+						},
+
+						{
+							name: "Drums",
+							status: false,
+							property: {}
+						},
+
+						{
+							name: "Hovel",
+							status: false,
+							property: {
+								departing: 1,
+							},
+						},
+
+						{
+							name: "Ammonia",
+							status: false,
+							property: {
+								departing: 1,
+							},
+						}
+					],
+				dex: []
 			}
 		},
 
@@ -77,7 +130,19 @@
 
 		methods:
 		{
+			getInnoConsequuence(innoName)
+			{
+				var dex = this.dex
+				firebase.database().ref('innovation').child(innoName).on('value', function(snapshot) {
 
+					$.each(snapshot.val().consequence, function(key, value) {
+						dex.push(value)
+					})
+
+					this.dex = dex
+
+				}.bind(this))
+			}
 		}
 
 	}

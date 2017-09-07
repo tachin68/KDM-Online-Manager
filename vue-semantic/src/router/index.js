@@ -18,6 +18,8 @@ import resource from '../components/resource/index'
 import resourceView from '../components/resource/view'
 import gear from '../components/gear/index'
 
+import testRandom from '../components/random'
+
 
 Vue.use(VueRouter)
 
@@ -106,6 +108,13 @@ const router = new VueRouter({
 			path: '/gear', name: 'gear', component: gear,
 			meta: {
 				requiresAuth: true
+			}
+		},
+
+		{
+			path: '/random', name: 'random', component: testRandom,
+			meta: {
+				requiresAuth: false
 			}
 		},
 		// {
