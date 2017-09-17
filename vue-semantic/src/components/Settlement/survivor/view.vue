@@ -21,7 +21,7 @@
 
 			<md-tabs @change="changeTabs">
 				<md-tab md-label="Stats">
-					<div class="ui grid">
+					<div class="ui grid phone-viewport">
 						<div class="sixteen wide column">
 							<md-switch v-model="survivor.Dead" @change="changeSurvivorData('Dead')" class="md-accent md-theme-about">Dead</md-switch>
 							<md-switch v-model="survivor.Spend" @change="changeSurvivorData('Spend')" class="md-primary md-theme-about">Spend Survival</md-switch>

@@ -38,6 +38,7 @@
 
 					var avatar = result.user.photoURL + '?sz=50'
 
+
 					firebase.database().ref('email').orderByChild('name').equalTo(result.user.email).on('value', function(snapshot)
 					{
 						if (snapshot.val() == null)

@@ -93,29 +93,31 @@
 				firebase.auth().signInWithPopup(provider).then(function(result) {
 
 					var avatar = result.user.photoURL + '?sz=50'
+					var displayName = result.user.displayName
+					var uemail = result.user.email
 					// var md5 = require('md5')
 
 					// console.log(md5('5555'))
-					firebase.database().ref('email').orderByChild('name').equalTo(result.user.email).on('value', function(snapshot) {
-
+					firebase.database().ref('email').orderByChild('name').equalTo(result.user.email).on('value', function(snapshot)
+					{
 						if (snapshot.val() === null)
 						{
-							var user  = firebase.database().ref('user').push({
+							var user = firebase.database().ref('user').push({
 								avatar: avatar,
-								name: result.user.displayName,
-								email: result.user.email,
+								name: displayName,
+								email: uemail,
 								created_at: Date.now()
 							})
 
 							var email = firebase.database().ref('email').push({
-								name: result.user.email,
+								name: uemail,
 								ref_user: user.key,
 								created_at: Date.now()
 							})
 
 							// firebase.database().ref('email').child(email.key).update({ ref_user: user.key })
 
-							var result = { login: true, key: user.key, avatar: avatar, name: result.user.displayName }
+							var result = { login: true, key: user.key, avatar: avatar, name: displayName }
 							this.$store.dispatch('authLogin', {result: result}).then(this.$router.push({name: 'settlement'}))
 
 						} else {

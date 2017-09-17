@@ -134,7 +134,7 @@
 				input: {
 
 					name: '',
-					survival_limit: { name: 'Survival Limit', value: 1 },
+					s_limit: { name: 'Survival Limit', value: 1 },
 					depart: { name: 'Depart', value:0 },
 					population: { name:'Population', value: 0},
 					dead: { name:'Dead', value: 0}
@@ -345,11 +345,15 @@
 
 			settlementHasSurvivor() {
 				return	{
-							survival_limit: { name: 'Survival Limit', value: 1 },
-							depart: { name: 'Depart', value:0 },
-							population: { name:'Population', value: 0},
-							dead: { name:'Dead', value: 0}
-						}
+					s_limit: { name: 'Survival Limit', value: 1 },
+					depart: { name: 'Depart', value:0 },
+					population: { name:'Population', value: 0},
+					dead: { name:'Dead', value: 0},
+					dodge: true,
+					encorage: true,
+					dash: true,
+					surge: true
+				}
 			},
 
 			locationCoreGame() {

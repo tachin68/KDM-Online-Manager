@@ -86,7 +86,7 @@
 
 				var update = firebase.database().ref(table).child(this.surId).update(input)
 				// if(update) this.notify()
-				// if(update) this.$refs.snackbar.open()
+				if(update) this.$refs.snackbar.open()
 
 			},
 
@@ -108,7 +108,6 @@
 					input['status'] = (value == key) ? true : false;
 					update = firebase.database().ref(table).child(surId).child(value).update(input)
 
-					if(update) this.$refs.snackbar.open()
 				})
 
 				return update

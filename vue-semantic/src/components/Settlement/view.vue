@@ -25,7 +25,7 @@
 
 			<div class="ui four stackable inverted grey tiny item menu">
 				<!-- <span class="item" v-for="(data, key) in rows" v-if="data.name"><h4>{{ data.name }} : {{ data.value }}</h4></span> -->
-				<span class="item"><h4>{{ rows.survival_limit.name }} : {{ rows.survival_limit.value }}</h4></span>
+				<span class="item"><h4>{{ rows.s_limit.name }} : {{ rows.s_limit.value }}</h4></span>
 				<span class="item"><h4>{{ rows.depart.name }} : {{ rows.depart.value }}</h4></span>
 				<span class="item"><h4>{{ rows.population.name }} : {{ rows.population.value }}</h4></span>
 				<span class="item"><h4>{{ rows.dead.name }} : {{ rows.dead.value }}</h4></span>
@@ -126,7 +126,7 @@
 			return {
 				id: this.$route.params.key,
 				emailShare: '',
-				shareStatus: 'Share success.',
+				shareStatus: 'xxx',
 				access: false,
 				settlementName: '',
 				locations: {},
@@ -134,7 +134,7 @@
 				itemCount: {},
 				rows: {
 					loading: true,
-					survival_limit: { name: 'Survival Limit', value: 1 },
+					s_limit: { name: 'Survival Limit', value: 1 },
 					depart: { name: 'Depart', value:0 },
 					population: { name:'Population', value: 0},
 					dead: { name:'Dead', value: 0}
@@ -161,27 +161,36 @@
 				if(this.emailShare)
 				{
 					var userKey = ''
-					firebase.database().ref('user').orderByChild('email').equalTo(this.emailShare).on('child_added', function(snapshot) {
+					var dun_have = false
+					var have = false
 
+					firebase.database().ref('user').orderByChild('email').equalTo(this.emailShare).on('child_added', function(snapshot)
+					{
 						userKey = snapshot.key
 
+						if(userKey)
+						{
+							firebase.database().ref('settlementMember').child(this.$route.params.key).on('value', function(snapshot) {
+
+								$.each(snapshot.val(), function(k, v) {
+									(v == userKey) ? have = true : dun_have = true
+								})
+
+								if(!have && dun_have)
+								{
+									firebase.database().ref('settlementMember').child(this.$route.params.key).push(userKey)
+									firebase.database().ref('user_has_settlement').child(userKey).child(this.$route.params.key).update({ name: this.settlementName })
+									this.shareStatus = 'Share success.'
+								} else this.shareStatus = 'You have already share this email.'
+
+							}.bind(this))
+
+						} else this.shareStatus = 'Email not found.'
+
+						this.$refs.snackbar.open()
+						this.emailShare = ''
+
 					}.bind(this))
-
-					if(userKey)
-					{
-						firebase.database().ref('settlementMember').child(this.$route.params.key).orderByChild(userKey).on('value', function(snapshot) {
-							if(!snapshot.val())
-							{
-								firebase.database().ref('settlementMember').child(this.$route.params.key).push(userKey)
-								firebase.database().ref('user_has_settlement').child(userKey).child(this.$route.params.key).update({ name: this.settlementName })
-								shareStatus = 'Share success.'
-							}
-
-						}.bind(this))
-					} else this.shareStatus = 'Email not found.'
-
-					this.$refs.snackbar.open()
-					this.emailShare = ''
 				}
 			},
 
@@ -193,12 +202,11 @@
 
 			checkMember()
 			{
-				firebase.database().ref('settlementMember').child(this.$route.params.key).orderByKey().equalTo(this.auth.key).on('value', function(snapshot) {
+				firebase.database().ref('settlementMember').child(this.$route.params.key).orderByValue().equalTo(this.auth.key).on('value', function(snapshot) {
 
 					if(snapshot.val())
 					{
 						this.getSettlement()
-
 					} else {
 						firebase.database().ref('settlement').child(this.auth.key).child(this.$route.params.key).on('value', function(snapshot) {
 							if(snapshot.val().owner == this.auth.key)
@@ -213,8 +221,6 @@
 								this.access				= true
 
 								this.getSettlementLocation()
-
-
 
 							} else this.$store.dispatch('setSettlementIndex')
 
