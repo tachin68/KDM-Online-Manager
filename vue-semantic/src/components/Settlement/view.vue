@@ -38,7 +38,7 @@
 						<b style="font-size: 1.28em;">Inovations</b>
 					</div>
 					<div class="content">
-						<p>A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
+						<p v-for="(value, name) in innovations">- {{ name }}</p>
 					</div>
 				</div>
 			</div>
@@ -132,6 +132,7 @@
 				locations: {},
 				stroage: {loading: true},
 				itemCount: {},
+				innovations: {},
 				rows: {
 					loading: true,
 					s_limit: { name: 'Survival Limit', value: 1 },
@@ -194,6 +195,15 @@
 				}
 			},
 
+			getSettlementInnovation()
+			{
+				firebase.database().ref('settlementInnovation').child(this.$route.params.key).orderByChild("status").equalTo(1).on('value', function(snapshot) {
+
+					this.innovations = snapshot.val()
+
+				}.bind(this))
+			},
+
 			firstUpper(str) {
 				return str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
 					return letter.toUpperCase();
@@ -220,7 +230,10 @@
 								this.settlementName		= snapshot.val().name
 								this.access				= true
 
+								localStorage.setItem('settlement', JSON.stringify(snapshot.val()))
+
 								this.getSettlementLocation()
+								this.getSettlementInnovation()
 
 							} else this.$store.dispatch('setSettlementIndex')
 
@@ -239,6 +252,7 @@
 					{
 						var result = {key: snapshot.key, owner: snapshot.val().owner, name: snapshot.val().name}
 
+						localStorage.setItem('settlement', JSON.stringify(snapshot.val()))
 						this.$store.dispatch('getSettlement', {result: result})
 
 						window.document.title 	= snapshot.val().name
@@ -246,7 +260,9 @@
 						this.settlementName		= snapshot.val().name
 						this.access				= true
 
+
 						this.getSettlementLocation()
+						this.getSettlementInnovation()
 
 					}.bind(this))
 

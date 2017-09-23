@@ -10,31 +10,29 @@
 		<!-- </pre> -->
 
 		<md-card md-with-hover>
-			<!-- <md-card-area md-inset> -->
-				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
-					<div class="md-title">
-						<div class="md-toolbar-container">
-							<h2 class="md-headline" style="flex: 1;">Create Settlement</h2>
-						</div>
+			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
+				<div class="md-title">
+					<div class="md-toolbar-container">
+						<h2 class="md-headline" style="flex: 1;">Create Settlement</h2>
 					</div>
-				</md-whiteframe>
+				</div>
+			</md-whiteframe>
 
-				<md-card-header>
-					<md-card-header-text>
-						<form novalidate v-on:submit.stop.prevent="createSettlement">
-							<md-input-container class="md-accent md-theme-default">
-								<md-icon>add_circle</md-icon>
-								<label>Settlement Name</label>
-								<md-input type="text" v-model="input.name"></md-input>
-							</md-input-container>
-							<md-snackbar :md-position="'bottom center'" ref="snackbar" :md-duration="5000">
-								<span>Create Settlement Success.</span>
-								<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
-							</md-snackbar>
-						</form>
-					</md-card-header-text>
-				</md-card-header>
-			<!-- </md-card-area> -->
+			<md-card-header>
+				<md-card-header-text>
+					<form novalidate v-on:submit.stop.prevent="createSettlement">
+						<md-input-container class="md-accent md-theme-default">
+							<md-icon>add_circle</md-icon>
+							<label>Settlement Name</label>
+							<md-input type="text" v-model="input.name"></md-input>
+						</md-input-container>
+						<md-snackbar :md-position="'bottom center'" ref="snackbar" :md-duration="5000">
+							<span>Create Settlement Success.</span>
+							<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
+						</md-snackbar>
+					</form>
+				</md-card-header-text>
+			</md-card-header>
 		</md-card>
 
 		<md-card md-with-hover style="margin-top:1rem;">
@@ -132,12 +130,11 @@
 
 			return {
 				input: {
-
 					name: '',
 					s_limit: { name: 'Survival Limit', value: 1 },
 					depart: { name: 'Depart', value:0 },
-					population: { name:'Population', value: 0},
-					dead: { name:'Dead', value: 0}
+					population: { name:'Population', value: 0 },
+					dead: { name:'Dead', value: 0 }
 				},
 				items: [],
 				owner: null,
@@ -171,7 +168,6 @@
 
 				firebase.database().ref('user_has_settlement').child(this.auth.key).on('value', function(snapshot) {
 				// firebase.database().ref('user_has_settlement').child('-KrBbRhXmHHi96Vg4WBg').on('value', function(snapshot) {
-
 					this.share = snapshot.val()
 
 				}.bind(this))
@@ -272,6 +268,9 @@
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Monster Resource').child('Phoenix').set(this.phoenixResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Vermin Resource').set(this.verminResource())
 
+					// innovation
+					firebase.database().ref('settlementInnovation').child(row.key).set(this.innovation())
+
 					firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
 					firebase.database().ref('settlement_has_survivor').child(row.key).set(this.settlementHasSurvivor())
 
@@ -339,6 +338,8 @@
 				firebase.database().ref('settlementSurvivor').child(key).remove()
 				firebase.database().ref('settlementMember').child(key).remove()
 				firebase.database().ref('settlementLocation').child(key).remove()
+				firebase.database().ref('settlementLocation').child(key).remove()
+				firebase.database().ref('settlementInnovation').child(key).remove()
 
 				this.closeDialog(key)
 			},
@@ -374,7 +375,6 @@
 					'Weapon Crafter': 0
 				}
 			},
-
 
 			// start Resource Settlement
 			basciResource() {
@@ -431,7 +431,6 @@
 			},
 
 			strangeResource() {
-
 				return {
 					'Elder Cat Teeth': {
 						count: 0 ,
@@ -487,7 +486,6 @@
 			},
 
 			antelopeResource() {
-
 				return {
 					'Bladder': {
 						count: 0,
@@ -545,7 +543,6 @@
 			},
 
 			lionResource() {
-
 				return {
 					'Curious Hand': {
 						count: 0 ,
@@ -613,7 +610,6 @@
 			},
 
 			phoenixResource() {
-
 				return {
 					'Bird Beak': {
 						count: 0 ,
@@ -759,7 +755,6 @@
 
 			// start Gear Settlement
 			storageGearBarberSurgeon() {
-
 				return {
 					'Almanac': {
 						count: 0 ,
@@ -824,7 +819,6 @@
 			},
 
 			storageGearBlacksmith() {
-
 				return {
 					'Beacon Shield': {
 						count: 0 ,
@@ -962,7 +956,6 @@
 			},
 
 			storageGearBoneSmith() {
-
 				return {
 					'Bone Axe': {
 						count: 0 ,
@@ -1028,7 +1021,6 @@
 			},
 
 			storageGearCatarium() {
-
 				return {
 					'Cat Eye Circlet': {
 						count: 0 ,
@@ -1171,7 +1163,6 @@
 			},
 
 			storageGearLeatherWorker() {
-
 				return {
 					'Hunter Whip': {
 						count: 0 ,
@@ -1235,7 +1226,6 @@
 			},
 
 			storageGearMaskMaker() {
-
 				return {
 					'Antelope Mask': {
 						count: 0 ,
@@ -1295,7 +1285,6 @@
 			},
 
 			storageGearOrganGrinder() {
-
 				return {
 					'Dried Acanthus': {
 						count: 0 ,
@@ -1341,7 +1330,6 @@
 			},
 
 			storageGearPlummery() {
-
 				return {
 					'Arc Bow': {
 						count: 0 ,
@@ -1478,7 +1466,6 @@
 			},
 
 			storageGearRareGear() {
-
 				return {
 					'Adventure Sword': {
 						count: 0 ,
@@ -1622,7 +1609,6 @@
 			},
 
 			storageGearSkinnery() {
-
 				return {
 					'Bandages': {
 						count: 0 ,
@@ -1692,7 +1678,6 @@
 			},
 
 			storageGearStartingGear() {
-
 				return {
 					'Cloth': {
 						count: 0 ,
@@ -1712,7 +1697,6 @@
 			},
 
 			storageGearStoneCircle() {
-
 				return {
 					'Beast Knuckle': {
 						count: 0 ,
@@ -1823,7 +1807,6 @@
 			},
 
 			storageGearWeaponCrafter() {
-
 				return {
 					'Blood Sheath': {
 						count: 0 ,
@@ -1908,7 +1891,247 @@
 						}
 					}
 				}
+			},
+
+			innovation() {
+				return {
+					"Language" : {
+						status: 0,
+						dex: 1,
+						property: {
+							encorage: true,
+							s_limit: 1
+						}
+					},
+
+					"Paint": {
+						status: 0,
+						dex: 0,
+						property: {
+							dash: true
+						}
+					},
+
+					"Symposium": {
+						status: 0,
+						dex: 0,
+						property: {
+							s_limit: 1
+						},
+					},
+
+					"Inner Lantern": {
+						status: 0,
+						dex: 0,
+						property: {
+							surge: true
+						},
+					},
+
+					"Drums": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Hovel": {
+						status: 0,
+						dex: 0,
+						property: {
+							depart: 1
+						},
+					},
+
+					"Ammonia" : {
+						status: 0,
+						dex: 0,
+						property: {
+							depart: 1
+						},
+					},
+
+					"Face Painting": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Pictograph": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Sculpture": {
+						status: 0,
+						dex: 0,
+						property: {
+							s_limit: 1
+						}
+					},
+
+					"Memento Mori": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Pottery": {
+						status: 0,
+						dex: 0,
+						property: {
+							s_limit: 1
+						}
+					},
+
+					"Nightmare Training": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Storytelling": {
+						status: 0,
+						dex: 0,
+						property: {
+							s_limit: 1
+						}
+					},
+
+					"Records": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Scarification": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Shrine": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Sacrifice": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Forbidden Dance": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Song of the Brave": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Heart Flute": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Saga": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Bed": {
+						status: 0,
+						dex: 0,
+						property: {
+							s_limit: 1
+						}
+					},
+
+					"Partnership": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Family": {
+						status: 0,
+						dex: 0,
+						property: {
+							depart: 1
+						}
+					},
+
+					"Clan of Death": {
+						status: 0,
+						dex: 0,
+						property: {
+							acc: 1,
+							str: 1,
+							eva: 1
+						}
+					},
+
+					"Bloodletting": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Lantern Oven": {
+						status: 0,
+						dex: 0,
+						property: {
+							depart: 1
+						}
+					},
+
+					"Cooking": {
+						status: 0,
+						dex: 0,
+						property: {
+							s_limit: 1
+						}
+					},
+
+					"Scrap Smelting": {
+						status: 0,
+						dex: 0,
+						property: {}
+					},
+
+					"Final Fighting Art": {
+						status: 0,
+						dex: 0,
+						property: {
+							s_limit: 1
+						}
+					},
+
+					"Guidepost": {
+						status: 0,
+						dex: 0,
+						property: {
+							depart: 1
+						}
+					},
+
+					"Ultimate Weapon": {
+						status: 0,
+						dex: 0,
+						property: {
+							s_limit: 1
+						}
+					}
+				}
 			}
+
 		},
 
 		components: {},
