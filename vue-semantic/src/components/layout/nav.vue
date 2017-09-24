@@ -35,6 +35,12 @@
 				</li>
 
 				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+					<router-link :to="'/settlement/locations/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
+						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">location_searching</i> <span>Locations</span></div>
+					</router-link>
+				</li>
+
+				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<router-link :to="'/settlement/innovations/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">layers</i> <span>Innovations</span></div>
 					</router-link>

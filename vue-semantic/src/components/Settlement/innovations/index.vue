@@ -145,7 +145,6 @@
 				list: [],
 				principles: {},
 				pList: {"Conviction": [], "Death": [], "New Life": [], "Society": []},
-				row: {value: 0},
 				standalones: {},
 				settle: {}
 			}
@@ -163,15 +162,10 @@
 			this.getPrinciplesInnovation()
 			this.getStandaloneInnovation()
 			this.getSettlementInnovation()
-			// this.updateInno()
 		},
 
 		methods:
 		{
-			// updateInno()
-			// {
-			// 	firebase.database().ref('settlementInnovation').child(this.$route.params.key).child('Standalones').update(this.innovationStandalone())
-			// },
 			openDialog(ref) {
 				this.$refs[ref][0].open()
 			},

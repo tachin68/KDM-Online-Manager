@@ -34,10 +34,38 @@
 				<div class="ui inverted accordion">
 					<div class="title">
 						<i class="dropdown icon"></i>
-						<b style="font-size: 1.28em;">Inovations ({{ innovations ? Object.keys(innovations).length : 0 }})</b>
+						<b style="font-size: 1.28em;">Inovations ({{ innovations.innovation ? Object.keys(innovations.innovation).length : 0 }})</b>
 					</div>
 					<div class="content">
-						<p v-for="(value, name) in innovations">- {{ name }}</p>
+						<p style="font-size: 1.1em;padding-left:20px;" v-for="(value, name) in innovations.innovation">{{ name }}</p>
+						<div class="accordion" style="padding-left:20px;">
+							<div class="ui divider"></div>
+							<div class="title">
+								<i class="dropdown icon"></i>
+								<b style="font-size: 1.28em;">Principles</b>
+							</div>
+							<div class="content">
+								<div v-for="(value, name) in innovations.principles" class="ui inverted list" style="padding-left:20px;">
+									<div v-if="value" class="item" style="line-height: 2em;">
+										<div style="font-size: 1.1em;"><b>{{ name }}</b> : {{ value }}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="accordion" style="padding-left:20px;">
+							<div class="ui divider"></div>
+							<div class="title">
+								<i class="dropdown icon"></i>
+								<b style="font-size: 1.28em;">Standalones</b>
+							</div>
+							<div class="content">
+								<div v-for="(value, name) in innovations.standalones" class="ui inverted list" style="padding-left:20px;">
+									<div class="item" style="line-height: 2em;">
+										<div style="font-size: 1.1em;">{{ name }}</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -49,7 +77,7 @@
 						<b style="font-size: 1.28em;">Locations ({{ locations ? Object.keys(locations).length : 0 }})</b>
 					</div>
 					<div class="content">
-						<p v-for="(value, name) in locations">- {{ name }}</p>
+						<p style="font-size: 1.1em;padding-left:20px;" v-for="(value, name) in locations">{{ name }}</p>
 						<!-- <p v-for="(value, key) in locations" v-if="value"><router-link :to="'settlement/location/'+key" style="font-size: 1.1em; color:#fff; font-weight: bold;">{{ key }}</router-link></p> -->
 					</div>
 				</div>
@@ -69,10 +97,11 @@
 						<div class="ui internally celled grid">
 							<div class="row" v-for="item in itemCount">
 								<div class="fourteen wide column">
-									<label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span>
+									<p style="font-size: 1.1em;"><label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span></p>
 								</div>
 								<div class="two wide column">
-									<h4>{{ item.value }}</h4>
+									<!-- <h4>{{ item.value }}</h4> -->
+									<p style="font-size: 1.1em;">{{ item.value }}</p>
 								</div>
 							</div>
 						</div>
@@ -120,7 +149,7 @@
 				locations: {},
 				stroage: {loading: true},
 				itemCount: {},
-				innovations: {},
+				innovations: {innovation:{}, principles: {Conviction: "", Death: "", "New Life": "", Society: ""}, standalones: {}},
 				rows: {
 					loading: true,
 					s_limit: { name: 'Survival Limit', value: 1 },
@@ -187,9 +216,55 @@
 			{
 				firebase.database().ref('settlementInnovation').child(this.$route.params.key).orderByChild("status").equalTo(1).on('value', function(snapshot) {
 
-					this.innovations = snapshot.val()
+					this.innovations.innovation = snapshot.val()
 
 				}.bind(this))
+			},
+
+			getSettlementInnovationPrinciples()
+			{
+				var settlementKey = this.$route.params.key
+
+				firebase.database().ref('settlementInnovation').child(settlementKey).child("Principles/Conviction").orderByChild("status").equalTo(true).on('child_added', function(snapshot) {
+
+					if(snapshot.val()) this.innovations.principles.Conviction = snapshot.key
+
+				}.bind(this))
+
+				firebase.database().ref('settlementInnovation').child(settlementKey).child("Principles/Death").orderByChild("status").equalTo(true).on('child_added', function(snapshot) {
+
+					if(snapshot.val()) this.innovations.principles.Death = snapshot.key
+
+				}.bind(this))
+
+				firebase.database().ref('settlementInnovation').child(settlementKey).child("Principles/Death").orderByChild("status").equalTo(true).on('child_added', function(snapshot) {
+
+					if(snapshot.val()) this.innovations.principles["New Life"] = snapshot.key
+
+				}.bind(this))
+
+				firebase.database().ref('settlementInnovation').child(settlementKey).child("Principles/Society").orderByChild("status").equalTo(true).on('child_added', function(snapshot) {
+
+					if(snapshot.val()) this.innovations.principles.Society = snapshot.key
+
+				}.bind(this))
+			},
+
+			getSettlementInnovationStandalone()
+			{
+				firebase.database().ref('settlementInnovation').child(this.$route.params.key).child("Standalones").orderByChild("status").equalTo(true).on('value', function(snapshot) {
+
+					this.innovations.standalones = snapshot.val()
+
+				}.bind(this))
+			},
+
+			getEveryThing()
+			{
+				this.getSettlementLocation()
+				this.getSettlementInnovation()
+				this.getSettlementInnovationPrinciples()
+				this.getSettlementInnovationStandalone()
 			},
 
 			firstUpper(str) {
@@ -220,8 +295,7 @@
 
 								localStorage.setItem('settlement', JSON.stringify(snapshot.val()))
 
-								this.getSettlementLocation()
-								this.getSettlementInnovation()
+								this.getEveryThing()
 
 							} else this.$store.dispatch('setSettlementIndex')
 
@@ -248,9 +322,7 @@
 						this.settlementName		= snapshot.val().name
 						this.access				= true
 
-
-						this.getSettlementLocation()
-						this.getSettlementInnovation()
+						this.getEveryThing()
 
 					}.bind(this))
 
