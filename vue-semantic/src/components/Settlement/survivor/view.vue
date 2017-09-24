@@ -222,8 +222,8 @@
 				}
 			},
 
-			getSurvivor () {
-
+			getSurvivor ()
+			{
 				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).on('value', function(snapshot)
 				{
 					this.survivor	= snapshot.val()
@@ -231,7 +231,6 @@
 
 					if(this.survivor.Name || this.survivor.Surname) window.document.title = this.survivor.Name+' '+this.survivor.Surname
 					if(this.survivor.Name || this.survivor.Surname) this.title = this.survivor.Name+' '+this.survivor.Surname
-
 
 				}.bind(this))
 
@@ -247,7 +246,6 @@
 			{
 				if(this.checkData[key] != this.survivor[key])
 				{
-					// console.log('sss')
 					var input = {}
 					input[key] = this.survivor[key]
 					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).update(input)

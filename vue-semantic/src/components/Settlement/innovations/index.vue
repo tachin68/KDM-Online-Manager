@@ -72,8 +72,63 @@
 					</md-list-item>
 				</md-list>
 			</md-card-content>
-
 		</md-card>
+
+		<md-card md-with-hover style="margin-top:1rem; cursor:default;">
+			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
+				<div class="md-title">
+					<div class="md-toolbar-container">
+						<h2 class="md-headline" style="flex: 1;"> Principles</h2>
+					</div>
+				</div>
+			</md-whiteframe>
+
+			<md-card-content>
+				<md-list class="md-theme-default md-primary">
+					<md-layout md-gutter>
+						<md-layout v-for="(row, title) in principles" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="100" md-flex-large="100">
+							<md-layout md-flex-xsmall="100" md-flex-small="20" md-flex-medium="30" md-flex-large="30">
+								<h3 style="margin: 1rem 0px;">{{ title }}</h3>
+							</md-layout>
+							<!-- <md-layout v-for="(value, name) in row" md-flex-xsmall="100" md-flex-small="30" md-flex-medium="25" md-flex-large="25">
+								<md-checkbox @change="addPrinciples(row, name, value)" v-model="value.status">{{ name }}</md-checkbox>
+							</md-layout> -->
+							<!-- {{ row[] }} -->
+								<md-layout md-flex-xsmall="100" md-flex-small="25" md-flex-medium="25" md-flex-large="25">
+									<md-checkbox @change="addPrinciples(title, pList[title][0], row[pList[title][0]].status)" v-model="row[pList[title][0]].status">{{ pList[title][0] }}</md-checkbox>
+								</md-layout>
+								<md-layout md-flex-small="10" md-flex-medium="10" md-flex-large="10" md-hide-xsmall>
+									<b style="margin:1rem;">or</b>
+								</md-layout>
+								<md-layout md-flex-xsmall="100" md-flex-small="35" md-flex-medium="30" md-flex-large="30">
+									<md-checkbox @change="addPrinciples(title, pList[title][1], row[pList[title][1]].status)" v-model="row[pList[title][1]].status">{{ pList[title][1] }}</md-checkbox>
+								</md-layout>
+							<md-divider style="width:100%"></md-divider>
+						</md-layout>
+					</md-layout>
+					<!-- <md-divider class="md-inset"></md-divider> -->
+
+					<!-- <md-list-item v-for="(value, name) in innovations"> -->
+
+						<!-- <md-dialog :ref="name">
+							<md-dialog-title>Are you sure you want to delete {{ name }} innovation ?</md-dialog-title>
+							<md-dialog-actions>
+								<md-button class="md-accent" @click="closeDelDialog(name)">Cancel</md-button>
+								<md-button class="md-accent" @click="deleteInnovation(name, value)">Ok</md-button>
+							</md-dialog-actions>
+						</md-dialog>
+
+						<span>{{ name }}</span>
+
+						<md-button @click="openDelDialog(name)" class="md-primary md-icon-button md-mini md-dense">
+							<md-icon>delete_forever</md-icon>
+						</md-button> -->
+
+					<!-- </md-list-item> -->
+				</md-list>
+			</md-card-content>
+		</md-card>
+
 	</div>
 
 </template>
@@ -89,7 +144,61 @@
 			return {
 				innovation: '',
 				innovations: {},
-				list: []
+				list: [],
+				principles: {},
+				pList: {"Conviction": [], "Death": [], "New Life": [], "Society": []},
+				row: {}
+				// principles: {
+				// 	"New Life": {
+				// 		"Protect the Young": {
+				// 			status: false,
+				// 			property: {}
+				// 		},
+				// 		"Survival of the Fittest": {
+				// 			status: false,
+				// 			property: {
+				// 				s_limit: 1
+				// 			}
+				// 		}
+				// 	},
+				// 	"Death": {
+				// 		"Cannibalize": {
+				// 			status: false,
+				// 			property: {
+				// 				s_limit: 1
+				// 			}
+				// 		},
+				// 		"Graves": {
+				// 			status: false,
+				// 			property: {}
+				// 		}
+				// 	},
+				// 	"Society": {
+				// 		"Collective Toil": {
+				// 			status: false,
+				// 			property: {}
+				// 		},
+				// 		"Accept Darkness": {
+				// 			status: false,
+				// 			property: {}
+				// 		}
+				// 	},
+				// 	"Conviction": {
+				// 		"Barbaric": {
+				// 			status: false,
+				// 			property: {
+				// 				s_limit: 1,
+				// 				str: 1
+				// 			}
+				// 		},
+				// 		"Romantic": {
+				// 			status: false,
+				// 			property: {
+				// 				s_limit: 1
+				// 			}
+				// 		}
+				// 	},
+				// },
 			}
 		},
 
@@ -101,11 +210,19 @@
 		mounted ()
 		{
 			this.getListInnovation()
+			this.getPrinciplesInnovation()
 			this.getSettlementInnovation()
+
+			// this.updateInno()
 		},
 
 		methods:
 		{
+			// updateInno()
+			// {
+			// 	firebase.database().ref('settlementLocation').child(this.$route.params.key).update(this.locationCoreGame())
+			// },
+
 			openDialog(ref) {
 				this.$refs[ref][0].open()
 			},
@@ -120,6 +237,24 @@
 
 			closeDelDialog(ref) {
 				this.$refs[ref][0].close()
+			},
+
+			getPrinciplesInnovation()
+			{
+				var pList = this.pList
+
+				firebase.database().ref('settlementInnovation').child(this.$route.params.key).child("Principles").on('value', function(snapshot) {
+
+					this.principles = snapshot.val()
+
+					$.each(snapshot.val(), function(key, value) {
+						$.each(value, function(key2, value2) {
+							pList[key].push(key2)
+						})
+					})
+					this.pList = pList
+
+				}.bind(this))
 			},
 
 			getListInnovation()
@@ -197,6 +332,7 @@
 				var authKey = this.settlement.owner
 				var settlementKey = this.$route.params.key
 				var surSkill = ['encorage', 'dash', 'surge']
+				var $this = this
 
 				$.each(property, function(name, value)
 				{
@@ -204,12 +340,44 @@
 					{
 						firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name).set((type == 'add' ? value : false))
 					} else {
-						firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name).once('value', function(snapshot)
+						var sum = 0
+						firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name).on('value', function(snapshot)
 						{
-							var sum = type == 'add' ? (snapshot.val().value + value) : (snapshot.val().value - value)
-							firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name+"/value").set(sum)
-						}.bind(this))
+							$this.row = snapshot.val()
+						})
+						sum = type == 'add' ? ($this.row.value + value) : ($this.row.value - value)
+						firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name).child('value').set(sum)
 					}
+				})
+			},
+
+			addPrinciples(title, innoName, value)
+			{
+				var authKey = this.settlement.owner
+				var settlementKey = this.$route.params.key
+				var $this = this
+				value = value ? false : true
+
+				firebase.database().ref('settlementInnovation').child(settlementKey).child("Principles").child(title).once("value", function(snapshot)
+				{
+					$.each(snapshot.val(), function(key, data)
+					{
+						if(key == innoName) {
+						   firebase.database().ref('settlementInnovation').child(settlementKey).child("Principles").child(title).child(innoName).update({status: value})
+						   if(data["property"])
+						   {
+							   $this.updatePropSettlement(data.property, (value ? 'add' : 'delete'))
+						   }
+					   	}
+						else if(key != innoName && data.status) {
+							firebase.database().ref('settlementInnovation').child(settlementKey).child("Principles").child(title).child(key).update({status: false})
+
+							if(data.status && data["property"])
+							{
+								$this.updatePropSettlement(data.property, 'delete')
+							}
+						}
+					})
 				})
 			}
 		}

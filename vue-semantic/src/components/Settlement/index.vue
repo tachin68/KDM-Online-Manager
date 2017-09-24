@@ -360,19 +360,45 @@
 			locationCoreGame() {
 
 				return {
-					'Barber Surgeon': 0,
-					'Blacksmith': 0,
-					'Bone Smith': 0,
-					'Catarium': 0,
-					'Exhausted Lantern Hoard': 0,
-					'Lantern Hoard': 1,
-					'Leather Worker': 0,
-					'Mask Maker': 0,
-					'Organ Grinder': 0,
-					'Plumery': 0,
-					'Skinnery': 0,
-					'Stone Circle': 0,
-					'Weapon Crafter': 0
+					'Barber Surgeon': {
+						status: 0
+					},
+					'Blacksmith': {
+						status: 0
+					},
+					'Bone Smith': {
+						status: 0
+					},
+					'Catarium': {
+						status: 0
+					},
+					'Exhausted Lantern Hoard': {
+						status: 0
+					},
+					'Lantern Hoard': {
+						status: 1
+					},
+					'Leather Worker': {
+						status: 0
+					},
+					'Mask Maker': {
+						status: 0
+					},
+					'Organ Grinder': {
+						status: 0
+					},
+					'Plumery': {
+						status: 0
+					},
+					'Skinnery': {
+						status: 0
+					},
+					'Stone Circle': {
+						status: 0
+					},
+					'Weapon Crafter': {
+						status: 0
+					}
 				}
 			},
 

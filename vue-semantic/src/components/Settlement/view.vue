@@ -6,7 +6,6 @@
 <!-- <pre>{{ access }}</pre> -->
 <!-- <pre>{{ stroage }}</pre> -->
 
-
 		<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
 			<span>{{ shareStatus }}</span>
 			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
@@ -35,7 +34,7 @@
 				<div class="ui inverted accordion">
 					<div class="title">
 						<i class="dropdown icon"></i>
-						<b style="font-size: 1.28em;">Inovations</b>
+						<b style="font-size: 1.28em;">Inovations ({{ innovations ? Object.keys(innovations).length : 0 }})</b>
 					</div>
 					<div class="content">
 						<p v-for="(value, name) in innovations">- {{ name }}</p>
@@ -47,10 +46,10 @@
 				<div class="ui inverted accordion">
 					<div class="title">
 						<i class="dropdown icon"></i>
-						<b style="font-size: 1.28em;">Locations</b>
+						<b style="font-size: 1.28em;">Locations ({{ locations ? Object.keys(locations).length : 0 }})</b>
 					</div>
-					<div class="content" style="padding-left:20px;">
-						<p v-for="(value, key) in locations" v-if="value">{{ key }}</p>
+					<div class="content">
+						<p v-for="(value, name) in locations">- {{ name }}</p>
 						<!-- <p v-for="(value, key) in locations" v-if="value"><router-link :to="'settlement/location/'+key" style="font-size: 1.1em; color:#fff; font-weight: bold;">{{ key }}</router-link></p> -->
 					</div>
 				</div>
@@ -63,31 +62,20 @@
 						<b style="font-size: 1.28em;">Storage</b>
 					</div>
 					<div class="content">
-						<!-- <div class="ui grid container"> -->
-							<!-- <div v-if="stroage" v-for="(value, key) in stroage" class="three centered wide mobile eight wide tablet two wide computer column">
-								<div class="ui labeled inverted button">
-									<div class="ui inverted tiny basic red button">{{ key }}</div>
-									<a class="ui basic red left pointing label">{{ value }}</a>
+						<div style="margin-top:1rem;" class="ui six stackable inverted grey tiny item menu">
+							<span class="item" v-for="(value, key) in stroage"><h4>{{ key }} : {{ value }}</h4></span>
+						</div>
+
+						<div class="ui internally celled grid">
+							<div class="row" v-for="item in itemCount">
+								<div class="fourteen wide column">
+									<label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span>
 								</div>
-								<span class="item" ><h4>{{ key }} : {{ value }}</h4></span>
-							</div> -->
-
-							<div style="margin-top:1rem;" class="ui six stackable inverted grey tiny item menu">
-								<span class="item" v-for="(value, key) in stroage"><h4>{{ key }} : {{ value }}</h4></span>
-							</div>
-
-							<div class="ui internally celled grid">
-								<div class="row" v-for="item in itemCount">
-									<div class="fourteen wide column">
-										<label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span>
-									</div>
-									<div class="two wide column">
-										<h4>{{ item.value }}</h4>
-									</div>
+								<div class="two wide column">
+									<h4>{{ item.value }}</h4>
 								</div>
 							</div>
-
-						<!-- </div> -->
+						</div>
 					</div>
 				</div>
 			</div>
@@ -126,7 +114,7 @@
 			return {
 				id: this.$route.params.key,
 				emailShare: '',
-				shareStatus: 'xxx',
+				shareStatus: '',
 				access: false,
 				settlementName: '',
 				locations: {},
@@ -270,9 +258,9 @@
 			},
 
 			getSettlementLocation () {
-				// this.url = document.URL
-				firebase.database().ref('settlementLocation').child(this.$route.params.key).on('value', function(snapshot) {
-					// console.log(snapshot.val())
+
+				firebase.database().ref('settlementLocation').child(this.$route.params.key).orderByChild("status").equalTo(1).on('value', function(snapshot) {
+
 					this.locations = snapshot.val()
 
 				}.bind(this))
