@@ -270,6 +270,8 @@
 
 					// innovation
 					firebase.database().ref('settlementInnovation').child(row.key).set(this.innovation())
+					firebase.database().ref('settlementInnovation').child(row.key).child('Principles').update(this.innovationPrinciples())
+					firebase.database().ref('settlementInnovation').child(row.key).child('Standalones').update(this.innovationStandalone())
 
 					firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
 					firebase.database().ref('settlement_has_survivor').child(row.key).set(this.settlementHasSurvivor())
@@ -2130,29 +2132,87 @@
 						status: 0,
 						dex: 0,
 						property: {}
-					},
+					}
+				}
+			},
 
+			innovationStandalone() {
+				return {
 					"Final Fighting Art": {
-						status: 0,
-						dex: 0,
+						status: false,
+						standalone: 1,
 						property: {
 							s_limit: 1
 						}
 					},
 
 					"Guidepost": {
-						status: 0,
-						dex: 0,
+						status: false,
+						standalone: 1,
 						property: {
 							depart: 1
 						}
 					},
 
 					"Ultimate Weapon": {
-						status: 0,
-						dex: 0,
+						status: false,
+						standalone: 1,
 						property: {
 							s_limit: 1
+						}
+					}
+				}
+			},
+
+			innovationPrinciples() {
+				return {
+					"New Life": {
+						"Protect the Young": {
+							status: false,
+							property: {}
+						},
+						"Survival of the Fittest": {
+							status: false,
+							property: {
+								s_limit: 1
+							}
+						}
+					},
+					"Death": {
+						"Cannibalize": {
+							status: false,
+							property: {
+								s_limit: 1
+							}
+						},
+						"Graves": {
+							status: false,
+							property: {}
+						}
+					},
+					"Society": {
+						"Collective Toil": {
+							status: false,
+							property: {}
+						},
+						"Accept Darkness": {
+							status: false,
+							property: {}
+						}
+					},
+					"Conviction": {
+						"Barbaric": {
+							status: false,
+							property: {
+								s_limit: 1,
+								str: 1
+							}
+						},
+						"Romantic": {
+							status: false,
+							property: {
+								s_limit: 1
+							}
 						}
 					}
 				}
