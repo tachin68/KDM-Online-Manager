@@ -1,7 +1,7 @@
 <template>
 
 	<div class="ui basic segment container">
-		<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
+		<md-snackbar :md-position="'bottom right'" ref="snackbar" :md-duration="3000">
 			<span>Update Success.</span>
 			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 		</md-snackbar>
@@ -17,11 +17,16 @@
 				</md-whiteframe>
 
 				<md-card-content>
-                    <pre>
-                        {{ locations }}
-                    </pre>
-				</md-card-content>
+					<md-list class="md-theme-default md-primary">
+						<md-list-item v-for="(value, name) in locations">
+							<span>{{ name }}</span>
 
+							<md-checkbox @change="updateStatus(name, value.status)" v-model="value.status"></md-checkbox>
+
+							<md-divider style="width:100%"></md-divider>
+						</md-list-item>
+					</md-list>
+				</md-card-content>
 			</md-card-area>
 		</md-card>
 
@@ -50,6 +55,7 @@
 		mounted ()
 		{
             this.getSettlementLocation()
+			window.document.title = "Locations"
 		},
 
 		methods:
@@ -61,6 +67,15 @@
                     this.locations = snapshot.val()
 
                 }.bind(this))
+            },
+
+            updateStatus(name, status)
+            {
+				status = status ? false : true
+
+                firebase.database().ref('settlementLocation').child(this.$route.params.key).child(name).update({ status : status})
+
+				this.$refs.snackbar.open()
             }
 		}
 

@@ -363,43 +363,43 @@
 
 				return {
 					'Barber Surgeon': {
-						status: 0
+						status: false
 					},
 					'Blacksmith': {
-						status: 0
+						status: false
 					},
 					'Bone Smith': {
-						status: 0
+						status: false
 					},
 					'Catarium': {
-						status: 0
+						status: false
 					},
 					'Exhausted Lantern Hoard': {
-						status: 0
+						status: false
 					},
 					'Lantern Hoard': {
-						status: 1
+						status: true
 					},
 					'Leather Worker': {
-						status: 0
+						status: false
 					},
 					'Mask Maker': {
-						status: 0
+						status: false
 					},
 					'Organ Grinder': {
-						status: 0
+						status: false
 					},
 					'Plumery': {
-						status: 0
+						status: false
 					},
 					'Skinnery': {
-						status: 0
+						status: false
 					},
 					'Stone Circle': {
-						status: 0
+						status: false
 					},
 					'Weapon Crafter': {
-						status: 0
+						status: false
 					}
 				}
 			},

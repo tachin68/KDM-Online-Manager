@@ -331,7 +331,7 @@
 
 			getSettlementLocation () {
 
-				firebase.database().ref('settlementLocation').child(this.$route.params.key).orderByChild("status").equalTo(1).on('value', function(snapshot) {
+				firebase.database().ref('settlementLocation').child(this.$route.params.key).orderByChild("status").equalTo(true).on('value', function(snapshot) {
 
 					this.locations = snapshot.val()
 
