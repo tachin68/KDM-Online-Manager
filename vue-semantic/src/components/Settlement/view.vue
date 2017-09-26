@@ -83,7 +83,7 @@
 				</div>
 			</div>
 
-			<div v-if="stroage" v-on:click="getSettlementStorage" class="ui secondary inverted black segment">
+			<div class="ui secondary inverted black segment">
 				<div class="ui inverted accordion">
 					<div class="title">
 						<i class="dropdown icon"></i>
@@ -101,7 +101,29 @@
 								</div>
 								<div class="two wide column">
 									<!-- <h4>{{ item.value }}</h4> -->
-									<p style="font-size: 1.1em;">{{ item.value }}</p>
+									<p style="font-size: 1.1em;">{{ item.count }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="ui secondary inverted black segment">
+				<div class="ui inverted accordion">
+					<div class="title">
+						<i class="dropdown icon"></i>
+						<b style="font-size: 1.28em;">Storage Gears</b>
+					</div>
+					<div class="content">
+						<div class="ui internally celled grid">
+							<div class="row" v-for="item in gearItems" v-if="item">
+								<div class="fourteen wide column">
+									<p style="font-size: 1.1em;"><label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span></p>
+								</div>
+								<div class="two wide column">
+									<!-- <h4>{{ item.value }}</h4> -->
+									<p style="font-size: 1.1em;">{{ item.count }}</p>
 								</div>
 							</div>
 						</div>
@@ -150,6 +172,22 @@
 				stroage: {loading: true},
 				itemCount: {},
 				innovations: {innovation:{}, principles: {Conviction: "", Death: "", "New Life": "", Society: ""}, standalones: {}},
+				gears: {
+					"Barber Surgeon": {},
+					"Blacksmith": {},
+					"Bone Smith": {},
+					"Catarium": {},
+					"Leather Worker": {},
+					"Mask Maker": {},
+					"Organ Grinder": {},
+					"Plummery": {},
+					"Rare Gear": {},
+					"Skinnery": {},
+					"Starting Gear": {},
+					"Stone Circle": {},
+					"Weapon Crafter": {},
+				},
+				gearItems: {},
 				rows: {
 					loading: true,
 					s_limit: { name: 'Survival Limit', value: 1 },
@@ -265,6 +303,8 @@
 				this.getSettlementInnovation()
 				this.getSettlementInnovationPrinciples()
 				this.getSettlementInnovationStandalone()
+				this.getSettlementStorage()
+				this.getSettlementStorageGear()
 			},
 
 			firstUpper(str) {
@@ -350,7 +390,7 @@
 						if(key != 'Monster Resource') {
 							$.each(value , function (keys, values) {
 
-								if(values.count) itemCount.push({name: keys, type: values.type, value: values.count})
+								if(values.count) itemCount.push({name: keys, type: values.type, count: values.count})
 
 								$.each(values.type , function (key2, value2) {
 
@@ -367,7 +407,7 @@
 
 								$.each(valus , function (key2, value2) {
 
-									if(value2.count) itemCount.push({name: key2, type: value2.type, value: value2.count})
+									if(value2.count) itemCount.push({name: key2, type: value2.type, count: value2.count})
 
 									$.each(value2.type , function (key3, value3) {
 
@@ -387,6 +427,31 @@
 					this.itemCount = itemCount
 
 				}.bind(this))
+			},
+
+			getSettlementStorageGear ()
+			{
+				var $this = this
+				var settlementKey = this.$route.params.key
+				var gearItems = []
+
+				$.each(this.gears, function(key, value)
+				{
+					firebase.database().ref('settlementStorageGear').child(settlementKey).child(key).orderByChild("count").startAt(1).on('value', function(snapshot)
+					{
+						if(snapshot.val())
+						{
+							$.each(snapshot.val(), function(name, value)
+							{
+								gearItems.push({name: name, type: value.type, count: value.count})
+							})
+						}
+
+						$this.gearItems = gearItems
+
+					}.bind(this))
+				})
+
 			}
 		}
 

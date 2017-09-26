@@ -779,6 +779,7 @@
 					}
 				}
 			},
+			// end Resource Settlement
 
 
 			// start Gear Settlement
@@ -1920,7 +1921,10 @@
 					}
 				}
 			},
+			// end Gear Settlement
 
+
+			// start Innovation
 			innovation() {
 				return {
 					"Language" : {
@@ -2217,7 +2221,7 @@
 					}
 				}
 			}
-
+			// end Innovation
 		},
 
 		components: {},
