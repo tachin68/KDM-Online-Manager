@@ -297,6 +297,32 @@
 				}.bind(this))
 			},
 
+			getPopulation()
+			{
+				var population = 0
+				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).orderByChild("Dead").equalTo(false).on('value', function(snapshot) {
+
+					this.rows.population.value = snapshot.val() ? Object.keys(snapshot.val()).length : 0
+
+				}.bind(this))
+			},
+
+			getDead()
+			{
+				var dead = 0
+				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).orderByChild("Dead").equalTo(true).on('value', function(snapshot) {
+
+					this.rows.dead.value = snapshot.val() ? Object.keys(snapshot.val()).length : 0
+
+				}.bind(this))
+			},
+
+			updateSettlement(field, num)
+			{
+				firebase.database().ref('settlement').child(this.settlement.owner).child(this.$route.params.key).child("Dead").update({ value: num })
+
+			},
+
 			getEveryThing()
 			{
 				this.getSettlementLocation()
@@ -305,6 +331,8 @@
 				this.getSettlementInnovationStandalone()
 				this.getSettlementStorage()
 				this.getSettlementStorageGear()
+				this.getPopulation()
+				this.getDead()
 			},
 
 			firstUpper(str) {

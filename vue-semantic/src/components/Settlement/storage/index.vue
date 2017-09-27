@@ -166,8 +166,6 @@
 
 	import { mapState } from 'vuex'
 
-	import gear from './gear.vue'
-
 	export default {
 
 		data () {
@@ -261,9 +259,7 @@
 				if(count >= 0) firebase.database().ref('settlementStorageGear/'+this.$route.params.key+'/'+locationName+'/'+itemName).update({'count': count})
 
 			}
-		},
-
-		components: { gear }
+		}
 
 	}
 </script>

@@ -248,6 +248,7 @@
 				{
 					var input = {}
 					input[key] = this.survivor[key]
+					console.log(input)
 					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).update(input)
 					// if(update) this.notify()
 					if(update) this.$refs.snackbar.open()
