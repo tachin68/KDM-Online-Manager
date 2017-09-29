@@ -244,6 +244,9 @@
 
 			changeSurvivorData(key)
 			{
+				console.log(this.survivor[key])
+				if(key == 'Dead' || 'Spend') this.survivor[key] = this.survivor[key] ? false : true
+				console.log(this.survivor[key])
 				if(this.checkData[key] != this.survivor[key])
 				{
 					var input = {}

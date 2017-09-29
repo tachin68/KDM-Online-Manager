@@ -247,7 +247,7 @@
 
 				firebase.database().ref('innovation').orderByChild('consequence').on('child_added', function(data)
 				{
-					data.val().consequence.forEach(function(value){
+					data.val().consequence.forEach(function(value) {
 						if(value == innoName) parent_inno = data.key
 					})
 				})
