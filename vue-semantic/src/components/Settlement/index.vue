@@ -260,6 +260,9 @@
 					firebase.database().ref('settlementStorageGear').child(row.key).child('Stone Circle').set(this.storageGearStoneCircle())
 					firebase.database().ref('settlementStorageGear').child(row.key).child('Weapon Crafter').set(this.storageGearWeaponCrafter())
 
+					// Timeline
+					firebase.database().ref('settlementTimeline').child(row.key).set(this.timeline())
+
 					// Resource Storage
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Basic Resource').set(this.basciResource())
 					firebase.database().ref('settlementStorage').child(row.key).child('Resource').child('Strange Resource').set(this.strangeResource())
@@ -357,6 +360,11 @@
 					dash: true,
 					surge: true
 				}
+			},
+			
+			timeline()
+			{
+				return { 'timeline' : 'xxx' }
 			},
 
 			locationCoreGame() {
