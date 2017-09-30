@@ -16,10 +16,10 @@
 				</md-whiteframe>
 
 				<md-card-content>
-					<md-button type="button" class="md-raised md-primary" style="margin-left:0px;width:100%;" @click="getUncomplete(type)"><i class="md-icon material-icons">{{ text == 'show' ? 'visibility' : 'visibility_off' }}</i> {{ text }} Completed</md-button>
+					<md-button v-if="timeline.length" type="button" class="md-raised md-primary" style="margin-left:0px;width:100%;" @click="getUncomplete(type)"><i class="md-icon material-icons">{{ text == 'show' ? 'visibility' : 'visibility_off' }}</i> {{ text }} Completed</md-button>
 					<md-list class="md-theme-default md-primary">
 						<md-layout md-gutter>
-							<md-layout class="ui segment rasi" v-for="(row, key) in timeline" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="100" md-flex-large="100">
+							<md-layout class="ui segment raised" v-for="(row, key) in timeline" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="100" md-flex-large="100">
 								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="15" md-flex-large="10">
 									<md-checkbox v-model="timeline[key].status">LY{{ row.year }}</md-checkbox>
 								</md-layout>
@@ -39,25 +39,27 @@
 							</md-layout>
 						</md-layout>
 					</md-list>
-
-					<md-speed-dial md-mode="fling" class="md-fab btnOver">
+					<md-speed-dial v-if="timeline.length" md-mode="fling" class="btnOver">
 						<md-button class="md-fab md-raised md-mini md-primary" md-fab-trigger>
 							<md-icon md-icon-morph>close</md-icon>
 							<md-icon>settings</md-icon>
 						</md-button>
 
-						<md-button @click="addYear" class="md-fab md-mini md-clean md-accent">
+						<md-button @click="backToTop" style="background-color:#424242;color:rgba(255, 255, 255, .87);" class="md-fab md-mini md-clean">
+							<md-icon>keyboard_arrow_up</md-icon>
+						</md-button>
+
+						<md-button @click="addYear" style="background-color:#1e88e5;color:rgba(255, 255, 255, .87);" class="md-fab md-mini md-clean">
 							<md-icon>add</md-icon>
 						</md-button>
 
-						<md-button @click="save" md-theme="about" class="md-fab md-mini md-clean md-accent">
+						<md-button @click="save" style="background-color:#f44336;color:rgba(255, 255, 255, .87);" class="md-fab md-mini md-clean">
 							<md-icon>save</md-icon>
 						</md-button>
 					</md-speed-dial>
 				</md-card-content>
 			</md-card-area>
 		</md-card>
-
 	</div>
 </template>
 
@@ -72,7 +74,7 @@
 			return {
 				timeline: [],
 				tl: [],
-				text: 'hide',
+				text: 'show',
 				type: 'hide'
 			}
 		},
@@ -89,32 +91,46 @@
 
 		methods:
 		{
-			getSettlementTimeline(type)
+			getSettlementTimeline()
 			{
-				firebase.database().ref('settlementTimeline').child(this.$route.params.key).on('value', function(snapshot) {
+				firebase.database().ref('settlementTimeline').child(this.$route.params.key).orderByChild('status').equalTo(false).on('value', function(snapshot) {
 
 					this.timeline = snapshot.val()
-					this.tl = snapshot.val()
+					this.timeline = this.timeline.filter(function (n) { return n.status != true })
+					this.tl = this.timeline
+
 
 				}.bind(this))
 			},
 
 			getUncomplete(type)
 			{
-				if(type === 'all')
+				if(type === 'show')
 				{
-					this.timeline = this.tl
+					// this.timeline = this.tl
+					firebase.database().ref('settlementTimeline').child(this.$route.params.key).on('value', function(snapshot) {
+
+						this.timeline = snapshot.val()
+
+					}.bind(this))
 				} else {
-					this.timeline = this.timeline.filter(function (n) { return n.status != true })
+					this.timeline = this.tl
 				}
-				this.type = this.type === 'hide' ? 'all' : 'hide'
+				this.type = this.type === 'hide' ? 'show' : 'hide'
 				this.text = this.text === 'hide' ? 'show' : 'hide'
 			},
 
 			addYear()
 			{
 				var timeline = this.timeline
+
 				for(var i = 1; i <= 5; i++) this.timeline.push({year: (timeline[timeline.length - 1].year + 1), status: false, event: '', hunt: ''})
+				$("html, body").animate({ scrollTop: 1000000 }, 'slow');
+			},
+
+			backToTop()
+			{
+				$("html, body").animate({ scrollTop: 0}, 600);
 			},
 
 			save()
