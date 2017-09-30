@@ -1,11 +1,15 @@
 <template>
-	<div class="ui basic segment container">
+	<div :class="{'ui basic segment container' : true, 'loading' : timeline.length ? false : true}">
+		<!-- <pre>
+			{{ timeline }}
+		</pre> -->
+	<!-- <div :class="{'ui basic segment container' : true, 'loading' : false}"> -->
 		<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
 			<span>Update Success.</span>
 			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 		</md-snackbar>
 
-		<md-card md-with-hover style="cursor:default;">
+		<md-card v-if="timeline.length" md-with-hover style="cursor:default;">
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container">
 					<div class="md-title">
@@ -16,7 +20,7 @@
 				</md-whiteframe>
 
 				<md-card-content>
-					<md-button v-if="timeline.length" type="button" class="md-raised md-primary" style="margin-left:0px;width:100%;" @click="getUncomplete(type)"><i class="md-icon material-icons">{{ text == 'show' ? 'visibility' : 'visibility_off' }}</i> {{ text }} Completed</md-button>
+					<md-button v-if="btn" type="button" class="md-raised md-primary" style="margin-left:0px;width:100%;" @click="getUncomplete(type)"><i class="md-icon material-icons">{{ text == 'show' ? 'visibility' : 'visibility_off' }}</i> {{ text }} Completed</md-button>
 					<md-list class="md-theme-default md-primary">
 						<md-layout md-gutter>
 							<md-layout class="ui segment raised" v-for="(row, key) in timeline" md-flex-xsmall="100" md-flex-small="100" md-flex-medium="100" md-flex-large="100">
@@ -39,7 +43,7 @@
 							</md-layout>
 						</md-layout>
 					</md-list>
-					<md-speed-dial v-if="timeline.length" md-mode="fling" class="btnOver">
+					<md-speed-dial md-mode="fling" class="btnOver">
 						<md-button class="md-fab md-raised md-mini md-primary" md-fab-trigger>
 							<md-icon md-icon-morph>close</md-icon>
 							<md-icon>settings</md-icon>
@@ -75,7 +79,8 @@
 				timeline: [],
 				tl: [],
 				text: 'show',
-				type: 'hide'
+				btn: false,
+				type: 'show'
 			}
 		},
 
@@ -93,13 +98,11 @@
 		{
 			getSettlementTimeline()
 			{
-				firebase.database().ref('settlementTimeline').child(this.$route.params.key).orderByChild('status').equalTo(false).on('value', function(snapshot) {
-
+				firebase.database().ref('settlementTimeline').child(this.$route.params.key).orderByChild('status').equalTo(false).once('value', function(snapshot)
+				{
 					this.timeline = snapshot.val()
+					this.showBtn(this.timeline[0])
 					this.timeline = this.timeline.filter(function (n) { return n.status != true })
-					this.tl = this.timeline
-
-
 				}.bind(this))
 			},
 
@@ -107,23 +110,32 @@
 			{
 				if(type === 'show')
 				{
-					// this.timeline = this.tl
-					firebase.database().ref('settlementTimeline').child(this.$route.params.key).on('value', function(snapshot) {
-
+					firebase.database().ref('settlementTimeline').child(this.$route.params.key).once('value', function(snapshot)
+					{
 						this.timeline = snapshot.val()
 
 					}.bind(this))
 				} else {
-					this.timeline = this.tl
+					this.getSettlementTimeline()
 				}
 				this.type = this.type === 'hide' ? 'show' : 'hide'
 				this.text = this.text === 'hide' ? 'show' : 'hide'
 			},
 
+			showBtn(data)
+			{
+				if(!data)
+				{
+					this.btn = true
+					this.text = this.type = 'show'
+				} else {
+					this.btn = data.status ? true : false
+				}
+			},
+
 			addYear()
 			{
 				var timeline = this.timeline
-
 				for(var i = 1; i <= 5; i++) this.timeline.push({year: (timeline[timeline.length - 1].year + 1), status: false, event: '', hunt: ''})
 				$("html, body").animate({ scrollTop: 1000000 }, 'slow');
 			},
@@ -135,8 +147,11 @@
 
 			save()
 			{
-				var update = firebase.database().ref('settlementTimeline').child(this.$route.params.key).set(this.timeline)
+				var timeline = {}
+				$.each(this.timeline, function(key, value) { timeline[value.year - 1] = value })
+				var update = firebase.database().ref('settlementTimeline').child(this.$route.params.key).update(timeline)
 				if(update) this.$refs.snackbar.open()
+				this.getSettlementTimeline()
 			}
 		}
 

@@ -152,7 +152,6 @@
 			window.document.title = 'Settlements'
 			this.getSettlementShare()
 			this.getSettlement()
-			console.log(this.timeline())
 		},
 
 		methods: {
@@ -318,8 +317,8 @@
 
 				}.bind(this))
 
-				$.each(member, function(k, memKey) {
-
+				$.each(member, function(k, memKey)
+				{
 					var arr = {}
 					var i = 0
 
@@ -346,6 +345,8 @@
 				firebase.database().ref('settlementLocation').child(key).remove()
 				firebase.database().ref('settlementLocation').child(key).remove()
 				firebase.database().ref('settlementInnovation').child(key).remove()
+				firebase.database().ref('settlementTimeline').child(key).remove()
+				firebase.database().ref('settlementMonsters').child(key).remove()
 
 				this.closeDialog(key)
 			},
@@ -367,7 +368,6 @@
 			{
 				var year = 1
 				var timeline = []
-
 				var event = [
 					'📖 Returning Survivors',
 					'📖 Endless Screams',
