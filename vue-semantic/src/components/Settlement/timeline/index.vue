@@ -19,7 +19,7 @@
 					<md-button v-if="timeline.length" type="button" class="md-raised md-primary" style="margin-left:0px;width:100%;" @click="getUncomplete(type)"><i class="md-icon material-icons">{{ text == 'show' ? 'visibility' : 'visibility_off' }}</i> {{ text }} Completed</md-button>
 					<md-list class="md-theme-default md-primary">
 						<md-layout md-gutter>
-							<md-layout class="ui segment raised" v-for="(row, key) in timeline" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="100" md-flex-large="100">
+							<md-layout class="ui segment raised" v-for="(row, key) in timeline" md-flex-xsmall="100" md-flex-small="100" md-flex-medium="100" md-flex-large="100">
 								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="15" md-flex-large="10">
 									<md-checkbox v-model="timeline[key].status">LY{{ row.year }}</md-checkbox>
 								</md-layout>
@@ -29,8 +29,8 @@
 										<md-textarea v-model="row.event"></md-textarea>
 									</md-input-container>
 								</md-layout>
-								<md-layout md-hide-xsmall md-hide-small md-flex-medium="10" md-flex-large="15"></md-layout>
-								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="35" md-flex-large="40">
+								<md-layout  md-hide-xsmall md-flex-medium="5" md-flex-large="5"></md-layout>
+								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="45" md-flex-large="45">
 									 <md-input-container md-inline>
 										<label>Hunt / Notes</label>
 										<md-textarea v-model="row.hunt" ></md-textarea>
