@@ -152,6 +152,7 @@
 			window.document.title = 'Settlements'
 			this.getSettlementShare()
 			this.getSettlement()
+			console.log(this.timeline())
 		},
 
 		methods: {
@@ -361,10 +362,43 @@
 					surge: true
 				}
 			},
-			
+
 			timeline()
 			{
-				return { 'timeline' : 'xxx' }
+				var year = 1
+				var timeline = []
+
+				var event = [
+					'📖 Returning Survivors',
+					'📖 Endless Screams',
+					'',
+					'⚔ Nemesis Encounter - Butcher',
+					'📖 Hands of Heat',
+					'📖 Armored Strangers',
+					'📖 Phoenix Feather',
+					'',
+					"⚔ Nemesis Encounter - King's Man",
+					"",
+					"📖 Regal Visit",
+					"📖 Principle: Conviction",
+					"",
+					"",
+					"",
+					"⚔ Nemesis Encounter",
+					"",
+					"",
+					"⚔ Nemesis Encounter",
+					"📖 Watched",
+					"",
+					"",
+					"⚔ Nemesis Encounter - Level 3",
+					"",
+					"⚔ Nemesis Encounter - Watcher",
+				]
+
+				for(var i = 0; i <= 24; i++) timeline.push({ event: event[i], hunt: '', status: false, year: year++})
+
+				return timeline
 			},
 
 			locationCoreGame() {

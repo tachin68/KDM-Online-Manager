@@ -5,7 +5,7 @@
 			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 		</md-snackbar>
 
-		<md-card md-with-hover>
+		<md-card md-with-hover style="cursor:default;">
 			<md-card-area md-inset>
 				<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container">
 					<div class="md-title">
@@ -16,33 +16,47 @@
 				</md-whiteframe>
 
 				<md-card-content>
-					<md-list>
-						<md-list-item v-for="(row, key) in timeline">
-							<md-checkbox v-model="timeline[key].status">LY{{ row.year }}</md-checkbox>
-
-							<md-input-container md-inline>
-								<label>Event</label>
-								<md-textarea v-model="row.event"></md-textarea>
-							</md-input-container>
-
-							 <md-input-container md-inline>
-								<label>Hunt / Notes</label>
-								<md-textarea v-model="row.hunt" ></md-textarea>
-							</md-input-container>
-						</md-list-item>
+					<md-button type="button" class="md-raised md-primary" style="margin-left:0px;width:100%;" @click="getUncomplete(type)"><i class="md-icon material-icons">{{ text == 'show' ? 'visibility' : 'visibility_off' }}</i> {{ text }} Completed</md-button>
+					<md-list class="md-theme-default md-primary">
+						<md-layout md-gutter>
+							<md-layout class="ui segment rasi" v-for="(row, key) in timeline" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="100" md-flex-large="100">
+								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="15" md-flex-large="10">
+									<md-checkbox v-model="timeline[key].status">LY{{ row.year }}</md-checkbox>
+								</md-layout>
+								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="35" md-flex-large="40">
+									<md-input-container md-inline>
+										<label>Event</label>
+										<md-textarea v-model="row.event"></md-textarea>
+									</md-input-container>
+								</md-layout>
+								<md-layout md-hide-xsmall md-hide-small md-flex-medium="10" md-flex-large="15"></md-layout>
+								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="35" md-flex-large="40">
+									 <md-input-container md-inline>
+										<label>Hunt / Notes</label>
+										<md-textarea v-model="row.hunt" ></md-textarea>
+									</md-input-container>
+								</md-layout>
+							</md-layout>
+						</md-layout>
 					</md-list>
 
-					<md-button @click="addYear" class="md-icon-button md-raised md-accent">
-						<md-icon>add</md-icon>
-					</md-button>
+					<md-speed-dial md-mode="fling" class="md-fab btnOver">
+						<md-button class="md-fab md-raised md-mini md-primary" md-fab-trigger>
+							<md-icon md-icon-morph>close</md-icon>
+							<md-icon>settings</md-icon>
+						</md-button>
 
-					<md-button @click="save" md-theme="about" class="md-icon-button md-raised md-accent">
-						<md-icon>save</md-icon>
-					</md-button>
+						<md-button @click="addYear" class="md-fab md-mini md-clean md-accent">
+							<md-icon>add</md-icon>
+						</md-button>
+
+						<md-button @click="save" md-theme="about" class="md-fab md-mini md-clean md-accent">
+							<md-icon>save</md-icon>
+						</md-button>
+					</md-speed-dial>
 				</md-card-content>
 			</md-card-area>
 		</md-card>
-
 
 	</div>
 </template>
@@ -56,7 +70,10 @@
 		data () {
 
 			return {
-				timeline: []
+				timeline: [],
+				tl: [],
+				text: 'hide',
+				type: 'hide'
 			}
 		},
 
@@ -72,20 +89,32 @@
 
 		methods:
 		{
-			getSettlementTimeline()
+			getSettlementTimeline(type)
 			{
 				firebase.database().ref('settlementTimeline').child(this.$route.params.key).on('value', function(snapshot) {
 
 					this.timeline = snapshot.val()
+					this.tl = snapshot.val()
 
 				}.bind(this))
 			},
 
+			getUncomplete(type)
+			{
+				if(type === 'all')
+				{
+					this.timeline = this.tl
+				} else {
+					this.timeline = this.timeline.filter(function (n) { return n.status != true })
+				}
+				this.type = this.type === 'hide' ? 'all' : 'hide'
+				this.text = this.text === 'hide' ? 'show' : 'hide'
+			},
+
 			addYear()
 			{
-				for (var i = 1; i <= 5; i++) {
-					this.timeline.push({year: (this.timeline.length + 1), status: false, event: '', hunt: ''})
-				}
+				var timeline = this.timeline
+				for(var i = 1; i <= 5; i++) this.timeline.push({year: (timeline[timeline.length - 1].year + 1), status: false, event: '', hunt: ''})
 			},
 
 			save()
@@ -97,3 +126,11 @@
 
 	}
 </script>
+<style>
+	.btnOver {
+		position: fixed; /* Fixed/sticky position */
+		bottom: 2rem; /* Place the button at the bottom of the page */
+		right: 3rem; /* Place the button 30px from the right */
+		z-index: 99; /* Make sure it does not overlap */
+	}
+</style>
