@@ -187,9 +187,7 @@
 		},
 
 		mounted () {
-			window.document.title = 'Storage'
 			$('.ui.accordion').accordion();
-
 		},
 
 		methods: {

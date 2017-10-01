@@ -93,7 +93,6 @@
 		},
 
 		mounted () {
-			window.document.title = 'Survivor'
 			this.getSurvivor()
 		},
 
@@ -122,7 +121,7 @@
 				firebase.database().ref('survivorFightingArts').child(survivor.key).update(this.survivorFightingArts())
 				firebase.database().ref('survivorUnderstanding').child(survivor.key).update(this.survivorUnderstanding())
 				firebase.database().ref('survivorGearGrid').child(survivor.key).update(this.survivorGearGrid())
-				this.input = ''
+				this.input.name = ''
 				this.$refs.snackbar.open();
 			},
 
@@ -149,30 +148,33 @@
 					},
 					Gender: "",
 					Xp: 0,
-					// Head: {
-					// 	def: 0,
-					// 	H: 0
-					// },
-					// Arms: {
-					// 	def: 0,
-					// 	L: 0,
-					// 	H: 0
-					// },
-					// Body: {
-					// 	def: 0,
-					// 	L: 0,
-					// 	H: 0
-					// },
-					// Waist: {
-					// 	def: 0,
-					// 	L: 0,
-					// 	H: 0
-					// },
-					// Legs: {
-					// 	def: 0,
-					// 	L: 0,
-					// 	H: 0
-					// },
+					Armor:
+					{
+						Head: {
+							def: 0,
+							H: 0
+						},
+						Arms: {
+							def: 0,
+							L: 0,
+							H: 0
+						},
+						Body: {
+							def: 0,
+							L: 0,
+							H: 0
+						},
+						Waist: {
+							def: 0,
+							L: 0,
+							H: 0
+						},
+						Legs: {
+							def: 0,
+							L: 0,
+							H: 0
+						},
+					},
 					Impairments: {
 						note: "",
 						'skip Next Hunt': false

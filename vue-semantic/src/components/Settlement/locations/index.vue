@@ -56,7 +56,6 @@
 		mounted ()
 		{
             this.getSettlementLocation()
-			window.document.title = "Locations"
 		},
 
 		methods:

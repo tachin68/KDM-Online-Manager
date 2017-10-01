@@ -289,64 +289,57 @@
 				this.closeDialog(key)
 			},
 
-			deleteItem(key) {
-				var uhs			= {}
+			deleteItem(key)
+			{
 				var member		= {}
 				var survivors	= {}
+				var authKey = this.auth.key
 
-				firebase.database().ref('settlementSurvivor').child(key).on('value', function(snapshot) {
-
-					survivors = snapshot.val()
-
-				}.bind(this))
-
-				if(survivors)
+				firebase.database().ref('settlementSurvivor').child(key).once('value', function(snapshot)
 				{
-					$.each(survivors, function(surKey, value) {
-						firebase.database().ref('survivorCourage').child(surKey).remove()
-						firebase.database().ref('survivorDisorders').child(surKey).remove()
-						firebase.database().ref('survivorFightingArts').child(surKey).remove()
-						firebase.database().ref('survivorUnderstanding').child(surKey).remove()
-						firebase.database().ref('survivorGearGrid').child(surKey).remove()
-					})
-				}
-
-				firebase.database().ref('settlementMember').child(key).on('value', function(snapshot) {
-
-					member = snapshot.val()
-
-				}.bind(this))
-
-				$.each(member, function(k, memKey)
-				{
-					var arr = {}
-					var i = 0
-
-					firebase.database().ref('user_has_settlement').child(memKey).on('value', function(snapshot) {
-						if(snapshot.val()) uhs = snapshot.val()
-					}.bind(this))
-
-					if(uhs)
+					if(snapshot.val()) survivors = snapshot.val()
+					if(survivors)
 					{
-						$.each(uhs, function(k2, settleKey) {
-							if(settleKey != key) arr[i++] = settleKey
+						$.each(survivors, function(surKey, value)
+						{
+							firebase.database().ref('survivorCourage').child(surKey).remove()
+							firebase.database().ref('survivorDisorders').child(surKey).remove()
+							firebase.database().ref('survivorFightingArts').child(surKey).remove()
+							firebase.database().ref('survivorUnderstanding').child(surKey).remove()
+							firebase.database().ref('survivorGearGrid').child(surKey).remove()
 						})
 					}
 
-					firebase.database().ref('user_has_settlement').child(memKey).set(arr)
-				})
+					firebase.database().ref('settlementMember').child(key).once('value', function(snapshot) {
 
-				firebase.database().ref('settlement').child(this.auth.key).child(key).remove()
-				firebase.database().ref('settlementLocation').child(key).remove()
-				firebase.database().ref('settlementStorage').child(key).remove()
-				firebase.database().ref('settlementStorageGear').child(key).remove()
-				firebase.database().ref('settlementSurvivor').child(key).remove()
-				firebase.database().ref('settlementMember').child(key).remove()
-				firebase.database().ref('settlementLocation').child(key).remove()
-				firebase.database().ref('settlementLocation').child(key).remove()
-				firebase.database().ref('settlementInnovation').child(key).remove()
-				firebase.database().ref('settlementTimeline').child(key).remove()
-				firebase.database().ref('settlementMonsters').child(key).remove()
+						if(snapshot.val()) member = snapshot.val()
+						if(member)
+						{
+							$.each(member, function(k, memKey)
+							{
+								var arr = {}
+								var i = 0
+
+								firebase.database().ref('user_has_settlement').child(memKey).child(key).remove()
+							})
+						}
+
+						firebase.database().ref('settlement').child(authKey).child(key).remove()
+						firebase.database().ref('settlementLocation').child(key).remove()
+						firebase.database().ref('settlementStorage').child(key).remove()
+						firebase.database().ref('settlementStorageGear').child(key).remove()
+						firebase.database().ref('settlementSurvivor').child(key).remove()
+						firebase.database().ref('settlementMember').child(key).remove()
+						firebase.database().ref('settlementLocation').child(key).remove()
+						firebase.database().ref('settlementLocation').child(key).remove()
+						firebase.database().ref('settlementInnovation').child(key).remove()
+						firebase.database().ref('settlementTimeline').child(key).remove()
+						firebase.database().ref('settlementMonsters').child(key).remove()
+						firebase.database().ref('settlement_has_survivor').child(key).remove()
+
+					})
+
+				})
 
 				this.closeDialog(key)
 			},
@@ -355,12 +348,13 @@
 				return	{
 					s_limit: { name: 'Survival Limit', value: 1 },
 					depart: { name: 'Depart', value:0 },
-					population: { name:'Population', value: 0},
-					dead: { name:'Dead', value: 0},
+					population: { name:'Population', value: 0 },
+					dead: { name:'Dead', value: 0 },
+					str: { value: 0 },
 					dodge: true,
-					encorage: true,
-					dash: true,
-					surge: true
+					encorage: false,
+					dash: false,
+					surge: false
 				}
 			},
 

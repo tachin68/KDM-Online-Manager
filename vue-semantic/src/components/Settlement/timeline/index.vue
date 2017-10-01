@@ -23,18 +23,18 @@
 					<md-button v-if="btn" type="button" class="md-raised md-primary" style="margin-left:0px;width:100%;" @click="getUncomplete(type)"><i class="md-icon material-icons">{{ text == 'show' ? 'visibility' : 'visibility_off' }}</i> {{ text }} Completed</md-button>
 					<md-list class="md-theme-default md-primary">
 						<md-layout md-gutter>
-							<md-layout class="ui segment raised" v-for="(row, key) in timeline" md-flex-xsmall="100" md-flex-small="100" md-flex-medium="100" md-flex-large="100">
-								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="15" md-flex-large="10">
+							<md-layout class="ui segment raised" v-for="(row, key) in timeline" md-flex-xsmall="100" md-flex-small="100" md-flex-medium="100" md-flex-large="100" md-flex-xlarge="100">
+								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="15" md-flex-large="10" md-flex-xlarge="10">
 									<md-checkbox v-model="timeline[key].status">LY{{ row.year }}</md-checkbox>
 								</md-layout>
-								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="35" md-flex-large="40">
+								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="35" md-flex-large="40" md-flex-xlarge="40">
 									<md-input-container md-inline>
 										<label>Event</label>
 										<md-textarea v-model="row.event"></md-textarea>
 									</md-input-container>
 								</md-layout>
-								<md-layout  md-hide-xsmall md-flex-medium="5" md-flex-large="5"></md-layout>
-								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="45" md-flex-large="45">
+								<md-layout  md-hide-xsmall md-flex-medium="5" md-flex-large="5" md-flex-xlarge="5"></md-layout>
+								<md-layout md-flex-xsmall="100" md-flex-small="100" md-flex-medium="45" md-flex-large="45" md-flex-xlarge="45">
 									 <md-input-container md-inline>
 										<label>Hunt / Notes</label>
 										<md-textarea v-model="row.hunt" ></md-textarea>
@@ -137,12 +137,12 @@
 			{
 				var timeline = this.timeline
 				for(var i = 1; i <= 5; i++) this.timeline.push({year: (timeline[timeline.length - 1].year + 1), status: false, event: '', hunt: ''})
-				$("html, body").animate({ scrollTop: 1000000 }, 'slow');
+				$("html, body").animate({ scrollTop: 1000000 }, 600)
 			},
 
 			backToTop()
 			{
-				$("html, body").animate({ scrollTop: 0}, 600);
+				$("html, body").animate({ scrollTop: 0}, 600)
 			},
 
 			save()

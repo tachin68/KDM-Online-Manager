@@ -1,6 +1,7 @@
 <template>
 
-	<div :class="{'ui basic segment container':true, 'loading': survivor.loading}">
+	<!-- <div :class="{'ui basic segment container':true, 'loading': loading }"> -->
+	<div :class="{'ui basic segment container':true, 'loading': !survivor ? true : false }">
 
 		<md-card v-if="!survivor.loading">
 
@@ -18,22 +19,24 @@
 						</div>
 				</md-whiteframe>
 			</md-card-area>
-
-			<md-tabs @change="changeTabs">
+<pre>
+	{{weaponProficiency}}
+</pre>
+			<md-tabs v-if="survivor" @change="changeTabs">
 				<md-tab md-label="Stats">
 					<div class="ui grid phone-viewport">
 						<div class="sixteen wide column">
-							<md-switch v-model="survivor.Dead" @change="changeSurvivorData('Dead')" class="md-accent md-theme-about">Dead</md-switch>
+							<md-switch v-model="survivor.Dead" @change="changeSurvivorData('Dead')" class="md-primary md-theme-about">Dead</md-switch>
 							<md-switch v-model="survivor.Spend" @change="changeSurvivorData('Spend')" class="md-primary md-theme-about">Spend Survival</md-switch>
 						</div>
-						<div class="eight wide column">
+						<div class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label>Name</label>
 								<md-input type="text" v-model="survivor.Name" @change="changeSurvivorData('Name')"></md-input>
 							</md-input-container>
 						</div>
 
-						<div class="eight wide column">
+						<div class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label>Surname</label>
 								<md-input type="text" v-model="survivor.Surname" @change="changeSurvivorData('Surname')"></md-input>
@@ -61,14 +64,14 @@
 
 						<div class="sixteen wide column">
 							<md-layout md-gutter v-for="key in objKeys">
-								<md-layout>
+								<md-layout md-flex-xsmall="55" md-flex-small="60" md-flex-medium="80" md-flex-large="90" md-flex-xlarge="90">
 									<md-input-container class="md-accent md-theme-default">
 										<label>{{ key }}</label>
 										<md-input type="text" v-model="survivor[key]"></md-input>
 									</md-input-container>
 								</md-layout>
 
-								<md-layout>
+								<md-layout md-flex-xsmall="45" md-flex-small="40" md-flex-medium="20" md-flex-large="10" md-flex-xlarge="10">
 									<md-button v-on:click="updateStatusCount(key, '+')" class="md-icon-button md-mini md-raised md-accent">
 										<md-icon>add</md-icon>
 									</md-button>
@@ -127,22 +130,22 @@
 
 				title: '',
 				checkData: {},
-
-				survivor: {
-					loading		: true,
-					'Dead'		: false,
-					'Spend'		: false,
-					'Name'		: '',
-					'Surname'	: '',
-					'Gender'	: '',
-					'Insanity'	: 0,
-					'Movement'	: 0,
-					'Accuracy'	: 0,
-					'Strength'	: 0,
-					'Evasion'	: 0,
-					'Luck'		: 0,
-					'Speed'		: 0
-				},
+				survivor: '',
+				// survivor: {
+				// 	loading		: true,
+				// 	'Dead'		: false,
+				// 	'Spend'		: false,
+				// 	'Name'		: '',
+				// 	'Surname'	: '',
+				// 	'Gender'	: '',
+				// 	'Insanity'	: 0,
+				// 	'Movement'	: 0,
+				// 	'Accuracy'	: 0,
+				// 	'Strength'	: 0,
+				// 	'Evasion'	: 0,
+				// 	'Luck'		: 0,
+				// 	'Speed'		: 0
+				// },
 
 				huntExp: {
 							0 : 0,
@@ -171,7 +174,8 @@
 					'Evasion' : 'Evasion',
 					'Luck' : 'Luck',
 					'Speed' : 'Speed'
-				}
+				},
+				weaponProficiency: ''
 			}
 
 		},
@@ -182,6 +186,7 @@
 
 		mounted () {
 			this.getSurvivor()
+			this.getWeaponProficiency()
 		},
 
 		methods: {
@@ -222,6 +227,15 @@
 				}
 			},
 
+			getWeaponProficiency ()
+			{
+				firebase.database().ref('weaponProficiency').on('value', function(snapshot)
+				{
+					this.weaponProficiency	= snapshot.val()
+
+				}.bind(this))
+			},
+
 			getSurvivor ()
 			{
 				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).on('value', function(snapshot)
@@ -229,7 +243,6 @@
 					this.survivor	= snapshot.val()
 					this.checkData	= snapshot.val()
 
-					if(this.survivor.Name || this.survivor.Surname) window.document.title = this.survivor.Name+' '+this.survivor.Surname
 					if(this.survivor.Name || this.survivor.Surname) this.title = this.survivor.Name+' '+this.survivor.Surname
 
 				}.bind(this))
@@ -249,7 +262,6 @@
 				{
 					var input = {}
 					input[key] = this.survivor[key]
-					console.log(input)
 					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).update(input)
 					// if(update) this.notify()
 					if(update) this.$refs.snackbar.open()
@@ -269,7 +281,7 @@
 					message: 'อัพเดทสำเร็จ',
 					type: 'success'
 				})
-			}
+			},
 
 		},
 

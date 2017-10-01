@@ -86,17 +86,17 @@
 			<md-card-content>
 				<md-list class="md-theme-default md-primary">
 					<md-layout md-gutter>
-						<md-layout v-if="principles" v-for="(row, title) in principles" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="100" md-flex-large="100">
-							<md-layout md-flex-xsmall="100" md-flex-small="20" md-flex-medium="30" md-flex-large="30">
+						<md-layout v-if="principles" v-for="(row, title) in principles" md-flex-xsmall="100" md-flex-small="50" md-flex-medium="100" md-flex-large="100" md-flex-xlarge="100">
+							<md-layout md-flex-xsmall="100" md-flex-small="20" md-flex-medium="30" md-flex-large="30"  md-flex-xlarge="30">
 								<h3 style="margin: 1rem 0px;">{{ title }}</h3>
 							</md-layout>
-							<md-layout md-flex-xsmall="100" md-flex-small="25" md-flex-medium="25" md-flex-large="25">
+							<md-layout md-flex-xsmall="100" md-flex-small="25" md-flex-medium="25" md-flex-large="25"  md-flex-xlarge="25">
 								<md-checkbox @change="addPrinciples(title, pList[title][0], row[pList[title][0]].status)" v-model="row[pList[title][0]].status">{{ pList[title][0] }}</md-checkbox>
 							</md-layout>
-							<md-layout md-flex-small="10" md-flex-medium="10" md-flex-large="10" md-hide-xsmall>
+							<md-layout md-hide-xsmall md-flex-small="10" md-flex-medium="10" md-flex-large="10" md-flex-xlarge="10">
 								<b style="margin:1rem;">or</b>
 							</md-layout>
-							<md-layout md-flex-xsmall="100" md-flex-small="35" md-flex-medium="30" md-flex-large="30">
+							<md-layout md-flex-xsmall="100" md-flex-small="35" md-flex-medium="30" md-flex-large="30" md-flex-xlarge="30">
 								<md-checkbox @change="addPrinciples(title, pList[title][1], row[pList[title][1]].status)" v-model="row[pList[title][1]].status">{{ pList[title][1] }}</md-checkbox>
 							</md-layout>
 							<md-divider style="width:100%"></md-divider>
@@ -287,13 +287,13 @@
 				{
 					if(jQuery.inArray(name, surSkill) > -1)
 					{
-						firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name).set((type == 'add' ? value : false))
+						firebase.database().ref('settlement_has_survivor').child(settlementKey).child(name).set((type == 'add' ? value : false))
 					} else {
 						var sum = 0
-						firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name).once('value', function(snapshot)
+						firebase.database().ref('settlement_has_survivor').child(settlementKey).child(name).once('value', function(snapshot)
 						{
 							sum = type == 'add' ? (snapshot.val().value + value) : (snapshot.val().value - value)
-							firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name).update({ value: sum })
+							firebase.database().ref('settlement_has_survivor').child(settlementKey).child(name).update({ value: sum })
 						})
 					}
 				})
@@ -305,11 +305,10 @@
 				var settlementKey = this.$route.params.key
 				var $this = this
 				var sum = 0
-
 				$.each(property, function(name, value)
 				{
 					sum = type == 'add' ? ($this.settle[name].value + value) : ($this.settle[name].value - value)
-					firebase.database().ref('settlement').child(authKey).child(settlementKey).child(name).update({ value: sum })
+					firebase.database().ref('settlement_has_survivor').child(settlementKey).child(name).update({ value: sum })
 				})
 			},
 
@@ -317,7 +316,7 @@
 			{
 				var authKey = this.settlement.owner
 				var settlementKey = this.$route.params.key
-				firebase.database().ref('settlement').child(authKey).child(settlementKey).on('value', function(snapshot) {
+				firebase.database().ref('settlement_has_survivor').child(settlementKey).on('value', function(snapshot) {
 					this.settle = snapshot.val()
 				}.bind(this))
 			},

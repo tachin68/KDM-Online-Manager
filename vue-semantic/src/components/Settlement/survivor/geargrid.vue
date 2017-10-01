@@ -113,8 +113,8 @@
 				});
 			},
 
-			addEquipment () {
-
+			addEquipment ()
+			{
 				// var input = this.input
 				var survivor = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).push(this.survivor())
 				firebase.database().ref('survivorGearGrid').child(survivor.key).push(this.survivorGearGrid())

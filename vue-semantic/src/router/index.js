@@ -81,7 +81,7 @@ const router = new VueRouter({
 
 		// survivor
 		{
-			path: '/settlement/survivors/geargrid/:surid', name: 'settlement/geargrid/:surid', component: survivorGearGrid,
+			path: '/settlement/survivors/geargrid/:key/:surid', name: 'settlement/geargrid/:key/:surid', component: survivorGearGrid,
 			meta: {
 				requiresAuth: true
 			}

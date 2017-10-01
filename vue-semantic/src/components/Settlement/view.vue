@@ -1,10 +1,6 @@
 <template>
 
 	<div :class="{ 'ui basic segment container': true, 'loading': rows.loading }">
-<!-- <pre>{{ settlement }}</pre> -->
-<!-- <pre>{{ auth.key }}</pre> -->
-<!-- <pre>{{ access }}</pre> -->
-<!-- <pre>{{ stroage }}</pre> -->
 
 		<md-snackbar :md-position="'top right'" ref="snackbar" :md-duration="3000">
 			<span>{{ shareStatus }}</span>
@@ -19,15 +15,11 @@
 				</md-input-container>
 			</form>
 
-			<!-- <router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'storage/'+id" class="md-button md-theme-default md-raised md-primary">Storage's {{ settlementName }}</router-link> -->
-			<!-- <router-link v-if="settlement.owner === auth.key" style="margin-left:0rem;" :to="'survivors/'+id" class="md-button md-theme-default md-raised md-primary">Create Survivor</router-link> -->
-
 			<div class="ui four stackable inverted grey tiny item menu">
-				<!-- <span class="item" v-for="(data, key) in rows" v-if="data.name"><h4>{{ data.name }} : {{ data.value }}</h4></span> -->
-				<span class="item"><h4>{{ rows.s_limit.name }} : {{ rows.s_limit.value }}</h4></span>
-				<span class="item"><h4>{{ rows.depart.name }} : {{ rows.depart.value }}</h4></span>
-				<span class="item"><h4>{{ rows.population.name }} : {{ rows.population.value }}</h4></span>
-				<span class="item"><h4>{{ rows.dead.name }} : {{ rows.dead.value }}</h4></span>
+				<span class="item"><h4>{{ settlement_has_survivor.s_limit.name }} : {{ settlement_has_survivor.s_limit.value }}</h4></span>
+				<span class="item"><h4>{{ settlement_has_survivor.depart.name }} : {{ settlement_has_survivor.depart.value }}</h4></span>
+				<span class="item"><h4>{{ settlement_has_survivor.population.name }} : {{ settlement_has_survivor.population.value }}</h4></span>
+				<span class="item"><h4>{{ settlement_has_survivor.dead.name }} : {{ settlement_has_survivor.dead.value }}</h4></span>
 			</div>
 
 			<div class="ui secondary inverted black segment">
@@ -78,7 +70,6 @@
 					</div>
 					<div class="content">
 						<p style="font-size: 1.1em;padding-left:20px;" v-for="(value, name) in locations">{{ name }}</p>
-						<!-- <p v-for="(value, key) in locations" v-if="value"><router-link :to="'settlement/location/'+key" style="font-size: 1.1em; color:#fff; font-weight: bold;">{{ key }}</router-link></p> -->
 					</div>
 				</div>
 			</div>
@@ -100,7 +91,6 @@
 									<p style="font-size: 1.1em;"><label>{{ item.name }}</label> - <span v-for="(value, key) in item.type"> {{ firstUpper(value)+',' }} </span></p>
 								</div>
 								<div class="two wide column">
-									<!-- <h4>{{ item.value }}</h4> -->
 									<p style="font-size: 1.1em;">{{ item.count }}</p>
 								</div>
 							</div>
@@ -169,9 +159,9 @@
 				access: false,
 				settlementName: '',
 				locations: {},
-				stroage: {loading: true},
+				stroage: { loading: true },
 				itemCount: {},
-				innovations: {innovation:{}, principles: {Conviction: "", Death: "", "New Life": "", Society: ""}, standalones: {}},
+				innovations: { innovation:{}, principles: {Conviction: "", Death: "", "New Life": "", Society: ""}, standalones: {} },
 				gears: {
 					"Barber Surgeon": {},
 					"Blacksmith": {},
@@ -188,12 +178,15 @@
 					"Weapon Crafter": {},
 				},
 				gearItems: {},
-				rows: {
+				settlement_has_survivor: {
 					loading: true,
 					s_limit: { name: 'Survival Limit', value: 1 },
 					depart: { name: 'Depart', value:0 },
 					population: { name:'Population', value: 0},
 					dead: { name:'Dead', value: 0}
+				},
+				rows: {
+					loading: true
 				}
 			}
 		},
@@ -214,7 +207,7 @@
 			// share settlement with E-mail
 			shareSettlement()
 			{
-				if(this.emailShare)
+				if(this.emailShare && this.emailShare)
 				{
 					var userKey = ''
 					var dun_have = false
@@ -224,13 +217,19 @@
 					{
 						userKey = snapshot.key
 
-						if(userKey)
+						if(userKey && userKey != this.rows.owner)
 						{
 							firebase.database().ref('settlementMember').child(this.$route.params.key).on('value', function(snapshot) {
 
-								$.each(snapshot.val(), function(k, v) {
-									(v == userKey) ? have = true : dun_have = true
-								})
+								if(snapshot.val())
+								{
+									$.each(snapshot.val(), function(k, v) {
+										(v == userKey) ? have = true : dun_have = true
+									})
+								} else {
+									have = false
+									dun_have = true
+								}
 
 								if(!have && dun_have)
 								{
@@ -241,7 +240,7 @@
 
 							}.bind(this))
 
-						} else this.shareStatus = 'Email not found.'
+						} else this.shareStatus = (userKey == this.rows.owner) ? 'You are already owned.' : 'Email not found.'
 
 						this.$refs.snackbar.open()
 						this.emailShare = ''
@@ -302,7 +301,7 @@
 				var population = 0
 				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).orderByChild("Dead").equalTo(false).on('value', function(snapshot) {
 
-					this.rows.population.value = snapshot.val() ? Object.keys(snapshot.val()).length : 0
+					this.settlement_has_survivor.population.value = snapshot.val() ? Object.keys(snapshot.val()).length : 0
 
 				}.bind(this))
 			},
@@ -312,7 +311,7 @@
 				var dead = 0
 				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).orderByChild("Dead").equalTo(true).on('value', function(snapshot) {
 
-					this.rows.dead.value = snapshot.val() ? Object.keys(snapshot.val()).length : 0
+					this.settlement_has_survivor.dead.value = snapshot.val() ? Object.keys(snapshot.val()).length : 0
 
 				}.bind(this))
 			},
@@ -325,6 +324,7 @@
 
 			getEveryThing()
 			{
+				this.getSettlementHasSurvivor()
 				this.getSettlementLocation()
 				this.getSettlementInnovation()
 				this.getSettlementInnovationPrinciples()
@@ -393,6 +393,15 @@
 						this.getEveryThing()
 
 					}.bind(this))
+
+				}.bind(this))
+			},
+
+			getSettlementHasSurvivor () {
+
+				firebase.database().ref('settlement_has_survivor').child(this.$route.params.key).on('value', function(snapshot) {
+
+					this.settlement_has_survivor = snapshot.val()
 
 				}.bind(this))
 			},
