@@ -134,13 +134,7 @@
 
 			addNemesis()
 			{
-				this.input.nemesis.push({
-						name: '',
-						LV1: false,
-						LV2: false,
-						LV3: false,
-						status: false
-					})
+				this.input.nemesis.push({ name: '', 'LV1': false, 'LV2': false, 'LV3': false, status: false })
 			},
 
 			save()

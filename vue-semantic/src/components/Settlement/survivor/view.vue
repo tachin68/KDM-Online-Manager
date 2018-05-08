@@ -61,6 +61,15 @@
 								</md-select>
 							</md-input-container>
 						</div>
+						
+						<div class="mobile sixteen wide column computer eight wide column">
+							<md-input-container class="md-accent md-theme-default">
+								<label for="survivor.Xp">Weapon Proficiency</label>
+								<md-select name="survivor.Xp" v-model="survivor['Weapon Proficiency'].type" @change="changeSurvivorData('Weapon Proficiency')">
+									<md-option v-for="(value, key) in weaponProficiency" :value="key">{{value}}</md-option>
+								</md-select>
+							</md-input-container>
+						</div>
 
 						<div class="sixteen wide column">
 							<md-layout md-gutter v-for="key in objKeys">
@@ -148,24 +157,24 @@
 				// },
 
 				huntExp: {
-							0 : 0,
-							1 : 1,
-							2 : '2 | Age 1',
-							3 : 3,
-							4 : 4,
-							5 : 5,
-							6 : '6 | Age 2',
-							7 : 7,
-							8 : 8,
-							9 : 9,
-							10 : '10 | Age 3',
-							11 : 11,
-							12 : 12,
-							13 : 13,
-							14 : 14,
-							15 : '15 | Age 4',
-							16 : '16 Retired',
-						},
+					0 : 0,
+					1 : 1,
+					2 : '2 | Age 1',
+					3 : 3,
+					4 : 4,
+					5 : 5,
+					6 : '6 | Age 2',
+					7 : 7,
+					8 : 8,
+					9 : 9,
+					10 : '10 | Age 3',
+					11 : 11,
+					12 : 12,
+					13 : 13,
+					14 : 14,
+					15 : '15 | Age 4',
+					16 : '16 Retired',
+				},
 				objKeys : {
 					'Insanity' : 'Insanity',
 					'Movement' : 'Movement',
