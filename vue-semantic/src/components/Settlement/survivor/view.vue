@@ -19,9 +19,7 @@
 						</div>
 				</md-whiteframe>
 			</md-card-area>
-<pre>
-	{{weaponProficiency}}
-</pre>
+
 			<md-tabs v-if="survivor" @change="changeTabs">
 				<md-tab md-label="Stats">
 					<div class="ui grid phone-viewport">
@@ -32,18 +30,12 @@
 						<div class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label>Name</label>
-								<md-input type="text" v-model="survivor.Name" @change="changeSurvivorData('Name')"></md-input>
+								<md-input type="text" v-model="survivor.Name" @blur="changeSurvivorData('Name')"></md-input>
 							</md-input-container>
-						</div>
-
-						<div class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label>Surname</label>
-								<md-input type="text" v-model="survivor.Surname" @change="changeSurvivorData('Surname')"></md-input>
+								<md-input type="text" v-model="survivor.Surname" @blur="changeSurvivorData('Surname')"></md-input>
 							</md-input-container>
-						</div>
-
-						<div class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label for="survivor.Gender">Gender</label>
 								<md-select name="survivor.Gender" v-model="survivor.Gender" @change="changeSurvivorData('Gender')">
@@ -51,9 +43,6 @@
 									<md-option value="1">Male</md-option>
 								</md-select>
 							</md-input-container>
-						</div>
-
-						<div class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
 								<label for="survivor.Xp">Hunt XP</label>
 								<md-select name="survivor.Xp" v-model="survivor.Xp" @change="changeSurvivorData('Xp')">
@@ -61,14 +50,22 @@
 								</md-select>
 							</md-input-container>
 						</div>
-						
-						<div class="mobile sixteen wide column computer eight wide column">
+
+						<div v-show="survivor.Xp == 2" class="mobile sixteen wide column computer eight wide column">
 							<md-input-container class="md-accent md-theme-default">
-								<label for="survivor.Xp">Weapon Proficiency</label>
-								<md-select name="survivor.Xp" v-model="survivor['Weapon Proficiency'].type" @change="changeSurvivorData('Weapon Proficiency')">
+								<label>Weapon Proficiency</label>
+								<md-select v-model="survivor['Weapon Proficiency'].type" @change="changeSurvivorData('Weapon Proficiency')">
 									<md-option v-for="(value, key) in weaponProficiency" :value="key">{{value}}</md-option>
 								</md-select>
 							</md-input-container>
+							<!-- <div class="mobile sixteen wide column computer eight wide column"> -->
+							<md-input-container class="md-accent md-theme-default">
+								<label>Weapon Proficiency EXP</label>
+								<md-select v-model="survivor['Weapon Proficiency'].xp" @change="changeSurvivorData('Weapon Proficiency')">
+									<md-option v-for="(value, key) in weaponExp" :value="key">{{value}}</md-option>
+								</md-select>
+							</md-input-container>
+							<!-- </div> -->
 						</div>
 
 						<div class="sixteen wide column">
@@ -175,6 +172,17 @@
 					15 : '15 | Age 4',
 					16 : '16 Retired',
 				},
+				weaponExp: {
+					0 : 0,
+					1 : 1,
+					2 : 2,
+					3 : 'Specialist',
+					4 : 4,
+					5 : 5,
+					6 : 6,
+					7 : 7,
+					8 : 'Master'
+				},
 				objKeys : {
 					'Insanity' : 'Insanity',
 					'Movement' : 'Movement',
@@ -271,6 +279,15 @@
 				{
 					var input = {}
 					input[key] = this.survivor[key]
+					if(key == 'Weapon Proficiency')
+					{
+						if(this.checkData[key].type != this.survivor[key].type)
+						{
+							input[key].xp = this.survivor[key].xp = 0
+							this.checkData[key].type = this.survivor[key].type
+						}
+					}
+
 					var update = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).child(this.$route.params.surid).update(input)
 					// if(update) this.notify()
 					if(update) this.$refs.snackbar.open()

@@ -260,6 +260,10 @@
 					firebase.database().ref('settlementStorageGear').child(row.key).child('Stone Circle').set(this.storageGearStoneCircle())
 					firebase.database().ref('settlementStorageGear').child(row.key).child('Weapon Crafter').set(this.storageGearWeaponCrafter())
 
+					// Monster
+					firebase.database().ref('settlementMonsters').child(row.key).child('monsters').set([{ name: 'White Lion', status: false }])
+					firebase.database().ref('settlementMonsters').child(row.key).child('nemesis').set([{ name: '', 'LV1': false, 'LV2': false, 'LV3': false, status: false }])
+
 					// Timeline
 					firebase.database().ref('settlementTimeline').child(row.key).set(this.timeline())
 
@@ -276,7 +280,9 @@
 					firebase.database().ref('settlementInnovation').child(row.key).child('Principles').update(this.innovationPrinciples())
 					firebase.database().ref('settlementInnovation').child(row.key).child('Standalones').update(this.innovationStandalone())
 
+					// Location
 					firebase.database().ref('settlementLocation').child(row.key).set(this.locationCoreGame())
+					// settlement_has_survivor
 					firebase.database().ref('settlement_has_survivor').child(row.key).set(this.settlementHasSurvivor())
 
 					this.input.name = ''
@@ -330,7 +336,6 @@
 						firebase.database().ref('settlementStorageGear').child(key).remove()
 						firebase.database().ref('settlementSurvivor').child(key).remove()
 						firebase.database().ref('settlementMember').child(key).remove()
-						firebase.database().ref('settlementLocation').child(key).remove()
 						firebase.database().ref('settlementLocation').child(key).remove()
 						firebase.database().ref('settlementInnovation').child(key).remove()
 						firebase.database().ref('settlementTimeline').child(key).remove()
