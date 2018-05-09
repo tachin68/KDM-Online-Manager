@@ -64,11 +64,11 @@
 					</router-link>
 				</li>
 
-				<!-- <li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
-					<router-link to="/settlement" class="md-button md-button md-list-item-container md-theme-default">
+				<li v-show="this.$route.params.key" @click="$refs.sidebar.toggle()" class="md-list-item">
+					<router-link :to="'/settlement/party/'+this.$route.params.key" class="md-button md-button md-list-item-container md-theme-default">
 						<div class="md-list-item-holder"><i class="md-icon icon users md-theme-default"></i> <span>Party</span></div>
 					</router-link>
-				</li> -->
+				</li>
 
 				<li v-show="auth.login" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<md-button class="md-button md-list-item-container md-theme-default" v-on:click.prevent="logout" style="width:100%">

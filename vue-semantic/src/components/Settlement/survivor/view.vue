@@ -58,14 +58,12 @@
 									<md-option v-for="(value, key) in weaponProficiency" :value="key">{{value}}</md-option>
 								</md-select>
 							</md-input-container>
-							<!-- <div class="mobile sixteen wide column computer eight wide column"> -->
 							<md-input-container class="md-accent md-theme-default">
 								<label>Weapon Proficiency EXP</label>
 								<md-select v-model="survivor['Weapon Proficiency'].xp" @change="changeSurvivorData('Weapon Proficiency')">
 									<md-option v-for="(value, key) in weaponExp" :value="key">{{value}}</md-option>
 								</md-select>
 							</md-input-container>
-							<!-- </div> -->
 						</div>
 
 						<div class="sixteen wide column">

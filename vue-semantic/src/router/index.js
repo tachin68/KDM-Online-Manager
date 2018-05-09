@@ -11,6 +11,7 @@ import settlementMonsters from '../components/settlement/monsters/index'
 import settlementSurvivor from '../components/settlement/survivor/index'
 import settlementInnovations from '../components/settlement/innovations/index'
 import settlementLocation from '../components/settlement/locations/index'
+import settlementParty from '../components/settlement/party/index'
 
 import survivorView from '../components/settlement/survivor/view'
 import survivorGearGrid from '../components/settlement/survivor/geargrid'
@@ -73,6 +74,12 @@ const router = new VueRouter({
 		},
 		{
 			path: '/settlement/locations/:key', name: 'settlement/locations/:key', component: settlementLocation,
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/settlement/party/:key', name: 'settlement/party/:key', component: settlementParty,
 			meta: {
 				requiresAuth: true
 			}
