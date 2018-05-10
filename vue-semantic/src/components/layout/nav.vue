@@ -70,6 +70,8 @@
 					</router-link>
 				</li>
 
+				<div class="ui divider"></div>
+
 				<li v-show="auth.login" @click="$refs.sidebar.toggle()" class="md-list-item">
 					<md-button class="md-button md-list-item-container md-theme-default" v-on:click.prevent="logout" style="width:100%">
 						<div class="md-list-item-holder"><i class="md-icon material-icons md-theme-default">exit_to_app</i> <span>Log Out</span></div>
