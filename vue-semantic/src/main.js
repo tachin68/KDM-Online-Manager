@@ -53,6 +53,21 @@ Vue.material.registerTheme('about', {
 	}
 })
 
+Vue.material.registerTheme('color', {
+	primary: {
+		color: 'orange',
+		hue: 500
+	},
+	accent: {
+		color: 'grey',
+		hue: 800
+	},
+	warn: {
+		color: 'red',
+		hue: 500
+	}
+})
+
 sync(store, router)
 
 new Vue({

@@ -195,7 +195,8 @@
 					'Weapon Proficiency': {
 						type: "None",
 						xp: 0
-					}
+					},
+					retired: false
 				}
 			},
 

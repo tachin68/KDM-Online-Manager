@@ -5,8 +5,7 @@
 			<md-button class="md-accent" @click.native="$refs.snackbar.close()">OK</md-button>
 		</md-snackbar>
 
-		<md-card md-with-hover style="cursor:default;">
-
+		<md-card v-show="!showTabs" md-with-hover style="cursor:default;">
 			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container">
 				<div class="md-title">
 					<div class="md-toolbar-container">
@@ -64,20 +63,16 @@
 				</md-table>
 				<div class="ui divider"></div>
 
-				<button @click="showTabs = true" class="ui fluid button">Create Party</button>
+				<button v-show="checkObj(party)" @click="showTabs = true" class="ui fluid button">Depart</button>
 
 			</md-card-content>
+		</md-card>
 
-			<md-tabs v-show="showTabs">
-				<viewtabs v-for="(row, key) in party" :row="row"></viewtabs>
+		<md-card v-show="showTabs">
+			<md-tabs>
+				<viewtabs v-for="(row, key) in party" :surId="key" :row="row"></viewtabs>
 			</md-tabs>
-
-			<!-- <md-tabs>
-				<md-tab v-for="(row, key) in party" :md-label="row.Name">
-					<md-card-content>
-					</md-card-content>
-				</md-tab>
-			</md-tabs> -->
+			<!-- <button v-show="showTabs" @click="endHunt" style="margin:1rem;" class="ui button">End Hunt</button> -->
 		</md-card>
 	</div>
 </template>
@@ -85,7 +80,6 @@
 <script>
 
 	import { mapState } from 'vuex'
-
 	import viewtabs from './view.vue'
 
 	export default {
@@ -120,14 +114,23 @@
 				this.$refs[ref][0].close()
 			},
 
+			checkObj(obj)
+			{
+				return !$.isEmptyObject(obj) ? true : false
+			},
+
 			getSettlementSurvivor()
 			{
-				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).on('value', function(snapshot) {
+				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).orderByChild('Dead').equalTo(false).on('value', function(snapshot)
+				{
+					var rows = snapshot.val()
 
-					this.survivor_list = snapshot.val()
+					$.each(rows, function(key, value) {
+						if(value.retired) delete rows[key]
+					})
+					this.survivor_list = rows
 					this.select = ''
 					this.party = []
-
 				}.bind(this))
 			},
 
@@ -139,7 +142,6 @@
 				this.select = ''
 				delete this.survivor_list[select]
 				if(jQuery.isEmptyObject(this.survivor_list)) this.survivor_list = {}
-				// delete this.survivor_list.splice(select, 1);
 
 			},
 
@@ -154,13 +156,14 @@
 				this.closeDialog(key)
 			},
 
-			disband_party()
-			{
-				this.getSettlementSurvivor()
-			},
-
 			createParty() {
 				this.showTabs = true
+			},
+
+			endHunt()
+			{
+				this.getSettlementSurvivor()
+				this.showTabs = false
 			}
 		},
 
