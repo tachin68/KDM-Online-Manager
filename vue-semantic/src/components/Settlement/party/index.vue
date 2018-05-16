@@ -70,6 +70,7 @@
 
 		<md-card v-show="showTabs">
 			<md-tabs>
+				<!-- <viewtabs :rows="party"></viewtabs> -->
 				<viewtabs v-for="(row, key) in party" :surId="key" :row="row"></viewtabs>
 			</md-tabs>
 			<!-- <button v-show="showTabs" @click="endHunt" style="margin:1rem;" class="ui button">End Hunt</button> -->
