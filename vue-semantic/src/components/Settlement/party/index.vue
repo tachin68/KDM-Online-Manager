@@ -9,7 +9,7 @@
 			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container">
 				<div class="md-title">
 					<div class="md-toolbar-container">
-						<h2 class="md-headline" style="flex: 1;">Party</h2>
+						<h2 class="md-headline" style="flex: 1;">Survivor</h2>
 					</div>
 				</div>
 			</md-whiteframe>
@@ -17,7 +17,7 @@
 				<div class="ui grid phone-viewport">
 					<div class="mobile sixteen wide column computer eight wide column">
 						<md-input-container class="md-accent md-theme-default">
-							<label>Select Survivor</label>
+							<label>Add Party Member</label>
 							<md-select v-model="select" @change="addPrepareParty(select)">
 								<md-option v-for="(row, key) in survivor_list" :value="key">{{ row.Name +' '+ row.Surname }}</md-option>
 							</md-select>
@@ -29,7 +29,7 @@
 			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
 				<div class="md-title">
 					<div class="md-toolbar-container">
-						<h2 class="md-headline" style="flex: 1;"> Survivor</h2>
+						<h2 class="md-headline" style="flex: 1;"> Party</h2>
 					</div>
 				</div>
 			</md-whiteframe>
@@ -51,7 +51,7 @@
 								</md-button>
 
 								<md-dialog :ref="key">
-									<md-dialog-title>Are you sure you want to delete this survivor ?</md-dialog-title>
+									<md-dialog-title>Are you sure you want to delete this survivor from party ?</md-dialog-title>
 									<md-dialog-actions>
 										<md-button class="md-accent" @click="closeDialog(key)">Cancel</md-button>
 										<md-button class="md-accent" @click="removePrepareParty(key)">Ok</md-button>
@@ -63,18 +63,55 @@
 				</md-table>
 				<div class="ui divider"></div>
 
-				<button v-show="checkObj(party)" @click="showTabs = true" class="ui fluid button">Depart</button>
+				<button v-show="checkObj(party)" @click="createParty()" class="ui fluid button">Depart</button>
+				<!-- <button v-show="checkObj(party)" @click="showTabs = true" class="ui fluid button">Depart</button> -->
 
+			</md-card-content>
+
+			<md-whiteframe md-tag="md-toolbar" class="md-toolbar-container" md-elevation="5">
+				<div class="md-title">
+					<div class="md-toolbar-container">
+						<h2 class="md-headline" style="flex: 1;"> Party</h2>
+					</div>
+				</div>
+			</md-whiteframe>
+			<md-card-content>
+				<md-table>
+					<md-table-header>
+						<md-table-row>
+							<md-table-head>Name</md-table-head>
+							<md-table-head>Delete</md-table-head>
+						</md-table-row>
+					</md-table-header>
+
+					<!-- <md-table-body>
+						<md-table-row v-for="(row, key) in party">
+							<md-table-cell>{{ row.Name +' '+ row.Surname }}</md-table-cell>
+							<md-table-cell>
+								<md-button md-theme="about" class="md-icon-button md-list-action" @click="openDialog(key)">
+									<i class="md-icon material-icons md-theme-default">delete_forever</i>
+								</md-button>
+
+								<md-dialog :ref="key">
+									<md-dialog-title>Are you sure you want to delete this survivor ?</md-dialog-title>
+									<md-dialog-actions>
+										<md-button class="md-accent" @click="closeDialog(key)">Cancel</md-button>
+										<md-button class="md-accent" @click="removePrepareParty(key)">Ok</md-button>
+									</md-dialog-actions>
+								</md-dialog>
+							</md-table-cell>
+						</md-table-row>
+					</md-table-body> -->
+				</md-table>
 			</md-card-content>
 		</md-card>
 
-		<md-card v-show="showTabs">
-			<md-tabs>
-				<!-- <viewtabs :rows="party"></viewtabs> -->
-				<viewtabs v-for="(row, key) in party" :surId="key" :row="row"></viewtabs>
-			</md-tabs>
+		<!-- <md-card v-show="showTabs"> -->
+			<!-- <md-tabs> -->
+				<!-- <viewtabs v-for="(row, key) in party" :key="key" :surId="key" :row="row"></viewtabs> -->
+			<!-- </md-tabs> -->
 			<!-- <button v-show="showTabs" @click="endHunt" style="margin:1rem;" class="ui button">End Hunt</button> -->
-		</md-card>
+		<!-- </md-card> -->
 	</div>
 </template>
 
@@ -120,6 +157,25 @@
 				return !$.isEmptyObject(obj) ? true : false
 			},
 
+			getParty () {
+
+				firebase.database().ref('settlementParty').child(this.$route.params.key).on('value', function(snapshot) {
+
+					// this.survivors = snapshot.val()
+
+				}.bind(this))
+				// firebase.database().ref('settlementParty').child(this.$route.params.key)
+				// this.showTabs = true
+				// this.$refs.snackbar.open();
+			},
+
+			createParty() {
+
+				firebase.database().ref('settlementParty').child(this.$route.params.key).update(this.party)
+				this.showTabs = true
+				// this.$refs.snackbar.open();
+			},
+
 			getSettlementSurvivor()
 			{
 				firebase.database().ref('settlementSurvivor').child(this.$route.params.key).orderByChild('Dead').equalTo(false).on('value', function(snapshot)
@@ -143,7 +199,6 @@
 				this.select = ''
 				delete this.survivor_list[select]
 				if(jQuery.isEmptyObject(this.survivor_list)) this.survivor_list = {}
-
 			},
 
 			removePrepareParty(key)
@@ -157,9 +212,9 @@
 				this.closeDialog(key)
 			},
 
-			createParty() {
-				this.showTabs = true
-			},
+			// createParty() {
+			// 	this.showTabs = true
+			// },
 
 			endHunt()
 			{

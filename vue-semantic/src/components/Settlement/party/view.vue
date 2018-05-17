@@ -4,58 +4,11 @@
             <div class="mobile sixteen wide column computer eight wide column">
 				<!-- <md-layout md-gutter style="margin-top:1rem;"> -->
 				<div class="ui stackable hover six item labeled icon menu">
-					<a class="item" style="text-decoration: none;">
-						<p>{{ row.Movement }}</p>
-						Movement
-					</a>
-					<a class="item" style="text-decoration: none;">
-						<p>{{ row.Accuracy }}</p>
-						Accuracy
-					</a>
-					<a class="item" style="text-decoration: none;">
-						<p>{{ row.Strength }}</p>
-						Strength
-					</a>
-					<a class="item" style="text-decoration: none;">
-						<p>{{ row.Evasion }}</p>
-						Evasion
-					</a>
-					<a class="item" style="text-decoration: none;">
-						<p>{{ row.Luck }}</p>
-						Luck
-					</a>
-					<a class="item" style="text-decoration: none;">
-						<p>{{ row.Speed }}</p>
-						Speed
+					<a v-for="(value, key) in row.temporary_stats" @click="className(key)" class="item" style="text-decoration: none;">
+						<p>{{ (row[key] + value.gear + value.token.plus) - value.token.minus }}</p>
+						{{ key }}
 					</a>
 				</div>
-					<!-- <div class="ui horizontal segments">
-						<div class="ui black center aligned segment" style="cursor:pointer;">
-							<p>{{ row.Movement }}</p>
-							Movement
-						</div>
-						<div class="ui black center aligned segment" style="cursor:pointer;">
-							<p>{{ row.Accuracy }}</p>
-							Accuracy
-						</div>
-						<div class="ui black center aligned segment" style="cursor:pointer;">
-							<p>{{ row.Strength }}</p>
-							Strength
-						</div>
-						<div class="ui black center aligned segment" style="cursor:pointer;">
-							<p>{{ row.Evasion }}</p>
-							Evasion
-						</div>
-						<div class="ui black center aligned segment" style="cursor:pointer;">
-							<p>{{ row.Luck }}</p>
-							Luck
-						</div>
-						<div class="ui black center aligned segment" style="cursor:pointer;">
-							<p>{{ row.Speed }}</p>
-							Speed
-						</div>
-					</div> -->
-			    <!-- </md-layout> -->
 			</div>
             <div class="mobile sixteen wide column computer eight wide column">
                 <md-layout md-gutter style="margin-top:1rem;">
@@ -125,10 +78,57 @@
 			<div class="sixteen wide column">
 				<h4 class="ui horizontal divider header">Disorder</h4>
 			</div>
+
 			<div style="padding:0px;" class="sixteen wide column">
 				<disorders :surId="surId"></disorders>
 			</div>
 
+			<div class="sixteen wide column">
+				<div v-for="(value, key) in row.temporary_stats" :class="'ui tiny modal '+key+' '+surId">
+					<i class="close icon"></i>
+					<div class="header" style="text-align: center;">{{ key }}</div>
+					<div class="actions" style="text-align: center;">
+						<div class="ui grid">
+							<div class="sixteen wide column">
+								<div class="ui right labeled left action right action input">
+									<label style="background-color:#424242;width:90px;color: rgba(255, 255, 255, .87);" class="ui label">Base</label>
+									<button @click="editStats(key, '+')" style="background-color:#1e88e5;color: rgba(255, 255, 255, .87);" class="ui blue icon button small"><i class="plus icon"></i></button>
+									<input style="width:100px;text-align: center;" v-model="row[key]" placeholder="Def" type="text">
+									<button @click="editStats(key, '-')" style="background-color:#f44336;color: rgba(255, 255, 255, .87);" class="ui icon button small"><i class="minus icon"></i></button>
+								</div>
+							</div>
+							<div class="sixteen wide column">
+								<div class="ui right labeled left action right action input">
+									<label style="background-color:#424242;width:90px;color: rgba(255, 255, 255, .87);" class="ui label">Gear</label>
+									<button @click="gearValue(value, key, '+')" style="background-color:#1e88e5;color: rgba(255, 255, 255, .87);" class="ui blue icon button small"><i class="plus icon"></i></button>
+									<input style="width:100px;text-align: center;" v-model="value.gear" placeholder="Def" type="text">
+									<button @click="gearValue(value, key, '-')" style="background-color:#f44336;color: rgba(255, 255, 255, .87);" class="ui icon button small"><i class="minus icon"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="ui divider"></div>
+						<div class="ui grid">
+							<div class="sixteen wide column">
+								<div class="ui right labeled left action right action input">
+									<label style="background-color:#424242;width:90px;color: rgba(255, 255, 255, .87);" class="ui label">Token +</label>
+									<button @click="tokenPlusValue(value, key, '+')" style="background-color:#1e88e5;color: rgba(255, 255, 255, .87);" class="ui blue icon button small"><i class="plus icon"></i></button>
+									<input style="width:100px;text-align: center;" v-model="value.token.plus" placeholder="Def" type="text">
+									<button @click="tokenPlusValue(value, key, '-')" style="background-color:#f44336;color: rgba(255, 255, 255, .87);" class="ui icon button small"><i class="minus icon"></i></button>
+								</div>
+							</div>
+							<div class="sixteen wide column">
+								<div class="ui right labeled left action right action input">
+									<label style="background-color:#424242;width:90px;color: rgba(255, 255, 255, .87);" class="ui label">Token -</label>
+									<button @click="tokenMinusValue(value, key, '+')" style="background-color:#1e88e5;color: rgba(255, 255, 255, .87);" class="ui blue icon button small"><i class="plus icon"></i></button>
+									<input style="width:100px;text-align: center;" v-model="value.token.minus" placeholder="Def" type="text">
+									<button @click="tokenMinusValue(value, key, '-')" style="background-color:#f44336;color: rgba(255, 255, 255, .87);" class="ui icon button small"><i class="minus icon"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
         </div>
 	</md-tab>
 
@@ -147,17 +147,7 @@
         props: ['row', 'surId'],
 
 		data () {
-
 			return {
-                objKeys : {
-					'Insanity' : 'Insanity',
-					'Movement' : 'Movement',
-					'Accuracy' : 'Accuracy',
-					'Strength' : 'Strength',
-					'Evasion' : 'Evasion',
-					'Luck' : 'Luck',
-					'Speed' : 'Speed'
-				},
                 btnEditDef: {
                     'Head': 'Head',
                     'Body': 'Body',
@@ -179,10 +169,29 @@
 
 		methods:
 		{
+			className(name) {
+				$('.ui.tiny.modal.'+name+'.'+this.surId).modal('show')
+			},
+
             editBoolean(key)
             {
                 this.row[key] = !this.row[key]
             },
+
+			gearValue(row, key, type)
+			{
+				(type === '+') ? (row.gear += 1) : (row.gear -= 1)
+			},
+
+			tokenPlusValue(row, key, type)
+			{
+				(type === '+') ? (row.token.plus += 1) : (row.token.plus -= 1)
+			},
+
+			tokenMinusValue(row, key, type)
+			{
+				(type === '+') ? (row.token.minus += 1) : (row.token.minus -= 1)
+			},
 
             editStats(key, type)
             {

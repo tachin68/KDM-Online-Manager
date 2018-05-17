@@ -109,9 +109,6 @@
 			},
 
 			createSurvivor () {
-				// this.success = 1
-				// input['owner'] = { key: this.auth.key, name: this.auth.name }
-				// input['owner'] = this.auth.name
 				var input = this.input
 				var survivor = firebase.database().ref('settlementSurvivor').child(this.$route.params.key).push(this.survivor())
 
@@ -174,6 +171,50 @@
 							L: 0,
 							H: 0
 						},
+					},
+					temporary_stats: {
+						'Movement': {
+							gear: 0,
+							token: {
+								plus: 0,
+								minus: 0
+							}
+						},
+						'Accuracy': {
+							gear: 0,
+							token: {
+								plus: 0,
+								minus: 0
+							}
+						},
+						'Strength': {
+							gear: 0,
+							token: {
+								plus: 0,
+								minus: 0
+							}
+						},
+						'Evasion': {
+							gear: 0,
+							token: {
+								plus: 0,
+								minus: 0
+							}
+						},
+						'Luck': {
+							gear: 0,
+							token: {
+								plus: 0,
+								minus: 0
+							}
+						},
+						'Speed': {
+							gear: 0,
+							token: {
+								plus: 0,
+								minus: 0
+							}
+						}
 					},
 					Impairments: {
 						note: "",
